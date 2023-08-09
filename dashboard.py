@@ -54,6 +54,17 @@ def show_hide_heatmap(heatmap_figure):
     return {'height': '40vh', 'width': '100%'}
 
 
+
+text_file_content = read_text_file_content('all_a11y_objects.txt')
+items = text_file_content.split(', ')
+
+button_list = [
+    html.Button(item, id={'type': 'button', 'index': str(index)}, style={'margin': '5px', 'font-size': '11px'})
+    for index, item in enumerate(items)
+]
+
+
+
 # Define the layout
 tab_1_layout = html.Div([
 
@@ -92,8 +103,8 @@ tab_1_layout = html.Div([
     style={
         'display': 'flex',
         'justify-content': 'center',
-        'align-items': 'center',  # Vertically align items
-        'gap': '10px'  # Set equal spacing between items
+        'align-items': 'center',  
+        'gap': '10px'  
     }),
 
 
@@ -111,12 +122,15 @@ tab_1_layout = html.Div([
                         children=[
                             html.Div([html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
                         ]),
-                dcc.Textarea(
-                    id='text-file-content',
-                    value=read_text_file_content('all_a11y_objects.txt'),  
-                    readOnly=True,
-                    style={'width': '95%', 'height': '120px', 'fontSize': '12px', 'margin-top': '50px'}
-                ),
+            # dcc.Markdown(
+            #     id='text-file-content',
+            #     children=text_file_content,
+            #     style={'width': '95%', 'height': '120px', 'fontSize': '12px', 'margin-top': '50px'}
+            # ),
+            
+            html.Div(button_list, style={'margin-top': '10px'}),
+
+
             ], style={'width': '70%', 'display': 'inline-block', 'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'})
             ,
         ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}),
@@ -177,6 +191,26 @@ app.layout = html.Div([
     ]),
     html.Div(id="tab-content"),
 ])
+
+
+@app.callback(
+    Output('text-file-content', 'value'),
+    Input({'type': 'button', 'index': ALL}, 'n_clicks'),
+    State('text-file-content', 'value'),
+    prevent_initial_call=True
+)
+def update_text_content(button_clicks, current_value):
+    clicked_button_id = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
+    clicked_button_index = int(clicked_button_id.split('-')[-1])
+    clicked_button_text = items[clicked_button_index]
+    updated_content = current_value + ', ' + clicked_button_text
+    return updated_content
+
+
+
+
+
+
 
 
 
@@ -289,7 +323,7 @@ def update_image_container(selected_option,
                             image_card_id
                             ):
     
-    print(selected_option, clickData, click_timestamps, image_card_id)
+    # print(selected_option, clickData, click_timestamps, image_card_id)
 
     trigger = ctx.triggered_id
     if trigger:
@@ -299,7 +333,7 @@ def update_image_container(selected_option,
     if trigger != 'heatmap-1':
     # Handle image container click 
         if selected_option != None and image_card_id != []:
-            print("For image container click.")
+            # print("For image container click.")
             latest_click_index = None
             latest_click_time = 0
             for i, timestamp in enumerate(click_timestamps):
@@ -340,7 +374,7 @@ def update_image_container(selected_option,
 
     
     if selected_option:
-        print("For Heatmap click.")
+        # print("For Heatmap click.")
         image_names = os.listdir(images_source_folder)
         selected_option = selected_option.lower()
         image_names = [img.lower() for img in image_names]
@@ -371,13 +405,25 @@ def update_image_container(selected_option,
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'), 
     Input('line-graph-1', 'clickData'),
-    Input('heatmap-1', 'clickData'))  # Add input for heatmap click
+    Input('heatmap-1', 'clickData'))  
 def update_heatmaps(
     model, 
     selected_file, 
     line_graph_clickData,
-    heatmap_clickData
+    heatmap_clickData,
     ):
+
+    trigger = ctx.triggered_id
+    if trigger:
+        print("Trigger:" , trigger)
+
+        selected_column = None
+
+        if isinstance(trigger, str) == False:
+            if trigger['type']  and trigger['type'] == 'action-button':
+                selected_column = trigger['index'] 
+
+
     if model and selected_file:
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
@@ -435,7 +481,7 @@ def update_heatmaps(
             })
             
         # Add the horizontal and vertical line shapes for heatmap click
-        if heatmap_clickData and 'points' in heatmap_clickData and heatmap_clickData['points']:
+        if heatmap_clickData and 'points' in heatmap_clickData and heatmap_clickData['points'] and selected_column == None:
             clicked_point = heatmap_clickData['points'][0]
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
@@ -505,6 +551,23 @@ def update_heatmaps(
                 'opacity': 0.2
             })
 
+        print("Selected Column: ", selected_column)   
+
+        if selected_column is not None:
+            layout_shapes_list.append({
+                'type': 'line',
+                'x0': selected_column,
+                'x1': selected_column,
+                'y0': 0,
+                'y1': 1,
+                'xref': 'x',
+                'yref': 'paper',
+                'line': {
+                    'color': 'yellow',  # Set the line color
+                    'width': 15,  # Set the line width
+                },
+                'opacity': 0.6
+            })
 
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
