@@ -279,12 +279,12 @@ def get_image_card(image_name, frame_number, is_selected):
         Output('image-container', 'children'),
         Output('last-clicked-image-id', 'data'),
         Input('video-dropdown', 'value'),
-        Input('heatmap-1', 'clickData'),
+        Input('heatmap-1', 'hoverData'),
         [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
         State({"type": "image-card", "index": ALL}, "id"),
         )
 def update_image_container(selected_option,
-                            clickData,
+                            hoverData,
                             click_timestamps, 
                             image_card_id
                             ):
@@ -331,8 +331,8 @@ def update_image_container(selected_option,
             return image_elements, chosen_frame_number
 
 
-    if clickData and 'points' in clickData and clickData['points']:
-        clicked_point = clickData['points'][0]
+    if hoverData and 'points' in hoverData and hoverData['points']:
+        clicked_point = hoverData['points'][0]
         x_coord = str(clicked_point['x']).lower()
         y_coord = clicked_point['y']
     else:
@@ -397,9 +397,8 @@ def update_heatmaps(
 
         x_labels = [col for col in heat_map_file.columns if col != "Object"] 
 
-
-        y_labels = list(heat_map_file.iloc[:len(x_labels), 0])  
-        z_values = heat_map_file.iloc[:len(x_labels), 1:].values.tolist()  
+        y_labels = list(heat_map_file.iloc[:80, 0])  
+        z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
 
 
         filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_value.lower()]
