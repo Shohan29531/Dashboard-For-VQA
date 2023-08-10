@@ -1,5 +1,6 @@
 import os
 import dash
+from dash.dependencies import Input, Output, State
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State, MATCH, ALL
@@ -111,6 +112,21 @@ tab_1_layout = html.Div([
                     dcc.Graph(
                         id='heatmap-1',
                         style={'margin-top': '0px', 'margin-bottom': '2px'} ), 
+                    html.Div(
+                        id='heatmap-dropdown',
+                        style={'position': 'absolute', 'display': 'none'},
+                        children=[
+                            dcc.Markdown("Select Severity:"),
+                            dcc.Dropdown(
+                                id='heatmap-dropdown-options',
+                                options=[
+                                    {'label': 'Minor', 'value': 'Minor'},
+                                    {'label': 'Moderate', 'value': 'Moderate'},
+                                    {'label': 'Severe', 'value': 'Severe'},
+                                ],
+                            ),
+                        ],
+                    ),
                     dcc.Graph(
                         id='heatmap-2',
                         style={'margin-top': '0px', 'margin-bottom': '2px'}
@@ -336,10 +352,14 @@ def update_image_container(selected_option,
 
 @app.callback(
     Output('heatmap-1', 'figure'), 
+    Output('heatmap-dropdown', 'style'),
+    Output('heatmap-dropdown-options', 'value'),
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'), 
     Input('line-graph-1', 'clickData'),
     Input('heatmap-1', 'hoverData'),
+    Input('heatmap-1', 'clickData'), 
+    Input('heatmap-dropdown-options', 'value'), 
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
     State('last-clicked-image-id', 'data'),
@@ -351,12 +371,15 @@ def update_heatmap_1(
     selected_file, 
     line_graph_clickData,
     heatmap_hoverData,
+    heatmap_clickData, 
+    dropdown_selection, 
     n_clicks,                  
     textarea_example_value,    
     last_clicked_image_id,
     dummy_1,
     dummy_2
 ):
+    
     if n_clicks > 0 and model and selected_file:
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
@@ -568,10 +591,35 @@ def update_heatmap_1(
 
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
+        
+        if heatmap_clickData and heatmap_clickData.get('points'):
+            return (
+                heat_map,
+                {'position': 'relative', 'display': 'block'},  # Show the dropdown-like menu
+                None,  # Reset the dropdown selection
+            )
+        
+        if dropdown_selection:
+        # Update your heatmap data based on the selected option
+        # Reset the dropdown selection after processing
+            return (
+                heat_map,
+                {'position': 'relative', 'display': 'none'},  # Hide the dropdown-like menu
+                None,   # Reset the dropdown selection
+            )
+        
+        return (
+            heat_map,
+            {'position': 'relative', 'display': 'none'},  # Hide the dropdown-like menu
+            None,   # Reset the dropdown selection
+        )
 
-        return heat_map
 
-    return {}
+    return (
+        {},
+        {'position': 'relative', 'display': 'none'},  # Hide the dropdown-like menu
+        None,   # Reset the dropdown selection
+    )
 
 
 
