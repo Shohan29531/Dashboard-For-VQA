@@ -129,7 +129,7 @@ tab_1_layout = html.Div([
                         id='text-file-content',
                         value=read_text_file_content('all_a11y_objects.txt'),  
                         readOnly=True,
-                        style={'width': '89%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px'}
+                        style={'width': '90%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px'}
                     ),
                 ], style={'width': '60%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center','flexWrap': 'wrap'})
                 ,
@@ -313,8 +313,10 @@ def update_image_container(selected_option,
         image_elements = []
 
         for image_name in filtered_images:
+            
             frame_number = extract_frame_number(image_name)
-            if f"frame-{frame_number}" == x_coord:
+
+            if x_coord is not None and int(frame_number) == int(x_coord):
                 image_element = get_image_card(image_name, frame_number, True)
             else:
                 image_element = get_image_card(image_name, frame_number, False)
@@ -441,7 +443,7 @@ def update_heatmap_1(
         heatmap_line_column = None
         if last_clicked_image_id:
             clicked_frame_number = last_clicked_image_id
-            heatmap_line_column = x_labels.index(f'Frame-{clicked_frame_number}')
+            heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
             heatmap_hoverData = None
 
         layout_shapes_list = []
@@ -697,7 +699,7 @@ def update_heatmap_2(
         heatmap_line_column = None
         if last_clicked_image_id:
             clicked_frame_number = last_clicked_image_id
-            heatmap_line_column = x_labels.index(f'Frame-{clicked_frame_number}')
+            heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
             heatmap_hoverData = None
 
         layout_shapes_list = []
