@@ -35,7 +35,9 @@ heatmap_colorscale = [
     [1, 'rgb(6, 200, 115)']
 ]
 
-app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+external_stylesheets = [ 'https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]  #
+
+app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
 
 
 def read_text_file_content(file_path):
@@ -61,92 +63,159 @@ def show_hide_heatmap_2(heatmap_figure):
         return {'display': 'none'}
     return {'height': '40vh', 'width': '100%'}
 
-
-tab_1_layout = html.Div([
-
-    html.Div([
-        dcc.Dropdown(
-            id='video-dropdown',
-            options=[{'label': option, 'value': option} for option in line_options],
-            placeholder='Select a file...',
-            style={'width': '200px', 'margin': '10px'}
-        ),
-        dcc.Textarea(
-            id='I-see',
-            value='',
-            placeholder='Things I see',
-            style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
-        ),
-        dcc.Textarea(
-            id='I-dont-see',
-            value='',
-            placeholder='Things I do not see',
-            style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
-        ),
-        dcc.Dropdown(
-            id='model-dropdown',
-            options=[{'label': model, 'value': model} for model in available_models],
-            placeholder='Select a Model',
-            value=None,
-            style={'width': '150px', 'margin': '10px'}
-        ),
-        html.Button('Update Heatmap', id='update-heatmap-button', n_clicks=0, 
-                    style={'margin': '10px'}),
-    ], 
-    style={
-        'display': 'flex',
-        'justify-content': 'center',
-        'align-items': 'center',  
-        'gap': '10px',
-        'margin-bottom': '10px'  
-    }),
-
-
-
-    html.Div(id='output-folder-creation', style={'margin': '10px', 'display': 'none'}),
-
-    html.Div([
+# top row
+top_row = html.Div(
+    [
         html.Div([
-            html.Div([
-                    dcc.Graph(
-                        id='heatmap-1',
-                        style={'margin-top': '0px', 'margin-bottom': '2px'} ), 
-                    dcc.Graph(
-                        id='heatmap-2',
-                        style={'margin-top': '0px', 'margin-bottom': '2px'}
-                        ), 
-                    dcc.Textarea(
-                        id='statistics-textarea',
-                        value='Statistics go here...',
-                        readOnly=True,
-                        style={'width': '90%', 'height': '100px', 'fontSize': '12px', 'margin-top': '30px'}
-            ),
-                ], style={'width': '30%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center', 'flexWrap': 'wrap'})
-                
-                ,
+            dcc.Dropdown(
+                id='video-dropdown',
+                options=[{'label': option, 'value': option} for option in line_options],
+                placeholder='Select a video file...',
+                # value=None,
+                value='video-1-segment-5',
+                style={'border-color': 'gray'}            
+                # style={'width': '200px', 'margin': '10px'}
+            )],
+            className='row'
+        ),
 
-            html.Div([
-                    html.Div(id='image-container', style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
-                            children=[
-                                html.Div([html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
-                            ]),
-                    dcc.Textarea(
-                        id='text-file-content',
-                        value=read_text_file_content('all_a11y_objects.txt'),  
-                        readOnly=True,
-                        style={'width': '90%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px', 'margin-left': '50px','justify-content': 'center'}
-                    ),
-                ], style={'width': '60%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center','flexWrap': 'wrap'})
-                ,
-            ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}),
+        # I care text area
+        html.Div([
+            dcc.Dropdown(
+                id='model-dropdown',
+                options=[{'label': model, 'value': model} for model in available_models],
+                placeholder='Select a Model',
+                # value=None,
+                value='GPV-1',
+                # style={'width': '150px', 'margin': '10px'}
+                style={'border-color': 'gray'}            
+            )], className='row'
+        ),
+        
+        # I don't care text area
+        html.Div([
+            dcc.Markdown(children = '*Objects I **care** in the video:*'),
+            dcc.Textarea(
+                id='I-see',
+                value='Wall',
+                placeholder='Things I see',
+                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
+                # style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
+            )], className='two columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}
 
-            dcc.Graph(id='line-graph-1', style={'display': 'none'}),
+        ),
 
-        ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column'})
-,
-    dcc.Store(id='last-clicked-image-id'),
+        html.Div([
+            dcc.Markdown(children = '*Possible Objects:*'),
+			dcc.Textarea(
+                id='text-file-content',
+                value=read_text_file_content('all_a11y_objects.txt'),  
+                readOnly=True,
+                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
+                # style={'width': '90%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px', 'margin-left': '50px','justify-content': 'center'}
+            )], className = 'seven columns'
+        ),
 
-])
+
+
+        html.Div([
+            dcc.Markdown('*Objects I **don\'t care** in the video:*'),            
+            dcc.Textarea(
+                id='I-dont-see',
+                value='Yard Waste',
+                placeholder='Things I do not see',
+                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
+                # style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}        
+            )], className='two columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'} 
+        ),
+
+        html.Div([
+            html.Button(
+                'Analyze', 
+                id='update-heatmap-button', 
+                n_clicks=0, 
+                # style={'margin': '10px'}
+                style={'background-color': 'lightgray'}
+            )], className='row'
+        )         
+    ], 
+        className='row',
+) 
+
+
+
+        # dcc.Textarea(
+        #     id='statistics-textarea',
+        #     value='Statistics go here...',
+        #     readOnly=True,
+        #     # style={'width': '90%', 'height': '100px', 'fontSize': '12px', 'margin-top': '30px'}
+        # ),
+
+heatmaps = html.Div(
+    [        
+        html.Div([        
+            dcc.Graph(
+                id='heatmap-1',
+                # style={'margin-top': '0px', 'margin-bottom': '2px'} 
+            )], className='five columns'
+        ),
+
+         html.Div([
+				# empty								
+			], className = 'one column'
+        ),
+
+        html.Div([
+            dcc.Graph(
+                id='heatmap-2',
+                # style={'margin-top': '0px', 'margin-bottom': '2px'}
+            )], className='five columns'
+        ) 
+    ],
+        className='row', 
+        # style={'width': '30%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center', 'flexWrap': 'wrap'}
+)
+
+
+
+
+image_map = html.Div(
+    [
+        html.Div(
+            id='image-container', 
+            style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
+            children=[
+                html.Div([html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
+            ]
+        )
+    ],
+     className= 'row'
+      #style={'width': '60%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center','flexWrap': 'wrap'})         
+    #style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}
+)
+
+
+tab_1_layout = html.Div(
+    [        
+        top_row,
+        html.Div(id='output-folder-creation', style={'margin': '10px', 'display': 'none'}),
+
+        html.Div(
+            [
+                html.Div(
+                    [
+                        heatmaps,
+                        image_map,            
+                        # dcc.Graph(id='line-graph-1', style={'display': 'none'}),
+
+                    ], 
+                    #style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column'}
+                ),            
+                dcc.Store(id='last-clicked-image-id'),
+            ], className='row'
+        )
+    ]
+)
 
 
 app.layout = html.Div([
@@ -159,30 +228,6 @@ def render_tab_content(tab):
         return tab_1_layout
 
 app.layout.children[0].children = tab_1_layout
-
-@app.callback(Output('output-folder-creation', 'children'), Input('upload-csv', 'contents'), State('upload-csv', 'filename'))
-def handle_csv_upload(contents, filename):
-    if contents is not None and filename.endswith('.csv'):
-
-        destination_folder = r"C:\Users\arish\OneDrive\Desktop\Dashboard\Organized Data\Questions"
-
-        if not os.path.exists(destination_folder):
-            os.makedirs(destination_folder)
-
-        match = re.match(r'data:.*;base64,(.*)', contents)
-        if match:
-            base64_content = match.group(1)
-            decoded_content = base64.b64decode(base64_content)
-
-            uploaded_csv_path = os.path.join(destination_folder, filename)
-            with open(uploaded_csv_path, 'wb') as f:
-                f.write(decoded_content)
-
-
-        return f'Successfully uploaded and saved CSV file.'
-    return ''
-
-
 
 
 def extract_frame_number(filename):
@@ -239,21 +284,21 @@ def get_image_card(image_name, frame_number, is_selected):
 
 
 @app.callback(
-        Output('image-container', 'children'),
-        Output('last-clicked-image-id', 'data'),
-        Input('video-dropdown', 'value'),
-        Input('heatmap-1', 'hoverData'),
-        Input('heatmap-2', 'hoverData'),
-        [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
-        State({"type": "image-card", "index": ALL}, "id"),
-        )
-def update_image_container(selected_option,
-                            hoverData_heatmap1,
-                            hoverData_heatmap2,
-                            click_timestamps, 
-                            image_card_id
-                            ):
-
+    Output('image-container', 'children'),
+    Output('last-clicked-image-id', 'data'),
+    Input('video-dropdown', 'value'),
+    Input('heatmap-1', 'hoverData'),
+    Input('heatmap-2', 'hoverData'),
+    [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
+    State({"type": "image-card", "index": ALL}, "id")
+)
+def update_image_container(
+    selected_option,
+    hoverData_heatmap1,
+    hoverData_heatmap2,
+    click_timestamps, 
+    image_card_id
+):
 
     trigger = ctx.triggered_id
     if trigger:
@@ -337,8 +382,7 @@ def update_image_container(selected_option,
 @app.callback(
     Output('heatmap-1', 'figure'), 
     Input('model-dropdown', 'value'), 
-    Input('video-dropdown', 'value'), 
-    Input('line-graph-1', 'clickData'),
+    Input('video-dropdown', 'value'),     
     Input('heatmap-1', 'hoverData'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
@@ -348,8 +392,7 @@ def update_image_container(selected_option,
 )
 def update_heatmap_1(
     model, 
-    selected_file, 
-    line_graph_clickData,
+    selected_file,     
     heatmap_hoverData,
     n_clicks,                  
     textarea_example_value,    
@@ -357,6 +400,7 @@ def update_heatmap_1(
     dummy_1,
     dummy_2
 ):
+
     if n_clicks > 0 and model and selected_file:
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
@@ -382,11 +426,16 @@ def update_heatmap_1(
         y_labels = y_labels_filtered
         z_values = z_values_filtered
 
+        # colorscale_heatmap1 = [
+        #                         [0, 'rgb(211, 6, 50)'],
+        #                         [1, 'rgb(255, 255, 255)']
+        #                       ]
+        
         colorscale_heatmap1 = [
-                                [0, 'rgb(211, 6, 50)'],
+                                [0, 'lightgray'],
                                 [1, 'rgb(255, 255, 255)']
                               ]
-            
+
         x_labels = [label.replace('Frame-', '') for label in x_labels]
 
         heatmap = go.Heatmap(
@@ -454,30 +503,7 @@ def update_heatmap_1(
         layout_shapes_list = []
         
         layout_shapes_list.append(border_line)
-
-        if line_graph_clickData and 'points' in line_graph_clickData and line_graph_clickData['points']:
-            heatmap_hoverData = None
-            clicked_point = line_graph_clickData['points'][0]
-            x_coord = str(clicked_point['x']).lower()
-
-            frame_number = int(re.findall(r'\d+', x_coord)[-1])
-
-            column_width = len(x_labels) * 30 / len(x_labels)  
-
-            layout_shapes_list.append({
-                'type': 'line',
-                'x0': frame_number,
-                'x1': frame_number,
-                'y0': 0,
-                'y1': 1,
-                'xref': 'x',
-                'yref': 'paper',
-                'line': {
-                    'color': 'white', 
-                    'width': cell_size, 
-                },
-                'opacity': 0.4
-            })
+       
 
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
             last_clicked_image_id = None
@@ -574,20 +600,11 @@ def update_heatmap_1(
     return {}
 
 
-
-
-
-
-
-
-
-
-
 @app.callback(
     Output('heatmap-2', 'figure'), 
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'), 
-    Input('line-graph-1', 'clickData'),
+    # Input('line-graph-1', 'clickData'),
     Input('heatmap-2', 'hoverData'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-dont-see', 'value'),
@@ -598,7 +615,7 @@ def update_heatmap_1(
 def update_heatmap_2(
     model, 
     selected_file, 
-    line_graph_clickData,
+    # line_graph_clickData,
     heatmap_hoverData,
     n_clicks,                      
     textarea_example_2_value, 
@@ -635,10 +652,15 @@ def update_heatmap_2(
         z_values = z_values_filtered
 
 
+        # colorscale_heatmap2 = [
+        #                         [0, 'rgb(255, 255, 255)'], 
+        #                         [1, 'rgb(6, 200, 115)']
+        #                       ]
+
         colorscale_heatmap2 = [
-                                [0, 'rgb(255, 255, 255)'], 
-                                [1, 'rgb(6, 200, 115)']
-                              ]
+                                 [0, 'rgb(255, 255, 255)'], 
+                                 [1, 'lightgray']
+                               ]
 
         x_labels = [label.replace('Frame-', '') for label in x_labels]
 
@@ -711,30 +733,7 @@ def update_heatmap_2(
 
         layout_shapes_list.append(border_line)
 
-        if line_graph_clickData and 'points' in line_graph_clickData and line_graph_clickData['points']:
-            heatmap_hoverData = None
-            clicked_point = line_graph_clickData['points'][0]
-            x_coord = str(clicked_point['x']).lower()
-
-            frame_number = int(re.findall(r'\d+', x_coord)[-1])
-
-            column_width = len(x_labels) * 30 / len(x_labels)  
-
-            layout_shapes_list.append({
-                'type': 'line',
-                'x0': frame_number,
-                'x1': frame_number,
-                'y0': 0,
-                'y1': 1,
-                'xref': 'x',
-                'yref': 'paper',
-                'line': {
-                    'color': 'white', 
-                    'width': cell_size, 
-                },
-                'opacity': 0.4
-            })
-
+       
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
 
             last_clicked_image_id = None
@@ -829,80 +828,6 @@ def update_heatmap_2(
         return heat_map
 
     return {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@app.callback(Output('line-graph-1', 'figure'), Input('video-dropdown', 'value'), Input('heatmap-1', 'clickData'))
-def update_line_graphs(selected_file, clickData):
-    if selected_file:
-        file_path = os.path.join(line_folder_path, selected_file + '.csv')
-        line_graph_file = pd.read_csv(file_path)
-        line_graph_file_modified = line_graph_file[["frame pair", "Similarity (Human)", "Similarity (VQA-based)", "resnet-50 feature similarity"]].copy()
-
-        data = []
-        excluded_column = "frame pair"
-
-        for column in line_graph_file_modified.columns:
-            if column != excluded_column:
-                line = go.Scatter(
-                    x=line_graph_file_modified["frame pair"],
-                    y=line_graph_file_modified[column],
-                    mode='lines',
-                    name=column
-                )
-                data.append(line)
-
-        layout = go.Layout(
-            title='Line Graph',
-            xaxis=dict(title='X-axis'),
-            yaxis=dict(title='Y-axis'),
-            showlegend=True,
-            height=300  
-        )
-
-        if clickData and 'points' in clickData and clickData['points']:
-            clicked_point = clickData['points'][0]
-            x_coord = str(clicked_point['x']).lower()
-            y_coord = clicked_point['y']
-
-            frame_number = int(x_coord.split('-')[-1])
-
-            layout['shapes'] = [{
-                'type': 'line',
-                'x0': frame_number, 
-                'x1': frame_number,
-                'y0': 0, 
-                'y1': 1,  
-                'xref': 'x',
-                'yref': 'paper',
-                'line': {
-                    'color': 'black',
-                    'width': 3
-                }
-            }]
-
-        line_graph = go.Figure(data=data, layout=layout)
-        return line_graph
-
-    return {}
-
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
