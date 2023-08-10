@@ -134,7 +134,7 @@ tab_1_layout = html.Div([
                         id='text-file-content',
                         value=read_text_file_content('all_a11y_objects.txt'),  
                         readOnly=True,
-                        style={'width': '90%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px'}
+                        style={'width': '90%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px', 'margin-left': '50px','justify-content': 'center'}
                     ),
                 ], style={'width': '60%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center','flexWrap': 'wrap'})
                 ,
