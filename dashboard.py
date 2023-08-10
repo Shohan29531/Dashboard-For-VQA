@@ -40,7 +40,6 @@ heatmap_colorscale = [
 app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
-
 def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
@@ -51,10 +50,21 @@ def read_text_file_content(file_path):
 @app.callback(
     Output('heatmap-1', 'style'), 
     Input('heatmap-1', 'figure'))
-def show_hide_heatmap(heatmap_figure):
+def show_hide_heatmap_1(heatmap_figure):
     if not heatmap_figure:
         return {'display': 'none'}
     return {'height': '40vh', 'width': '100%'}
+
+
+@app.callback(
+    Output('heatmap-2', 'style'), 
+    Input('heatmap-2', 'figure'))
+def show_hide_heatmap_2(heatmap_figure):
+    if not heatmap_figure:
+        return {'display': 'none'}
+    return {'height': '40vh', 'width': '100%'}
+
+
 
 
 # Define the layout
@@ -65,7 +75,7 @@ tab_1_layout = html.Div([
             id='video-dropdown',
             options=[{'label': option, 'value': option} for option in line_options],
             placeholder='Select a file...',
-            style={'width': '170px', 'margin': '10px'}
+            style={'width': '200px', 'margin': '10px'}
         ),
         dcc.Textarea(
             id='I-see',
@@ -103,32 +113,29 @@ tab_1_layout = html.Div([
     html.Div([
         html.Div([
             html.Div([
-                dcc.Graph(id='heatmap-1'), 
-            ], style={'width': '30%', 'display': 'inline-block', 'verticalAlign': 'top'}),
+                    dcc.Graph(id='heatmap-1'), 
+                    dcc.Graph(id='heatmap-2'), 
+                ], style={'width': '30%', 'display': 'inline-block', 'verticalAlign': 'top'}),
 
-            html.Div([
-                html.Div(id='image-container', style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
-                        children=[
-                            html.Div([html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
-                        ]),
-                dcc.Textarea(
-                    id='text-file-content',
-                    value=read_text_file_content('all_a11y_objects.txt'),  
-                    readOnly=True,
-                    style={'width': '95%', 'height': '120px', 'fontSize': '12px', 'margin-top': '50px'}
-                ),
-            ], style={'width': '70%', 'display': 'inline-block', 'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'})
-            ,
-        ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}),
+                html.Div([
+                    html.Div(id='image-container', style={'display': 'flex', 'justify-content': 'top', 'flexWrap': 'wrap'},
+                            children=[
+                                html.Div([html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
+                            ]),
+                    dcc.Textarea(
+                        id='text-file-content',
+                        value=read_text_file_content('all_a11y_objects.txt'),  
+                        readOnly=True,
+                        style={'width': '95%', 'height': '120px', 'fontSize': '12px', 'margin-top': '50px'}
+                    ),
+                ], style={'width': '70%', 'display': 'inline-block', 'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'})
+                ,
+            ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}),
 
-        ## line graph hidden for now
-        dcc.Graph(id='line-graph-1', style={'display': 'none'})
-    ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column'})
+            ## line graph hidden for now
+            dcc.Graph(id='line-graph-1', style={'display': 'none'})
+        ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column'})
 ,
-
-
-    html.Div(id='heatmap-click-coordinates', style={'display': 'none'}),
-
     dcc.Store(id='last-clicked-image-id'),
 
 ])
@@ -280,11 +287,13 @@ def get_image_card(image_name, frame_number, is_selected):
         Output('last-clicked-image-id', 'data'),
         Input('video-dropdown', 'value'),
         Input('heatmap-1', 'hoverData'),
+        Input('heatmap-2', 'hoverData'),
         [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
         State({"type": "image-card", "index": ALL}, "id"),
         )
 def update_image_container(selected_option,
-                            hoverData,
+                            hoverData_heatmap1,
+                            hoverData_heatmap2,
                             click_timestamps, 
                             image_card_id
                             ):
@@ -292,12 +301,11 @@ def update_image_container(selected_option,
     # print(selected_option, clickData, click_timestamps, image_card_id)
 
     trigger = ctx.triggered_id
-    # if trigger:
-    #     print("Trigger:" , trigger)
+    if trigger:
+        print("Trigger:" , trigger)
 
-
-    if trigger != 'heatmap-1':
-    # Handle image container click 
+    x_coord, y_coord = None, None
+    if trigger != 'heatmap-1' and trigger != 'heatmap-2':
         if selected_option != None and image_card_id != []:
             print("For image container click.")
             latest_click_index = None
@@ -330,17 +338,20 @@ def update_image_container(selected_option,
 
             return image_elements, chosen_frame_number
 
-
-    if hoverData and 'points' in hoverData and hoverData['points']:
-        clicked_point = hoverData['points'][0]
-        x_coord = str(clicked_point['x']).lower()
-        y_coord = clicked_point['y']
     else:
-        x_coord, y_coord = None, None  
+        if trigger == 'heatmap-1':
+            clicked_point = hoverData_heatmap1['points'][0]
+            x_coord = str(clicked_point['x']).lower()
+            y_coord = clicked_point['y']
+        elif trigger == 'heatmap-2':
+            clicked_point = hoverData_heatmap2['points'][0]
+            x_coord = str(clicked_point['x']).lower()
+            y_coord = clicked_point['y']
+        else:
+            x_coord, y_coord = None, None      
 
 
     if selected_option:
-        print("For Heatmap click.")
         image_names = os.listdir(images_source_folder)
         selected_option = selected_option.lower()
         image_names = [img.lower() for img in image_names]
@@ -371,22 +382,20 @@ def update_image_container(selected_option,
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'), 
     Input('line-graph-1', 'clickData'),
-    Input('heatmap-1', 'clickData'),
+    Input('heatmap-1', 'hoverData'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
-    State('I-dont-see', 'value'),
     State('last-clicked-image-id', 'data'),
     [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
     State({"type": "image-card", "index": ALL}, "id") 
 )
-def update_heatmaps(
+def update_heatmap_1(
     model, 
     selected_file, 
     line_graph_clickData,
-    heatmap_clickData,
+    heatmap_hoverData,
     n_clicks,                  
     textarea_example_value,    
-    textarea_example_2_value, 
     last_clicked_image_id,
     dummy_1,
     dummy_2
@@ -402,24 +411,20 @@ def update_heatmaps(
 
 
         filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_value.lower()]
-        filtered_indices_dont_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_2_value.lower()]
+
         
- 
-        filtered_indices = filtered_indices_see + [-1] + filtered_indices_dont_see
-        
+        filtered_indices = filtered_indices_see 
         y_labels_filtered = []
         z_values_filtered = []
 
         for i in filtered_indices:
             if i != -1:
                 y_labels_filtered.append(y_labels[i])
-                z_values_filtered.append(z_values[i])
-            else:
-                y_labels_filtered.append("")  # Add a blank label
-                z_values_filtered.append([0.5] * len(x_labels))  # Blank row
+                z_row = [0.5 if val == 1 else val for val in z_values[i]]
+                z_values_filtered.append(z_row)
 
-        # ... (your existing code for creating heatmap)
 
+        print("z_values_filtered: ", z_values_filtered)
         y_labels = y_labels_filtered
         z_values = z_values_filtered
 
@@ -431,23 +436,31 @@ def update_heatmaps(
             colorscale=heatmap_colorscale,
             showscale = False
         )
+        cell_size = 30  # Adjust this value based on your preference
+
+        # Calculate the size of the heatmap based on the number of rows and columns
+        heatmap_width = len(x_labels) * cell_size
+        heatmap_height = len(y_labels) * cell_size
+
 
         layout = go.Layout(
-            title_x=0.5, 
-            title_y=0.95,  
-            margin={'t': 10, 'l': 10},
+            title = "Things You See",
+            title_x = 0.5,
+            title_y = 0.85,
+            title_font=dict(color='green'),
             coloraxis=dict(colorscale=heatmap_colorscale),
-            height=len(y_labels) * 40, 
-            width=len(x_labels) * 30,
+            height=350, 
+            width=heatmap_width,
             xaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
-            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11))
+            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
         )
+
 
         heatmap_line_column = None
         if last_clicked_image_id:
             clicked_frame_number = last_clicked_image_id
             heatmap_line_column = x_labels.index(f'Frame-{clicked_frame_number}')
-            heatmap_clickData = None
+            heatmap_hoverData = None
 
 
 
@@ -456,7 +469,7 @@ def update_heatmaps(
 
 
         if line_graph_clickData and 'points' in line_graph_clickData and line_graph_clickData['points']:
-            heatmap_clickData = None
+            heatmap_hoverData = None
             clicked_point = line_graph_clickData['points'][0]
             x_coord = str(clicked_point['x']).lower()
 
@@ -474,21 +487,19 @@ def update_heatmaps(
                 'yref': 'paper',
                 'line': {
                     'color': 'white',  # Set the line color
-                    'width': 15,  # Set the line width
+                    'width': cell_size,  # Set the line width
                 },
-                'opacity': 0.8
+                'opacity': 0.4
             })
 
-        if heatmap_clickData and 'points' in heatmap_clickData and heatmap_clickData['points']:
+        if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
         # Remove the image click highlight
             last_clicked_image_id = None
 
             # Add the horizontal and vertical line shapes for heatmap click
-            clicked_point = heatmap_clickData['points'][0]
+            clicked_point = heatmap_hoverData['points'][0]
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
-
-            row_height = len(y_labels) * 15 / len(y_labels)  # Calculate row height
 
             layout_shapes_list.extend([
                 {
@@ -501,9 +512,9 @@ def update_heatmaps(
                     'yref': 'y',
                     'line': {
                         'color': 'yellow',  # Set the line color
-                        'width': 15,  # Set the line width
+                        'width': cell_size/2,  # Set the line width
                     },
-                    'opacity': 0.8
+                    'opacity': 0.5
                 },
                 {
                     'type': 'line',
@@ -515,9 +526,9 @@ def update_heatmaps(
                     'yref': 'paper',
                     'line': {
                         'color': 'yellow',  # Set the line color
-                        'width': 15,  # Set the line width
+                        'width': cell_size/2,  # Set the line width
                     },
-                    'opacity': 0.8
+                    'opacity': 0.5
                 }
             ])
 
@@ -565,9 +576,9 @@ def update_heatmaps(
                 'yref': 'paper',
                 'line': {
                     'color': 'yellow',  # Set the line color
-                    'width': 15,  # Set the line width
+                    'width': cell_size/2,  # Set the line width
                 },
-                'opacity': 0.8
+                'opacity': 0.5
             })
 
         layout['shapes'] = tuple(layout_shapes_list)
@@ -576,6 +587,239 @@ def update_heatmaps(
         return heat_map
 
     return {}
+
+
+
+
+
+
+
+
+
+
+
+@app.callback(
+    Output('heatmap-2', 'figure'), 
+    Input('model-dropdown', 'value'), 
+    Input('video-dropdown', 'value'), 
+    Input('line-graph-1', 'clickData'),
+    Input('heatmap-2', 'hoverData'),
+    Input('update-heatmap-button', 'n_clicks'),
+    State('I-dont-see', 'value'),
+    State('last-clicked-image-id', 'data'),
+    [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
+    State({"type": "image-card", "index": ALL}, "id") 
+)
+def update_heatmap_2(
+    model, 
+    selected_file, 
+    line_graph_clickData,
+    heatmap_hoverData,
+    n_clicks,                      
+    textarea_example_2_value, 
+    last_clicked_image_id,
+    dummy_1,
+    dummy_2
+):
+    if n_clicks > 0 and model and selected_file:
+        file_path = os.path.join(base_folder, model, selected_file + '.csv')
+        heat_map_file = pd.read_csv(file_path)
+
+        x_labels = [col for col in heat_map_file.columns if col != "Object"] 
+
+        y_labels = list(heat_map_file.iloc[:80, 0])  
+        z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
+
+
+        filtered_indices_dont_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_2_value.lower()]
+        
+ 
+        filtered_indices = filtered_indices_dont_see
+        
+        y_labels_filtered = []
+        z_values_filtered = []
+
+        for i in filtered_indices:
+            if i != -1:
+                y_labels_filtered.append(y_labels[i])
+                z_values_filtered.append(z_values[i])
+
+
+
+        y_labels = y_labels_filtered
+        z_values = z_values_filtered
+
+
+        heatmap = go.Heatmap(
+            x=x_labels,
+            y=y_labels,
+            z=z_values,
+            colorscale=heatmap_colorscale,
+            showscale = False
+        )
+        cell_size = 30  # Adjust this value based on your preference
+
+        # Calculate the size of the heatmap based on the number of rows and columns
+        heatmap_width = len(x_labels) * cell_size
+        heatmap_height = len(y_labels) * cell_size
+
+
+        layout = go.Layout(
+            title = "Things You Do Not See", 
+            title_x = 0.5,
+            title_y = 0.85,
+            title_font=dict(color='red'),
+            coloraxis=dict(colorscale=heatmap_colorscale),
+            height=350, 
+            width=heatmap_width,
+            xaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
+            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
+        )
+
+
+        heatmap_line_column = None
+        if last_clicked_image_id:
+            clicked_frame_number = last_clicked_image_id
+            heatmap_line_column = x_labels.index(f'Frame-{clicked_frame_number}')
+            heatmap_hoverData = None
+
+
+
+        # Initialize layout_shapes_list
+        layout_shapes_list = []
+
+
+        if line_graph_clickData and 'points' in line_graph_clickData and line_graph_clickData['points']:
+            heatmap_hoverData = None
+            clicked_point = line_graph_clickData['points'][0]
+            x_coord = str(clicked_point['x']).lower()
+
+            frame_number = int(re.findall(r'\d+', x_coord)[-1])
+
+            column_width = len(x_labels) * 30 / len(x_labels)  
+
+            layout_shapes_list.append({
+                'type': 'line',
+                'x0': frame_number,
+                'x1': frame_number,
+                'y0': 0,
+                'y1': 1,
+                'xref': 'x',
+                'yref': 'paper',
+                'line': {
+                    'color': 'white',  # Set the line color
+                    'width': cell_size,  # Set the line width
+                },
+                'opacity': 0.4
+            })
+
+        if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
+        # Remove the image click highlight
+            last_clicked_image_id = None
+
+            # Add the horizontal and vertical line shapes for heatmap click
+            clicked_point = heatmap_hoverData['points'][0]
+            x_coord = clicked_point['x']
+            y_coord = clicked_point['y']
+
+            layout_shapes_list.extend([
+                {
+                    'type': 'line',
+                    'x0': 0,
+                    'x1': 1,
+                    'y0': y_coord,
+                    'y1': y_coord,
+                    'xref': 'paper',
+                    'yref': 'y',
+                    'line': {
+                        'color': 'yellow',  # Set the line color
+                        'width': cell_size/2,  # Set the line width
+                    },
+                    'opacity': 0.5
+                },
+                {
+                    'type': 'line',
+                    'x0': x_coord,
+                    'x1': x_coord,
+                    'y0': 0,
+                    'y1': 1,
+                    'xref': 'x',
+                    'yref': 'paper',
+                    'line': {
+                        'color': 'yellow',  # Set the line color
+                        'width': cell_size/2,  # Set the line width
+                    },
+                    'opacity': 0.5
+                }
+            ])
+
+
+        for i in range(len(x_labels)):
+            layout_shapes_list.append({
+                'type': 'line',
+                'x0': i / len(x_labels),
+                'x1': i / len(x_labels),
+                'y0': 0,
+                'y1': 1,
+                'xref': 'paper',  # Set xref to 'paper'
+                'yref': 'paper',  # Set yref to 'paper'
+                'line': {
+                    'color': 'black',  # Set the line color
+                    'width': 1,  # Set the line width
+                },
+                'opacity': 0.2
+            })
+
+        for i in range(len(y_labels) + 1):
+            layout_shapes_list.append({
+                'type': 'line',
+                'x0': 0,
+                'x1': 1,
+                'y0': i / len(y_labels),
+                'y1': i / len(y_labels),
+                'xref': 'paper',
+                'yref': 'paper',  # Set yref to 'paper'
+                'line': {
+                    'color': 'black',  # Set the line color
+                    'width': 1,  # Set the line width
+                },
+                'opacity': 0.2
+            })
+
+        if heatmap_line_column is not None:
+            layout_shapes_list.append({
+                'type': 'line',
+                'x0': heatmap_line_column,
+                'x1': heatmap_line_column,
+                'y0': 0,
+                'y1': 1,
+                'xref': 'x',
+                'yref': 'paper',
+                'line': {
+                    'color': 'yellow',  # Set the line color
+                    'width': cell_size/2,  # Set the line width
+                },
+                'opacity': 0.5
+            })
+
+        layout['shapes'] = tuple(layout_shapes_list)
+        heat_map = go.Figure(data=heatmap, layout=layout)
+
+        return heat_map
+
+    return {}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
