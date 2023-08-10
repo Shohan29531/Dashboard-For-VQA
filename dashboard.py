@@ -27,9 +27,8 @@ num_frames = 100
 
 heatmap_colorscale = [
     [0, 'rgb(211, 6, 50)'],
-    [0.5, 'rgb(255, 255, 255)'],
     [1, 'rgb(6, 200, 115)']
-                       ]  
+]
 
 app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -71,13 +70,13 @@ tab_1_layout = html.Div([
             id='I-see',
             value='',
             placeholder='Things I see',
-            style={'width': '300px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
+            style={'width': '300px', 'height': '100px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
         ),
         dcc.Textarea(
             id='I-dont-see',
             value='',
             placeholder='Things I do not see',
-            style={'width': '300px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
+            style={'width': '300px', 'height': '100px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
         ),
         dcc.Dropdown(
             id='model-dropdown',
@@ -247,7 +246,7 @@ def get_image_card(image_name, frame_number, is_selected):
 
     image_div = html.Div(
         [
-            dbc.CardImg(src=encoded_image, style={'width': '100%', 'height': 'auto'}),
+            dbc.CardImg(src=encoded_image, style={'width': '100%'}),
             action_button,
             frame_number_label
         ],
@@ -404,20 +403,23 @@ def update_heatmap_1(
         for i in filtered_indices:
             if i != -1:
                 y_labels_filtered.append(y_labels[i])
-                z_row = [0.5 if val == 1 else val for val in z_values[i]]
+                z_row = [1 if val == 1 else val for val in z_values[i]]
                 z_values_filtered.append(z_row)
-
-
-        print("z_values_filtered: ", z_values_filtered)
         y_labels = y_labels_filtered
         z_values = z_values_filtered
+
+        colorscale_heatmap1 = [
+                                [0, 'rgb(211, 6, 50)'],
+                                [1, 'rgb(255, 255, 255)']
+                              ]
+            
 
 
         heatmap = go.Heatmap(
             x=x_labels,
             y=y_labels,
             z=z_values,
-            colorscale=heatmap_colorscale,
+            colorscale=colorscale_heatmap1,
             showscale = False
         )
         cell_size = 30  
@@ -426,13 +428,28 @@ def update_heatmap_1(
         heatmap_height = len(y_labels) * cell_size
 
 
+        border_line = {
+            'type': 'rect',
+            'x0': -0.5,  
+            'x1': len(x_labels)-0.5, 
+            'y0': -0.5,  
+            'y1': len(y_labels)-0.5,  
+            'xref': 'x',
+            'yref': 'y',
+            'line': {
+                'color': 'green',  
+                'width': 3, 
+            },
+            'fillcolor': 'rgba(0,0,0,0)',  
+            'opacity': 1,
+        }
+
         layout = go.Layout(
             title = "Things You See",
             title_x = 0.5,
             title_y = 0.85,
             title_font=dict(color='green'),
-            coloraxis=dict(colorscale=heatmap_colorscale),
-            height=350, 
+            height=320, 
             width=heatmap_width,
             xaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
             yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
@@ -446,6 +463,8 @@ def update_heatmap_1(
             heatmap_hoverData = None
 
         layout_shapes_list = []
+        
+        layout_shapes_list.append(border_line)
 
         if line_graph_clickData and 'points' in line_graph_clickData and line_graph_clickData['points']:
             heatmap_hoverData = None
@@ -627,11 +646,17 @@ def update_heatmap_2(
         z_values = z_values_filtered
 
 
+        colorscale_heatmap2 = [
+                                [0, 'rgb(255, 255, 255)'], 
+                                [1, 'rgb(6, 200, 115)']
+                              ]
+
+
         heatmap = go.Heatmap(
             x=x_labels,
             y=y_labels,
             z=z_values,
-            colorscale=heatmap_colorscale,
+            colorscale=colorscale_heatmap2,
             showscale = False
         )
         cell_size = 30  
@@ -640,13 +665,29 @@ def update_heatmap_2(
         heatmap_height = len(y_labels) * cell_size
 
 
+        border_line = {
+            'type': 'rect',
+            'x0': -0.5,  
+            'x1': len(x_labels)-0.5, 
+            'y0': -0.5,  
+            'y1': len(y_labels)-0.5,  
+            'xref': 'x',
+            'yref': 'y',
+            'line': {
+                'color': 'red',  
+                'width': 3, 
+            },
+            'fillcolor': 'rgba(0,0,0,0)',  
+            'opacity': 1,
+        }
+
+
         layout = go.Layout(
             title = "Things You Do Not See", 
             title_x = 0.5,
             title_y = 0.85,
             title_font=dict(color='red'),
-            coloraxis=dict(colorscale=heatmap_colorscale),
-            height=350, 
+            height=320, 
             width=heatmap_width,
             xaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
             yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
@@ -661,6 +702,7 @@ def update_heatmap_2(
 
         layout_shapes_list = []
 
+        layout_shapes_list.append(border_line)
 
         if line_graph_clickData and 'points' in line_graph_clickData and line_graph_clickData['points']:
             heatmap_hoverData = None
