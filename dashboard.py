@@ -11,22 +11,16 @@ import re
 import base64
 from dash import ctx
 
-# Set the path to the folder containing the model folders
 base_folder = r"C:\Users\Touhid Shohan\Desktop\Dashboard Data"
 
-# Get the list of available models
 available_models = ['GPV-1', 'BLIP']
 
-# Folder path for line graph
 line_folder_path =  line_folder_path = r"C:\Users\Touhid Shohan\Desktop\Dashboard Data\Line graph data"
 
-# Get all the files in the folder
 files = os.listdir(line_folder_path)
 
-# Extract filenames without extension
 line_options = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
 
-# Folder path for images
 images_source_folder = images_source_folder = r"C:\Users\Touhid Shohan\Desktop\Dashboard Data\Images"
 
 num_frames = 100
@@ -44,7 +38,6 @@ def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
-
 
 
 @app.callback(
@@ -65,9 +58,6 @@ def show_hide_heatmap_2(heatmap_figure):
     return {'height': '40vh', 'width': '100%'}
 
 
-
-
-# Define the layout
 tab_1_layout = html.Div([
 
     html.Div([
@@ -102,8 +92,8 @@ tab_1_layout = html.Div([
     style={
         'display': 'flex',
         'justify-content': 'center',
-        'align-items': 'center',  # Vertically align items
-        'gap': '10px'  # Set equal spacing between items
+        'align-items': 'center',  
+        'gap': '10px'  
     }),
 
 
@@ -132,7 +122,6 @@ tab_1_layout = html.Div([
                 ,
             ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}),
 
-            ## line graph hidden for now
             dcc.Graph(id='line-graph-1', style={'display': 'none'})
         ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column'})
 ,
@@ -200,21 +189,17 @@ def render_tab_content(tab):
 @app.callback(Output('output-folder-creation', 'children'), Input('upload-csv', 'contents'), State('upload-csv', 'filename'))
 def handle_csv_upload(contents, filename):
     if contents is not None and filename.endswith('.csv'):
-        # Define the destination folder
+
         destination_folder = r"C:\Users\arish\OneDrive\Desktop\Dashboard\Organized Data\Questions"
-        # Create the destination folder if it doesn't exist
+
         if not os.path.exists(destination_folder):
             os.makedirs(destination_folder)
 
-
-        # Extract the base64-encoded content from the Data URL
         match = re.match(r'data:.*;base64,(.*)', contents)
         if match:
             base64_content = match.group(1)
-            # Decode the base64 content
             decoded_content = base64.b64decode(base64_content)
 
-            # Save the decoded content to the destination folder
             uploaded_csv_path = os.path.join(destination_folder, filename)
             with open(uploaded_csv_path, 'wb') as f:
                 f.write(decoded_content)
@@ -298,7 +283,6 @@ def update_image_container(selected_option,
                             image_card_id
                             ):
 
-    # print(selected_option, clickData, click_timestamps, image_card_id)
 
     trigger = ctx.triggered_id
     if trigger:
@@ -436,9 +420,8 @@ def update_heatmap_1(
             colorscale=heatmap_colorscale,
             showscale = False
         )
-        cell_size = 30  # Adjust this value based on your preference
+        cell_size = 30  
 
-        # Calculate the size of the heatmap based on the number of rows and columns
         heatmap_width = len(x_labels) * cell_size
         heatmap_height = len(y_labels) * cell_size
 
@@ -462,11 +445,7 @@ def update_heatmap_1(
             heatmap_line_column = x_labels.index(f'Frame-{clicked_frame_number}')
             heatmap_hoverData = None
 
-
-
-        # Initialize layout_shapes_list
         layout_shapes_list = []
-
 
         if line_graph_clickData and 'points' in line_graph_clickData and line_graph_clickData['points']:
             heatmap_hoverData = None
@@ -486,17 +465,15 @@ def update_heatmap_1(
                 'xref': 'x',
                 'yref': 'paper',
                 'line': {
-                    'color': 'white',  # Set the line color
-                    'width': cell_size,  # Set the line width
+                    'color': 'white', 
+                    'width': cell_size, 
                 },
                 'opacity': 0.4
             })
 
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
-        # Remove the image click highlight
             last_clicked_image_id = None
 
-            # Add the horizontal and vertical line shapes for heatmap click
             clicked_point = heatmap_hoverData['points'][0]
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
@@ -511,8 +488,8 @@ def update_heatmap_1(
                     'xref': 'paper',
                     'yref': 'y',
                     'line': {
-                        'color': 'yellow',  # Set the line color
-                        'width': cell_size/2,  # Set the line width
+                        'color': 'yellow',  
+                        'width': cell_size/2, 
                     },
                     'opacity': 0.5
                 },
@@ -525,8 +502,8 @@ def update_heatmap_1(
                     'xref': 'x',
                     'yref': 'paper',
                     'line': {
-                        'color': 'yellow',  # Set the line color
-                        'width': cell_size/2,  # Set the line width
+                        'color': 'yellow',  
+                        'width': cell_size/2, 
                     },
                     'opacity': 0.5
                 }
@@ -540,11 +517,11 @@ def update_heatmap_1(
                 'x1': i / len(x_labels),
                 'y0': 0,
                 'y1': 1,
-                'xref': 'paper',  # Set xref to 'paper'
-                'yref': 'paper',  # Set yref to 'paper'
+                'xref': 'paper',  
+                'yref': 'paper',  
                 'line': {
-                    'color': 'black',  # Set the line color
-                    'width': 1,  # Set the line width
+                    'color': 'black', 
+                    'width': 1,  
                 },
                 'opacity': 0.2
             })
@@ -557,10 +534,10 @@ def update_heatmap_1(
                 'y0': i / len(y_labels),
                 'y1': i / len(y_labels),
                 'xref': 'paper',
-                'yref': 'paper',  # Set yref to 'paper'
+                'yref': 'paper', 
                 'line': {
-                    'color': 'black',  # Set the line color
-                    'width': 1,  # Set the line width
+                    'color': 'black', 
+                    'width': 1, 
                 },
                 'opacity': 0.2
             })
@@ -575,8 +552,8 @@ def update_heatmap_1(
                 'xref': 'x',
                 'yref': 'paper',
                 'line': {
-                    'color': 'yellow',  # Set the line color
-                    'width': cell_size/2,  # Set the line width
+                    'color': 'yellow', 
+                    'width': cell_size/2, 
                 },
                 'opacity': 0.5
             })
@@ -657,9 +634,8 @@ def update_heatmap_2(
             colorscale=heatmap_colorscale,
             showscale = False
         )
-        cell_size = 30  # Adjust this value based on your preference
+        cell_size = 30  
 
-        # Calculate the size of the heatmap based on the number of rows and columns
         heatmap_width = len(x_labels) * cell_size
         heatmap_height = len(y_labels) * cell_size
 
@@ -683,9 +659,6 @@ def update_heatmap_2(
             heatmap_line_column = x_labels.index(f'Frame-{clicked_frame_number}')
             heatmap_hoverData = None
 
-
-
-        # Initialize layout_shapes_list
         layout_shapes_list = []
 
 
@@ -707,17 +680,16 @@ def update_heatmap_2(
                 'xref': 'x',
                 'yref': 'paper',
                 'line': {
-                    'color': 'white',  # Set the line color
-                    'width': cell_size,  # Set the line width
+                    'color': 'white', 
+                    'width': cell_size, 
                 },
                 'opacity': 0.4
             })
 
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
-        # Remove the image click highlight
+
             last_clicked_image_id = None
 
-            # Add the horizontal and vertical line shapes for heatmap click
             clicked_point = heatmap_hoverData['points'][0]
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
@@ -732,8 +704,8 @@ def update_heatmap_2(
                     'xref': 'paper',
                     'yref': 'y',
                     'line': {
-                        'color': 'yellow',  # Set the line color
-                        'width': cell_size/2,  # Set the line width
+                        'color': 'yellow', 
+                        'width': cell_size/2,  
                     },
                     'opacity': 0.5
                 },
@@ -746,8 +718,8 @@ def update_heatmap_2(
                     'xref': 'x',
                     'yref': 'paper',
                     'line': {
-                        'color': 'yellow',  # Set the line color
-                        'width': cell_size/2,  # Set the line width
+                        'color': 'yellow', 
+                        'width': cell_size/2, 
                     },
                     'opacity': 0.5
                 }
@@ -761,11 +733,11 @@ def update_heatmap_2(
                 'x1': i / len(x_labels),
                 'y0': 0,
                 'y1': 1,
-                'xref': 'paper',  # Set xref to 'paper'
-                'yref': 'paper',  # Set yref to 'paper'
+                'xref': 'paper', 
+                'yref': 'paper',  
                 'line': {
-                    'color': 'black',  # Set the line color
-                    'width': 1,  # Set the line width
+                    'color': 'black',  
+                    'width': 1,  
                 },
                 'opacity': 0.2
             })
@@ -778,10 +750,10 @@ def update_heatmap_2(
                 'y0': i / len(y_labels),
                 'y1': i / len(y_labels),
                 'xref': 'paper',
-                'yref': 'paper',  # Set yref to 'paper'
+                'yref': 'paper',  
                 'line': {
-                    'color': 'black',  # Set the line color
-                    'width': 1,  # Set the line width
+                    'color': 'black',  
+                    'width': 1,  
                 },
                 'opacity': 0.2
             })
@@ -796,8 +768,8 @@ def update_heatmap_2(
                 'xref': 'x',
                 'yref': 'paper',
                 'line': {
-                    'color': 'yellow',  # Set the line color
-                    'width': cell_size/2,  # Set the line width
+                    'color': 'yellow', 
+                    'width': cell_size/2, 
                 },
                 'opacity': 0.5
             })
@@ -852,24 +824,21 @@ def update_line_graphs(selected_file, clickData):
             xaxis=dict(title='X-axis'),
             yaxis=dict(title='Y-axis'),
             showlegend=True,
-            height=300  # height 300 pixels to fit within the page
+            height=300  
         )
 
-        #clicked tiles coordinates
         if clickData and 'points' in clickData and clickData['points']:
             clicked_point = clickData['points'][0]
             x_coord = str(clicked_point['x']).lower()
             y_coord = clicked_point['y']
 
-            # Extract the frame number from x_coord
             frame_number = int(x_coord.split('-')[-1])
 
-            # Add a vertical line shape to the layout
             layout['shapes'] = [{
                 'type': 'line',
-                'x0': frame_number, #width of the line
+                'x0': frame_number, 
                 'x1': frame_number,
-                'y0': 0, #length of the line
+                'y0': 0, 
                 'y1': 1,  
                 'xref': 'x',
                 'yref': 'paper',
@@ -893,17 +862,13 @@ def update_line_graphs(selected_file, clickData):
 def update_image_container_2(selected_option):
 
     if selected_option:
-        # Get the list of images in the current directory
         image_names = os.listdir(images_source_folder)
 
-        # selected_option and image_names to lowercase
         selected_option = selected_option.lower()
         image_names = [img.lower() for img in image_names]
 
-        # Filter images
         filtered_images = [img.strip() for img in image_names if img.startswith(selected_option)]
 
-        # Sort images based on the frame number
         filtered_images.sort(key=extract_frame_number)
 
         image_elements = []
@@ -911,7 +876,6 @@ def update_image_container_2(selected_option):
         for image_name in filtered_images:
             encoded_image = get_encoded_image(image_name)
 
-            # Extract frame number from the image filename
             frame_number = extract_frame_number(image_name)
 
             image_element = get_image_card(image_name, frame_number, False)
@@ -935,7 +899,6 @@ def update_heatmap_gpv(selected_file):
 
         x_labels = [col for col in heat_map_file.columns if col != "Object"] 
 
-        # taking only the first 45 to fit within the page
         y_labels = list(heat_map_file.iloc[:45, 0])  
         z_values = heat_map_file.iloc[:45, 1:].values.tolist()  
 
@@ -975,7 +938,6 @@ def update_heatmap_gpv(selected_file):
 
         x_labels = [col for col in heat_map_file.columns if col != "Object"] 
 
-        # taking only the first 45 to fit within the page
         y_labels = list(heat_map_file.iloc[:45, 0])  
         z_values = heat_map_file.iloc[:45, 1:].values.tolist()  
 
