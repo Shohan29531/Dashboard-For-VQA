@@ -26,7 +26,7 @@ files = os.listdir(line_folder_path)
 line_options = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
 
 
-
+heatmap_cell_size = 30
 available_models = ['GPV-1', 'BLIP']
 
 num_frames = 100
@@ -113,20 +113,9 @@ tab_1_layout = html.Div([
                         id='heatmap-1',
                         style={'margin-top': '0px', 'margin-bottom': '2px'} ), 
                     html.Div(
-                        id='heatmap-dropdown',
-                        style={'position': 'absolute', 'display': 'none'},
-                        children=[
-                            dcc.Markdown("Select Severity:"),
-                            dcc.Dropdown(
-                                id='heatmap-dropdown-options',
-                                options=[
-                                    {'label': 'Minor', 'value': 'Minor'},
-                                    {'label': 'Moderate', 'value': 'Moderate'},
-                                    {'label': 'Severe', 'value': 'Severe'},
-                                ],
-                            ),
-                        ],
-                    ),
+                            id='heatmap-popover',
+                            style={'position': 'relative'},
+                        ),
                     dcc.Graph(
                         id='heatmap-2',
                         style={'margin-top': '0px', 'margin-bottom': '2px'}
@@ -352,14 +341,10 @@ def update_image_container(selected_option,
 
 @app.callback(
     Output('heatmap-1', 'figure'), 
-    Output('heatmap-dropdown', 'style'),
-    Output('heatmap-dropdown-options', 'value'),
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'), 
     Input('line-graph-1', 'clickData'),
     Input('heatmap-1', 'hoverData'),
-    Input('heatmap-1', 'clickData'), 
-    Input('heatmap-dropdown-options', 'value'), 
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
     State('last-clicked-image-id', 'data'),
@@ -371,8 +356,6 @@ def update_heatmap_1(
     selected_file, 
     line_graph_clickData,
     heatmap_hoverData,
-    heatmap_clickData, 
-    dropdown_selection, 
     n_clicks,                  
     textarea_example_value,    
     last_clicked_image_id,
@@ -591,36 +574,47 @@ def update_heatmap_1(
 
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
-        
-        if heatmap_clickData and heatmap_clickData.get('points'):
-            return (
-                heat_map,
-                {'position': 'relative', 'display': 'block'},  # Show the dropdown-like menu
-                None,  # Reset the dropdown selection
-            )
-        
-        if dropdown_selection:
-        # Update your heatmap data based on the selected option
-        # Reset the dropdown selection after processing
-            return (
-                heat_map,
-                {'position': 'relative', 'display': 'none'},  # Hide the dropdown-like menu
-                None,   # Reset the dropdown selection
-            )
-        
-        return (
-            heat_map,
-            {'position': 'relative', 'display': 'none'},  # Hide the dropdown-like menu
-            None,   # Reset the dropdown selection
+                
+        return heat_map
+
+
+    return {}
+
+
+
+
+@app.callback(
+    Output('heatmap-popover', 'children'),
+    Output('heatmap-popover', 'style'),
+    Input('heatmap-1', 'clickData'),
+)
+def render_popover(click_data):
+    if click_data:
+        x_coord = int(click_data['points'][0]['x'])  # Convert to integer
+        y_coord = 5
+        options = ['Minor', 'Moderate', 'Severe']
+
+        dropdown = dcc.Dropdown(
+            id='heatmap-dropdown',
+            options=[{'label': option, 'value': option} for option in options],
+            value=None,
+            clearable=False,
+            style={'width': '100px'},
+            placeholder='Error Is:'
         )
 
+        print(x_coord, y_coord)
 
-    return (
-        {},
-        {'position': 'relative', 'display': 'none'},  # Hide the dropdown-like menu
-        None,   # Reset the dropdown selection
-    )
+        dropdown_style = {
+            'position': 'absolute',
+            'left': f'{425}px',  
+            'top': f'{210}px', 
+            'z-index': 1000  
+        }
 
+        return dropdown, dropdown_style
+
+    return html.Div(), {'display': 'none'}
 
 
 
