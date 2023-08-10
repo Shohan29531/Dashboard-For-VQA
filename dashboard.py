@@ -70,13 +70,13 @@ tab_1_layout = html.Div([
             id='I-see',
             value='',
             placeholder='Things I see',
-            style={'width': '300px', 'height': '100px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
+            style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
         ),
         dcc.Textarea(
             id='I-dont-see',
             value='',
             placeholder='Things I do not see',
-            style={'width': '300px', 'height': '100px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
+            style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
         ),
         dcc.Dropdown(
             id='model-dropdown',
@@ -437,7 +437,7 @@ def update_heatmap_1(
             'xref': 'x',
             'yref': 'y',
             'line': {
-                'color': 'green',  
+                'color': 'rgb(6, 200, 115)',  
                 'width': 3, 
             },
             'fillcolor': 'rgba(0,0,0,0)',  
@@ -674,7 +674,7 @@ def update_heatmap_2(
             'xref': 'x',
             'yref': 'y',
             'line': {
-                'color': 'red',  
+                'color': 'rgb(211, 6, 50)',  
                 'width': 3, 
             },
             'fillcolor': 'rgba(0,0,0,0)',  
