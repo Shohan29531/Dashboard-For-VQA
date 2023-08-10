@@ -6,22 +6,27 @@ from dash.dependencies import Input, Output, State, MATCH, ALL
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
-import seaborn as sns
 import re
 import base64
 from dash import ctx
 
-base_folder = r"C:\Users\Touhid Shohan\Desktop\Dashboard Data"
 
-available_models = ['GPV-1', 'BLIP']
 
-line_folder_path =  line_folder_path = r"C:\Users\Touhid Shohan\Desktop\Dashboard Data\Line graph data"
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
+LINE_GRAPH_DATA_DIR = os.path.join(DATA_DIR, 'Line graph data')
+IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 
+
+
+base_folder = DATA_DIR
+images_source_folder = IMAGE_DATA_DIR
+line_folder_path =  LINE_GRAPH_DATA_DIR
 files = os.listdir(line_folder_path)
-
 line_options = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
 
-images_source_folder = images_source_folder = r"C:\Users\Touhid Shohan\Desktop\Dashboard Data\Images"
+
+
+available_models = ['GPV-1', 'BLIP']
 
 num_frames = 100
 fixed_heatmap_height = 350
