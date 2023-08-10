@@ -24,7 +24,7 @@ line_options = [os.path.splitext(file)[0] for file in files if file.endswith(".c
 images_source_folder = images_source_folder = r"C:\Users\Touhid Shohan\Desktop\Dashboard Data\Images"
 
 num_frames = 100
-
+fixed_heatmap_height = 350
 heatmap_colorscale = [
     [0, 'rgb(211, 6, 50)'],
     [1, 'rgb(6, 200, 115)']
@@ -92,22 +92,36 @@ tab_1_layout = html.Div([
         'display': 'flex',
         'justify-content': 'center',
         'align-items': 'center',  
-        'gap': '10px'  
+        'gap': '10px',
+        'margin-bottom': '10px'  
     }),
 
 
 
-    html.Div(id='output-folder-creation', style={'margin': '10px'}),
+    html.Div(id='output-folder-creation', style={'margin': '10px', 'display': 'none'}),
 
     html.Div([
         html.Div([
             html.Div([
-                    dcc.Graph(id='heatmap-1'), 
-                    dcc.Graph(id='heatmap-2'), 
-                ], style={'width': '30%', 'display': 'inline-block', 'verticalAlign': 'top'}),
+                    dcc.Graph(
+                        id='heatmap-1',
+                        style={'margin-top': '0px', 'margin-bottom': '2px'} ), 
+                    dcc.Graph(
+                        id='heatmap-2',
+                        style={'margin-top': '0px', 'margin-bottom': '2px'}
+                        ), 
+                    dcc.Textarea(
+                        id='statistics-textarea',
+                        value='Statistics go here...',
+                        readOnly=True,
+                        style={'width': '90%', 'height': '100px', 'fontSize': '12px', 'margin-top': '30px'}
+            ),
+                ], style={'width': '30%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center', 'flexWrap': 'wrap'})
+                
+                ,
 
-                html.Div([
-                    html.Div(id='image-container', style={'display': 'flex', 'justify-content': 'top', 'flexWrap': 'wrap'},
+            html.Div([
+                    html.Div(id='image-container', style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
                             children=[
                                 html.Div([html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
                             ]),
@@ -115,75 +129,31 @@ tab_1_layout = html.Div([
                         id='text-file-content',
                         value=read_text_file_content('all_a11y_objects.txt'),  
                         readOnly=True,
-                        style={'width': '95%', 'height': '120px', 'fontSize': '12px', 'margin-top': '50px'}
+                        style={'width': '89%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px'}
                     ),
-                ], style={'width': '70%', 'display': 'inline-block', 'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'})
+                ], style={'width': '60%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center','flexWrap': 'wrap'})
                 ,
             ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}),
 
-            dcc.Graph(id='line-graph-1', style={'display': 'none'})
+            dcc.Graph(id='line-graph-1', style={'display': 'none'}),
+
         ], style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column'})
 ,
     dcc.Store(id='last-clicked-image-id'),
 
 ])
 
-tab_2_layout =  html.Div([
-
-    html.Div([
-        dcc.Dropdown(
-            id= 'video-dropdown-2',
-            #'dropdown-2',
-            options=[{'label': option, 'value': option} for option in line_options],
-            placeholder='Select a file...',
-
-            style={
-                'width': '200px',
-                'margin': '10px'
-            }
-        )
-    ], style={'display': 'flex', 'justify-content': 'center'}),
-
-
-    html.Div(id='output-folder-creation-2', style={'margin': '10px'}),
-
-    html.Div([
-        html.Div([
-            dcc.Graph(id='heatmap-gpv', style={'height': '50vh', 'width': '50%', 'display': 'inline-block'}),
-            dcc.Graph(id='heatmap-lavis', style={'height': '50vh', 'width': '50%', 'display': 'inline-block'}),
-        ], style={'width': '100%', 'display': 'inline-block'}),
-
-        html.Div([
-            html.Div(id='image-container-2', style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
-                     children=[
-                         html.Div(
-                             [html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
-                     ]),
-        ], style={'width': '100%', 'display': 'inline-block'}),
-    ], style={'display': 'flex', 'justify-content': 'center'}),
-
-])
-
 
 app.layout = html.Div([
-    dcc.Tabs(id="tabs", value="tab-1", children=[
-        dcc.Tab(label="Tab 1", value="tab-1",),
-        dcc.Tab(label="Tab 2", value="tab-2",),
-    ]),
     html.Div(id="tab-content"),
 ])
-
-
 
 @app.callback(Output("tab-content", "children"), Input("tabs", "value"))
 def render_tab_content(tab):
     if tab == "tab-1":
         return tab_1_layout
 
-    elif tab == "tab-2":
-        return tab_2_layout
-
-
+app.layout.children[0].children = tab_1_layout
 
 @app.callback(Output('output-folder-creation', 'children'), Input('upload-csv', 'contents'), State('upload-csv', 'filename'))
 def handle_csv_upload(contents, filename):
@@ -241,7 +211,7 @@ def get_image_card(image_name, frame_number, is_selected):
 
     frame_number_label = html.Label(
         frame_number,
-        style={'position': 'absolute', 'top': '0px', 'left': '0px', 'color': 'rgb(252, 194, 3)', 'background-color': 'black', 'padding': '2px', 'font-weight': 'bold'}
+        style={'position': 'absolute', 'top': '0px', 'left': '0px', 'color': 'blue', 'background-color': 'rgb(232, 237, 235)', 'padding': '2px', 'font-weight': 'bold'}
     )
 
     image_div = html.Div(
@@ -260,9 +230,6 @@ def get_image_card(image_name, frame_number, is_selected):
         id={"type": "image-card", "index": frame_number}
     )
     return card
-
-
-
 
 
 
@@ -413,7 +380,7 @@ def update_heatmap_1(
                                 [1, 'rgb(255, 255, 255)']
                               ]
             
-
+        x_labels = [label.replace('Frame-', '') for label in x_labels]
 
         heatmap = go.Heatmap(
             x=x_labels,
@@ -438,23 +405,38 @@ def update_heatmap_1(
             'yref': 'y',
             'line': {
                 'color': 'rgb(6, 200, 115)',  
-                'width': 3, 
+                'width': 5, 
             },
             'fillcolor': 'rgba(0,0,0,0)',  
             'opacity': 1,
         }
 
         layout = go.Layout(
-            title = "Things You See",
-            title_x = 0.5,
-            title_y = 0.85,
-            title_font=dict(color='green'),
-            height=320, 
+            title="Things You See",
+            title_x=0.53,
+            title_y=0.8,
+            title_font=dict(color='rgb(6, 200, 115)', family='Arial Black' ),
+            height=fixed_heatmap_height,
             width=heatmap_width,
-            xaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
-            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
+            xaxis=dict(
+                showgrid=False,
+                dtick=1,
+                gridwidth=1,
+                tickfont=dict(size=10.5, color='blue', family='Arial Black'),
+            ),
+            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)),
+            annotations=[
+                dict(
+                    x=0.5, 
+                    y=-0.25, 
+                    xref='paper', 
+                    yref='paper',  
+                    text='Frames',  
+                    showarrow=False,  
+                    font=dict(size=12, family='Arial Black'),
+                )
+            ]
         )
-
 
         heatmap_line_column = None
         if last_clicked_image_id:
@@ -651,6 +633,7 @@ def update_heatmap_2(
                                 [1, 'rgb(6, 200, 115)']
                               ]
 
+        x_labels = [label.replace('Frame-', '') for label in x_labels]
 
         heatmap = go.Heatmap(
             x=x_labels,
@@ -675,7 +658,7 @@ def update_heatmap_2(
             'yref': 'y',
             'line': {
                 'color': 'rgb(211, 6, 50)',  
-                'width': 3, 
+                'width': 5, 
             },
             'fillcolor': 'rgba(0,0,0,0)',  
             'opacity': 1,
@@ -683,15 +666,32 @@ def update_heatmap_2(
 
 
         layout = go.Layout(
-            title = "Things You Do Not See", 
-            title_x = 0.5,
-            title_y = 0.85,
-            title_font=dict(color='red'),
-            height=320, 
+            title="Things You Do Not See",
+            title_x=0.53,
+            title_y=0.8,
+            title_font=dict(color='rgb(211, 6, 50)', family='Arial Black' ),
+            height=fixed_heatmap_height,
             width=heatmap_width,
-            xaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
-            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)), 
+            xaxis=dict(
+                showgrid=False,
+                dtick=1,
+                gridwidth=1,
+                tickfont=dict(size=10.5, color='blue', family='Arial Black'),
+            ),
+            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)),
+            annotations=[
+                dict(
+                    x=0.5, 
+                    y=-0.25, 
+                    xref='paper', 
+                    yref='paper',  
+                    text='Frames',  
+                    showarrow=False,  
+                    font=dict(size=12, family='Arial Black'),
+                )
+            ]
         )
+
 
 
         heatmap_line_column = None
@@ -894,119 +894,6 @@ def update_line_graphs(selected_file, clickData):
         return line_graph
 
     return {}
-
-
-
-
-
-
-@app.callback(Output('image-container-2', 'children'), Input('video-dropdown-2', 'value'))
-def update_image_container_2(selected_option):
-
-    if selected_option:
-        image_names = os.listdir(images_source_folder)
-
-        selected_option = selected_option.lower()
-        image_names = [img.lower() for img in image_names]
-
-        filtered_images = [img.strip() for img in image_names if img.startswith(selected_option)]
-
-        filtered_images.sort(key=extract_frame_number)
-
-        image_elements = []
-
-        for image_name in filtered_images:
-            encoded_image = get_encoded_image(image_name)
-
-            frame_number = extract_frame_number(image_name)
-
-            image_element = get_image_card(image_name, frame_number, False)
-            image_elements.append(image_element)
-
-        return image_elements
-    else:
-        return []
-
-
-
-
-
-
-@app.callback(Output('heatmap-gpv', 'figure'), Input('video-dropdown-2', 'value'))
-def update_heatmap_gpv(selected_file):
-    if selected_file:
-        model = 'model GPV'
-        file_path = os.path.join(base_folder, model, selected_file + '.csv')
-        heat_map_file = pd.read_csv(file_path)
-
-        x_labels = [col for col in heat_map_file.columns if col != "Object"] 
-
-        y_labels = list(heat_map_file.iloc[:45, 0])  
-        z_values = heat_map_file.iloc[:45, 1:].values.tolist()  
-
-
-        heatmap = go.Heatmap(
-            x=x_labels,
-            y=y_labels,
-            z=z_values,
-            colorscale=heatmap_colorscale
-        )
-
-        layout = go.Layout(
-            title='Heatmap GPV',
-            title_x=0.5, 
-            title_y=0.95,  
-            coloraxis=dict(colorscale=heatmap_colorscale, colorbar=dict(tickvals=[0, 1], ticktext=["Not Present", "Present"])),
-            height=len(y_labels) * 15, 
-            width=len(x_labels) * 30,
-            xaxis=dict(showgrid=True, dtick=1, gridwidth=2),  
-            yaxis=dict(showgrid=True, dtick=1, gridwidth=2)  
-        )
-
-        heat_map = go.Figure(data=heatmap, layout=layout)
-
-        return heat_map
-
-    return {}
-
-
-
-@app.callback(Output('heatmap-lavis', 'figure'), Input('video-dropdown-2', 'value'))
-def update_heatmap_gpv(selected_file):
-    if selected_file:
-        model = 'model LAVIS'
-        file_path = os.path.join(base_folder, model, selected_file + '.csv')
-        heat_map_file = pd.read_csv(file_path)
-
-        x_labels = [col for col in heat_map_file.columns if col != "Object"] 
-
-        y_labels = list(heat_map_file.iloc[:45, 0])  
-        z_values = heat_map_file.iloc[:45, 1:].values.tolist()  
-
-        heatmap = go.Heatmap(
-            x=x_labels,
-            y=y_labels,
-            z=z_values,
-            colorscale=heatmap_colorscale
-        )
-
-        layout = go.Layout(
-            title='Heatmap LAVIS',
-            title_x=0.5, 
-            title_y=0.95,  
-            coloraxis=dict(colorscale=heatmap_colorscale, colorbar=dict(tickvals=[0, 1], ticktext=["Not Present", "Present"])),
-            height=len(y_labels) * 15, 
-            width=len(x_labels) * 30,
-            xaxis=dict(showgrid=True, dtick=1, gridwidth=2),  
-            yaxis=dict(showgrid=True, dtick=1, gridwidth=2)  
-        )
-
-        heat_map = go.Figure(data=heatmap, layout=layout)
-
-        return heat_map
-
-    return {}
-
 
 
 
