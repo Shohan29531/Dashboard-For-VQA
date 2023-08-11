@@ -374,6 +374,8 @@ def update_image_container(
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'),     
     Input('heatmap-1', 'hoverData'),
+    Input('heatmap-1', 'clickData'),
+    # Input('heatmap-dropdown-1', 'value'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
     State('last-clicked-image-id', 'data'),
@@ -384,6 +386,8 @@ def update_heatmap_1(
     model, 
     selected_file,     
     heatmap_hoverData,
+    heatmap_clickData,
+    # heatmap_dropdownData,
     n_clicks,                  
     textarea_example_value,    
     last_clicked_image_id,
@@ -420,9 +424,13 @@ def update_heatmap_1(
         z_values = z_values_filtered
         
         colorscale_heatmap1 = [
-                                [0, 'lightgray'],
-                                [1, 'rgb(255, 255, 255)']
+                                
+                                [0, 'rgb(255,255,255)'],
+                                [1, 'rgb(6, 200, 115)'],
                               ]
+        
+        ## green means model sees
+        ## white means model does not see 
 
         x_labels = [label.replace('Frame-', '') for label in x_labels]
 
@@ -586,6 +594,15 @@ def update_heatmap_1(
                 'opacity': 0.5
             })
 
+
+
+        if heatmap_clickData:
+            x_coord = int(heatmap_clickData['points'][0]['x']) 
+            y_coord = heatmap_clickData['points'][0]['y']
+
+
+
+
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
 
@@ -603,7 +620,7 @@ def update_heatmap_1(
 def render_popover_1(click_data):
     if click_data:
         x_coord = int(click_data['points'][0]['x']) 
-        y_coord = 5
+        y_coord = click_data['points'][0]['y']
         options = ['Minor', 'Moderate', 'Severe']
 
         dropdown = dcc.Dropdown(
@@ -728,9 +745,9 @@ def update_heatmap_2(
         z_values = z_values_filtered
 
 
-        colorscale_heatmap2 = [
-                                 [0, 'rgb(255, 255, 255)'], 
-                                 [1, 'lightgray']
+        colorscale_heatmap2 = [                          
+                                 [0, 'red'],
+                                 [1, 'rgb(255, 255, 255)'], 
                                ]
 
         x_labels = [label.replace('Frame-', '') for label in x_labels]
