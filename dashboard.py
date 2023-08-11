@@ -28,9 +28,11 @@ line_options = [os.path.splitext(file)[0] for file in files if file.endswith(".c
 
 available_models = ['GPV-1', 'BLIP']
 
-heatmap_cell_size = 30
 num_frames = 100
+
 fixed_heatmap_height = 350
+fixed_heatmap_width = 500
+
 heatmap_colorscale = [
     [0, 'rgb(211, 6, 50)'],
     [1, 'rgb(6, 200, 115)']
@@ -86,9 +88,7 @@ top_row = html.Div(
                 id='model-dropdown',
                 options=[{'label': model, 'value': model} for model in available_models],
                 placeholder='Select a Model',
-                # value=None,
                 value='GPV-1',
-                # style={'width': '150px', 'margin': '10px'}
                 style={'border-color': 'gray'}            
             )], className='row'
         ),
@@ -98,10 +98,9 @@ top_row = html.Div(
             dcc.Markdown(children = '*Objects I **see** in the video:*'),
             dcc.Textarea(
                 id='I-see',
-                value='Wall',
+                value='Wall, Bicycle, Bridge, Building, Bus, Bus Stop',
                 placeholder='Things I see',
                 style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
-                # style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}
             )], className='two columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}
 
         ),
@@ -113,7 +112,6 @@ top_row = html.Div(
                 value=read_text_file_content('all_a11y_objects.txt'),  
                 readOnly=True,
                 style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
-                # style={'width': '90%', 'height': '135px', 'fontSize': '12px', 'margin-top': '30px', 'margin-left': '50px','justify-content': 'center'}
             )], className = 'seven columns'
         ),
 
@@ -123,10 +121,9 @@ top_row = html.Div(
             dcc.Markdown('*Objects I **don\'t see** in the video:*'),            
             dcc.Textarea(
                 id='I-dont-see',
-                value='Yard Waste',
+                value='Guide dog, Gutter, Hose, Lamp Post, Mail box',
                 placeholder='Things I do not see',
-                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
-                # style={'width': '300px', 'height': '80px', 'margin': '10px', 'color': 'grey', 'font-style': 'italic'}        
+                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}      
             )], className='two columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'} 
         ),
 
@@ -135,7 +132,6 @@ top_row = html.Div(
                 'Analyze', 
                 id='update-heatmap-button', 
                 n_clicks=0, 
-                # style={'margin': '10px'}
                 style={'background-color': 'lightgray'}
             )], className='row'
         )         
@@ -171,7 +167,7 @@ heatmaps = html.Div(
                 id='heatmap-popover-2',
                 style={'position': 'relative'},
             ),                  
-            ], className='five columns'
+          ], className='five columns'
         ),
     ],
         className='row', 
@@ -185,14 +181,10 @@ image_map = html.Div(
         html.Div(
             id='image-container', 
             style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
-            children=[
-                html.Div([html.Div(f'{item}', style={'flex': '0 0 16.66%', 'padding': '10px'}) for item in []])
-            ]
+            children=[]
         )
     ],
      className= 'row'
-      #style={'width': '60%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center','flexWrap': 'wrap'})         
-    #style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'row'}
 )
 
 
@@ -207,10 +199,7 @@ tab_1_layout = html.Div(
                     [
                         heatmaps,
                         image_map,            
-                        # dcc.Graph(id='line-graph-1', style={'display': 'none'}),
-
                     ], 
-                    #style={'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column'}
                 ),            
                 dcc.Store(id='last-clicked-image-id'),
             ], className='row'
@@ -408,6 +397,9 @@ def update_heatmap_1(
 
         x_labels = [col for col in heat_map_file.columns if col != "Object"] 
 
+        longest_x_label = max(x_labels, key=len)
+        length_of_longest_x_label = len(longest_x_label)
+
         y_labels = list(heat_map_file.iloc[:80, 0])  
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
 
@@ -426,11 +418,6 @@ def update_heatmap_1(
                 z_values_filtered.append(z_row)
         y_labels = y_labels_filtered
         z_values = z_values_filtered
-
-        # colorscale_heatmap1 = [
-        #                         [0, 'rgb(211, 6, 50)'],
-        #                         [1, 'rgb(255, 255, 255)']
-        #                       ]
         
         colorscale_heatmap1 = [
                                 [0, 'lightgray'],
@@ -446,11 +433,11 @@ def update_heatmap_1(
             colorscale=colorscale_heatmap1,
             showscale = False
         )
-        cell_size = 30  
 
-        heatmap_width = len(x_labels) * cell_size
-        heatmap_height = len(y_labels) * cell_size
+        heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
+        heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
+        print("heatmap-1: ", heatmap_cell_width, heatmap_cell_height)
 
         border_line = {
             'type': 'rect',
@@ -470,22 +457,28 @@ def update_heatmap_1(
 
         layout = go.Layout(
             title="Things You See",
-            title_x=0.53,
-            title_y=0.8,
+            title_x=0.55,
+            title_y=0.95,
             title_font=dict(color='rgb(6, 200, 115)', family='Arial Black' ),
             height=fixed_heatmap_height,
-            width=heatmap_width,
+            width=fixed_heatmap_width,
+            margin=dict(l=30, r=30, t=50, b=70),
             xaxis=dict(
                 showgrid=False,
                 dtick=1,
                 gridwidth=1,
                 tickfont=dict(size=10.5, color='blue', family='Arial Black'),
             ),
-            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)),
+            yaxis=dict(
+                showgrid=False, 
+                dtick=1, 
+                gridwidth=1, 
+                tickfont=dict(size=11, family='Arial')
+            ),
             annotations=[
                 dict(
                     x=0.5, 
-                    y=-0.25, 
+                    y=-0.15, 
                     xref='paper', 
                     yref='paper',  
                     text='Frames',  
@@ -524,7 +517,7 @@ def update_heatmap_1(
                     'yref': 'y',
                     'line': {
                         'color': 'yellow',  
-                        'width': cell_size/2, 
+                        'width': heatmap_cell_height, 
                     },
                     'opacity': 0.5
                 },
@@ -538,7 +531,7 @@ def update_heatmap_1(
                     'yref': 'paper',
                     'line': {
                         'color': 'yellow',  
-                        'width': cell_size/2, 
+                        'width': heatmap_cell_width, 
                     },
                     'opacity': 0.5
                 }
@@ -588,7 +581,7 @@ def update_heatmap_1(
                 'yref': 'paper',
                 'line': {
                     'color': 'yellow', 
-                    'width': cell_size/2, 
+                    'width': heatmap_cell_width, 
                 },
                 'opacity': 0.5
             })
@@ -609,7 +602,7 @@ def update_heatmap_1(
 )
 def render_popover_1(click_data):
     if click_data:
-        x_coord = int(click_data['points'][0]['x'])  # Convert to integer
+        x_coord = int(click_data['points'][0]['x']) 
         y_coord = 5
         options = ['Minor', 'Moderate', 'Severe']
 
@@ -626,7 +619,7 @@ def render_popover_1(click_data):
 
         dropdown_style = {
             'position': 'absolute',
-            'left': f'{375}px',  
+            'left': f'{430}px',  
             'top': f'{310}px', 
             'z-index': 1000  
         }
@@ -647,7 +640,7 @@ def render_popover_1(click_data):
 )
 def render_popover_2(click_data):
     if click_data:
-        x_coord = int(click_data['points'][0]['x'])  # Convert to integer
+        x_coord = int(click_data['points'][0]['x']) 
         y_coord = 5
         options = ['Minor', 'Moderate', 'Severe']
 
@@ -664,7 +657,7 @@ def render_popover_2(click_data):
 
         dropdown_style = {
             'position': 'absolute',
-            'left': f'{1100}px',  
+            'left': f'{1280}px',  
             'top': f'{310}px', 
             'z-index': 1000  
         }
@@ -709,6 +702,9 @@ def update_heatmap_2(
 
         x_labels = [col for col in heat_map_file.columns if col != "Object"] 
 
+        longest_x_label = max(x_labels, key=len)
+        length_of_longest_x_label = len(longest_x_label)
+
         y_labels = list(heat_map_file.iloc[:80, 0])  
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
 
@@ -732,11 +728,6 @@ def update_heatmap_2(
         z_values = z_values_filtered
 
 
-        # colorscale_heatmap2 = [
-        #                         [0, 'rgb(255, 255, 255)'], 
-        #                         [1, 'rgb(6, 200, 115)']
-        #                       ]
-
         colorscale_heatmap2 = [
                                  [0, 'rgb(255, 255, 255)'], 
                                  [1, 'lightgray']
@@ -750,12 +741,7 @@ def update_heatmap_2(
             z=z_values,
             colorscale=colorscale_heatmap2,
             showscale = False
-        )
-        cell_size = 30  
-
-        heatmap_width = len(x_labels) * cell_size
-        heatmap_height = len(y_labels) * cell_size
-
+        ) 
 
         border_line = {
             'type': 'rect',
@@ -773,25 +759,35 @@ def update_heatmap_2(
             'opacity': 1,
         }
 
+        heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
+        heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
+
+        print("heatmap-2: ", heatmap_cell_width, heatmap_cell_height)
 
         layout = go.Layout(
             title="Things You Do Not See",
-            title_x=0.53,
-            title_y=0.8,
+            title_x=0.55,
+            title_y=0.95,
             title_font=dict(color='rgb(211, 6, 50)', family='Arial Black' ),
             height=fixed_heatmap_height,
-            width=heatmap_width,
+            width=fixed_heatmap_width,
+            margin=dict(l=5, r=0, t=50, b=70),
             xaxis=dict(
                 showgrid=False,
                 dtick=1,
                 gridwidth=1,
                 tickfont=dict(size=10.5, color='blue', family='Arial Black'),
             ),
-            yaxis=dict(showgrid=False, dtick=1, gridwidth=1, tickfont=dict(size=11)),
+            yaxis=dict(
+                showgrid=False, 
+                dtick=1, 
+                gridwidth=1, 
+                tickfont=dict(size=11, family='Arial')
+            ),
             annotations=[
                 dict(
                     x=0.5, 
-                    y=-0.25, 
+                    y=-0.15, 
                     xref='paper', 
                     yref='paper',  
                     text='Frames',  
@@ -833,7 +829,7 @@ def update_heatmap_2(
                     'yref': 'y',
                     'line': {
                         'color': 'yellow', 
-                        'width': cell_size/2,  
+                        'width': heatmap_cell_height,  
                     },
                     'opacity': 0.5
                 },
@@ -847,7 +843,7 @@ def update_heatmap_2(
                     'yref': 'paper',
                     'line': {
                         'color': 'yellow', 
-                        'width': cell_size/2, 
+                        'width': heatmap_cell_width, 
                     },
                     'opacity': 0.5
                 }
@@ -897,7 +893,7 @@ def update_heatmap_2(
                 'yref': 'paper',
                 'line': {
                     'color': 'yellow', 
-                    'width': cell_size/2, 
+                    'width': heatmap_cell_width, 
                 },
                 'opacity': 0.5
             })
