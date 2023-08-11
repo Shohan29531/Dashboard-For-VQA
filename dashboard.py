@@ -80,7 +80,7 @@ top_row = html.Div(
             className='row'
         ),
 
-        # I care text area
+        # I see text area
         html.Div([
             dcc.Dropdown(
                 id='model-dropdown',
@@ -93,9 +93,9 @@ top_row = html.Div(
             )], className='row'
         ),
         
-        # I don't care text area
+        # I don't see text area
         html.Div([
-            dcc.Markdown(children = '*Objects I **care** in the video:*'),
+            dcc.Markdown(children = '*Objects I **see** in the video:*'),
             dcc.Textarea(
                 id='I-see',
                 value='Wall',
@@ -120,7 +120,7 @@ top_row = html.Div(
 
 
         html.Div([
-            dcc.Markdown('*Objects I **don\'t care** in the video:*'),            
+            dcc.Markdown('*Objects I **don\'t see** in the video:*'),            
             dcc.Textarea(
                 id='I-dont-see',
                 value='Yard Waste',
@@ -145,22 +145,14 @@ top_row = html.Div(
 
 
 
-        # dcc.Textarea(
-        #     id='statistics-textarea',
-        #     value='Statistics go here...',
-        #     readOnly=True,
-        #     # style={'width': '90%', 'height': '100px', 'fontSize': '12px', 'margin-top': '30px'}
-        # ),
-
 heatmaps = html.Div(
     [        
         html.Div([        
             dcc.Graph(
                 id='heatmap-1',
-                # style={'margin-top': '0px', 'margin-bottom': '2px'} 
             ),
         html.Div(
-                id='heatmap-popover',
+                id='heatmap-popover-1',
                 style={'position': 'relative'},
             ),                  
             ], className='five columns'
@@ -171,15 +163,18 @@ heatmaps = html.Div(
 			], className = 'one column'
         ),
 
-        html.Div([
+        html.Div([        
             dcc.Graph(
                 id='heatmap-2',
-                # style={'margin-top': '0px', 'margin-bottom': '2px'}
-            )], className='five columns'
-        ) 
+            ),
+        html.Div(
+                id='heatmap-popover-2',
+                style={'position': 'relative'},
+            ),                  
+            ], className='five columns'
+        ),
     ],
         className='row', 
-        # style={'width': '30%', 'display': 'inline-block', 'display': 'flex', 'align-items': 'center', 'flexWrap': 'wrap'}
 )
 
 
@@ -608,18 +603,18 @@ def update_heatmap_1(
 
 
 @app.callback(
-    Output('heatmap-popover', 'children'),
-    Output('heatmap-popover', 'style'),
+    Output('heatmap-popover-1', 'children'),
+    Output('heatmap-popover-1', 'style'),
     Input('heatmap-1', 'clickData'),
 )
-def render_popover(click_data):
+def render_popover_1(click_data):
     if click_data:
         x_coord = int(click_data['points'][0]['x'])  # Convert to integer
         y_coord = 5
         options = ['Minor', 'Moderate', 'Severe']
 
         dropdown = dcc.Dropdown(
-            id='heatmap-dropdown',
+            id='heatmap-dropdown-1',
             options=[{'label': option, 'value': option} for option in options],
             value=None,
             clearable=False,
@@ -631,14 +626,53 @@ def render_popover(click_data):
 
         dropdown_style = {
             'position': 'absolute',
-            'left': f'{425}px',  
-            'top': f'{210}px', 
+            'left': f'{375}px',  
+            'top': f'{310}px', 
             'z-index': 1000  
         }
 
         return dropdown, dropdown_style
 
     return html.Div(), {'display': 'none'}
+
+
+
+
+
+
+@app.callback(
+    Output('heatmap-popover-2', 'children'),
+    Output('heatmap-popover-2', 'style'),
+    Input('heatmap-2', 'clickData'),
+)
+def render_popover_2(click_data):
+    if click_data:
+        x_coord = int(click_data['points'][0]['x'])  # Convert to integer
+        y_coord = 5
+        options = ['Minor', 'Moderate', 'Severe']
+
+        dropdown = dcc.Dropdown(
+            id='heatmap-dropdown-2',
+            options=[{'label': option, 'value': option} for option in options],
+            value=None,
+            clearable=False,
+            style={'width': '100px'},
+            placeholder='Error Is:'
+        )
+
+        print(x_coord, y_coord)
+
+        dropdown_style = {
+            'position': 'absolute',
+            'left': f'{1100}px',  
+            'top': f'{310}px', 
+            'z-index': 1000  
+        }
+
+        return dropdown, dropdown_style
+
+    return html.Div(), {'display': 'none'}
+
 
 
 
