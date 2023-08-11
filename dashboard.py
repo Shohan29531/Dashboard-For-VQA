@@ -9,26 +9,29 @@ import pandas as pd
 import re
 import base64
 from dash import ctx
-
+from natsort import natsorted
 
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
-LINE_GRAPH_DATA_DIR = os.path.join(DATA_DIR, 'Line graph data')
+GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 
 
 
 base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
-line_folder_path =  LINE_GRAPH_DATA_DIR
-files = os.listdir(line_folder_path)
-line_options = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
+files = os.listdir(GROUND_TRUTH_DATA)
+all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
+all_video_files = natsorted(all_video_files)
 
 
 
-available_models = ['GPV-1', 'BLIP']
+models_to_show = ['Model-1', 'Model-2']
+
+available_models = ['GPV-1', 'BLIP', 'GT', 'Random']
 
 num_frames = 100
+max_frames = 14
 
 fixed_heatmap_height = 350
 fixed_heatmap_width = 500
@@ -72,7 +75,7 @@ top_row = html.Div(
         html.Div([
             dcc.Dropdown(
                 id='video-dropdown',
-                options=[{'label': option, 'value': option} for option in line_options],
+                options=[{'label': option, 'value': option} for option in all_video_files],
                 placeholder='Select a video file...',
                 # value=None,
                 value='video-1-segment-5',
@@ -246,7 +249,7 @@ def get_image_card(image_name, frame_number, is_selected):
         size="sm",  
         id={"type": "action-button", "index": frame_number},
         n_clicks=0,
-        style={'position': 'absolute', 'top': '0', 'right': '0', 'bottom': '0', 'left': '0', 'margin': '5px', 'padding': '0', 'border': 'none', 'background': 'transparent'} 
+        style={'position': 'absolute', 'top': '0', 'right': '0', 'width': '100%', 'height': '100%', 'margin': '0', 'padding': '0', 'border': 'none', 'background': 'transparent'} 
     )
 
     frame_number_label = html.Label(
@@ -260,16 +263,18 @@ def get_image_card(image_name, frame_number, is_selected):
             action_button,
             frame_number_label
         ],
+        style={'position': 'relative', 'width': '100%', 'height': '100%'}
     )
 
     card = dbc.Card(
         [
             image_div
         ],
-        style={"width": "12rem", 'border': border_style, 'margin': '5px'},
+        style={"width": "20rem", 'border': border_style, 'margin': '5px'},
         id={"type": "image-card", "index": frame_number}
     )
     return card
+
 
 
 
@@ -305,7 +310,10 @@ def update_image_container(
                     latest_click_time = timestamp
                     latest_click_index = i
 
-            chosen_frame_number = trigger["index"]
+            chosen_frame_number = None
+            if trigger != "video-dropdown":
+                chosen_frame_number = trigger["index"]
+
 
             image_names = os.listdir(images_source_folder)
             selected_option = selected_option.lower()
@@ -314,6 +322,8 @@ def update_image_container(
             filtered_images = [img.strip() for img in image_names if img.startswith(selected_option)]
 
             filtered_images.sort(key=extract_frame_number)
+
+            filtered_images = filtered_images[:max_frames]
 
             image_elements = []
 
@@ -349,6 +359,8 @@ def update_image_container(
         filtered_images = [img.strip() for img in image_names if img.startswith(selected_option)]
 
         filtered_images.sort(key=extract_frame_number)
+
+        filtered_images = filtered_images[:max_frames]
 
         image_elements = []
 
@@ -433,6 +445,11 @@ def update_heatmap_1(
         ## white means model does not see 
 
         x_labels = [label.replace('Frame-', '') for label in x_labels]
+
+
+        x_labels = x_labels[:max_frames]
+        y_labels = y_labels[:max_frames]
+        z_values = z_values[:max_frames]
 
         heatmap = go.Heatmap(
             x=x_labels,
@@ -746,11 +763,16 @@ def update_heatmap_2(
 
 
         colorscale_heatmap2 = [                          
-                                 [0, 'red'],
-                                 [1, 'rgb(255, 255, 255)'], 
+                                 [0, 'rgb(255, 255, 255)'],
+                                 [1, 'rgb(211, 6, 50)'], 
                                ]
 
         x_labels = [label.replace('Frame-', '') for label in x_labels]
+
+
+        x_labels = x_labels[:max_frames]
+        y_labels = y_labels[:max_frames]
+        z_values = z_values[:max_frames]
 
         heatmap = go.Heatmap(
             x=x_labels,
