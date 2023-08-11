@@ -610,17 +610,17 @@ def render_popover_1(click_data):
             id='heatmap-dropdown-1',
             options=[{'label': option, 'value': option} for option in options],
             value=None,
-            clearable=False,
+            clearable=True,
             style={'width': '100px'},
-            placeholder='Error Is:'
+            placeholder='The Error Is:'
         )
 
         print(x_coord, y_coord)
 
         dropdown_style = {
             'position': 'absolute',
-            'left': f'{430}px',  
-            'top': f'{310}px', 
+            'left': f'{480}px',  
+            'top': f'{253}px', 
             'z-index': 1000  
         }
 
@@ -648,17 +648,17 @@ def render_popover_2(click_data):
             id='heatmap-dropdown-2',
             options=[{'label': option, 'value': option} for option in options],
             value=None,
-            clearable=False,
+            clearable=True,
             style={'width': '100px'},
-            placeholder='Error Is:'
+            placeholder='The Error Is:'
         )
 
         print(x_coord, y_coord)
 
         dropdown_style = {
             'position': 'absolute',
-            'left': f'{1280}px',  
-            'top': f'{310}px', 
+            'left': f'{1315}px',  
+            'top': f'{253}px', 
             'z-index': 1000  
         }
 
