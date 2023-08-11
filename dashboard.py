@@ -28,6 +28,7 @@ line_options = [os.path.splitext(file)[0] for file in files if file.endswith(".c
 
 available_models = ['GPV-1', 'BLIP']
 
+heatmap_cell_size = 30
 num_frames = 100
 fixed_heatmap_height = 350
 heatmap_colorscale = [
@@ -157,7 +158,12 @@ heatmaps = html.Div(
             dcc.Graph(
                 id='heatmap-1',
                 # style={'margin-top': '0px', 'margin-bottom': '2px'} 
-            )], className='five columns'
+            ),
+        html.Div(
+                id='heatmap-popover',
+                style={'position': 'relative'},
+            ),                  
+            ], className='five columns'
         ),
 
          html.Div([
@@ -598,6 +604,46 @@ def update_heatmap_1(
         return heat_map
 
     return {}
+
+
+
+@app.callback(
+    Output('heatmap-popover', 'children'),
+    Output('heatmap-popover', 'style'),
+    Input('heatmap-1', 'clickData'),
+)
+def render_popover(click_data):
+    if click_data:
+        x_coord = int(click_data['points'][0]['x'])  # Convert to integer
+        y_coord = 5
+        options = ['Minor', 'Moderate', 'Severe']
+
+        dropdown = dcc.Dropdown(
+            id='heatmap-dropdown',
+            options=[{'label': option, 'value': option} for option in options],
+            value=None,
+            clearable=False,
+            style={'width': '100px'},
+            placeholder='Error Is:'
+        )
+
+        print(x_coord, y_coord)
+
+        dropdown_style = {
+            'position': 'absolute',
+            'left': f'{425}px',  
+            'top': f'{210}px', 
+            'z-index': 1000  
+        }
+
+        return dropdown, dropdown_style
+
+    return html.Div(), {'display': 'none'}
+
+
+
+
+
 
 
 @app.callback(
