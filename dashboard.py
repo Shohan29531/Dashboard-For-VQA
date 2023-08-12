@@ -10,12 +10,12 @@ import re
 import base64
 from dash import ctx
 from natsort import natsorted
-
+import datetime
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
-
+LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
 
 
 base_folder = DATA_DIR
@@ -43,8 +43,17 @@ heatmap_colorscale = [
 
 external_stylesheets = [ 'https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]  #
 
+    
 app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
 
+# Write and/or read files
+def save_log_file(df):
+    current_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    log_file = os.path.join(LOG_DATA_DIR, current_time + '.csv')    
+    # df = df.append(data, ignore_index=True)
+    df.to_csv(log_file, index=False)
+# pd.DataFrame({'a': [1, 2, 3], 'b': [3, 1, 2]}).to_csv(log_file, index=False)
+# df = pd.DataFrame(columns=['timestamp', 'video', 'model', 'I-see', 'I-dont-see'])
 
 def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
