@@ -11,6 +11,7 @@ import base64
 from dash import ctx
 from natsort import natsorted
 import datetime
+import random
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
@@ -25,17 +26,15 @@ all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(
 all_video_files = natsorted(all_video_files)
 
 
-
-models_to_show = ['Model-1', 'Model-2', 'Model-3', 'Model-4']
-
 available_models = ['GPV-1', 'BLIP', 'GT', 'Random']
+
 
 # a global log file contains the following columns: timestamp, video, model, score, comments
 COLUMNS = ['timestamp', 'video', 'model', 'see', 'not_see', 'score', 'comments']
 
 # default values
-current_model = 'GPV-1'
-current_file = 'video-1-segment-5'
+current_model = 'Model-0' #'GPV-1'
+current_file = 'video-1-segment-5' # 'video-1-segment-5'
 current_text_see = 'Wall, Bicycle, Bridge, Building, Bus, Bus Stop'
 current_text_not_see = 'Guide dog, Gutter, Hose, Lamp Post, Mail box'
 current_rating = 5
@@ -52,6 +51,20 @@ heatmap_colorscale = [
     [0, 'rgb(211, 6, 50)'],
     [1, 'rgb(6, 200, 115)']
 ]
+
+
+def randomize_data():
+    random_model = random.sample(range(0, len(available_models)), len(available_models))        
+    # a dictionary that maps model-{} to available models randomly
+    global models_to_show
+    models_to_show = {}
+    for i in range(len(available_models)):
+        models_to_show['Model-{}'.format(i)] = available_models[random_model[i]]
+
+
+# update models_to_show, a dictionary that maps model-{} to available models
+randomize_data()
+
 
 # Write or append log files
 def save_log_file(new_row):    
@@ -82,6 +95,29 @@ app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheet
 # top row layout
 top_row = html.Div(
     [
+        # random button
+        html.Div(
+            [
+                html.Button(
+                    'Randomize Models', 
+                    id='random-button', 
+                    n_clicks=0, 
+                    style={'background-color': 'lightgray'}
+                )
+            ], className='row'
+        ),
+
+        # model dropdown
+        html.Div([
+            dcc.Dropdown(
+                id='model-dropdown',
+                options=[{'label': model, 'value': model} for model in models_to_show],
+                placeholder='Select a Model',
+                value= current_model,
+                style={'border-color': 'gray'}            
+            )], className='row'
+        ),
+        
         html.Div([
             dcc.Dropdown(
                 id='video-dropdown',
@@ -93,17 +129,6 @@ top_row = html.Div(
                 # style={'width': '200px', 'margin': '10px'}
             )],
             className='row'
-        ),
-
-        # I see text area
-        html.Div([
-            dcc.Dropdown(
-                id='model-dropdown',
-                options=[{'label': model, 'value': model} for model in available_models],
-                placeholder='Select a Model',
-                value= current_model,
-                style={'border-color': 'gray'}            
-            )], className='row'
         ),
         
         # I don't see text area
@@ -269,7 +294,7 @@ rating_row = html.Div(
                     style={'background-color': 'lightgray'}
                 )
             ], className='row'
-        )
+        ),        
     ], className='row'
 )        
 
@@ -461,6 +486,10 @@ def update_image_container(
 
 
 
+color_white = 'rgb(255,255,255)' # white
+color_agreement = 'rgb(6, 200, 115)' # green
+color_disagreement = 'rgb(211, 6, 50)' # red
+
 @app.callback(
     Output('heatmap-1', 'figure'), 
     Input('model-dropdown', 'value'), 
@@ -486,6 +515,7 @@ def update_heatmap_1(
     dummy_1,
     dummy_2
 ):
+    model = models_to_show[model]
 
     if n_clicks > 0 and model and selected_file:
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
@@ -515,10 +545,16 @@ def update_heatmap_1(
         y_labels = y_labels_filtered
         z_values = z_values_filtered
         
+        # colorscale_heatmap1 = [
+                                
+        #                         [0, 'rgb(255,255,255)'], # disagreement
+        #                         [1, 'rgb(6, 200, 115)'],
+        #                       ]
+        
         colorscale_heatmap1 = [
                                 
-                                [0, 'rgb(255,255,255)'],
-                                [1, 'rgb(6, 200, 115)'],
+                                [0, color_disagreement], # disagreement
+                                [1, color_agreement],
                               ]
         
         ## green means model sees
@@ -560,11 +596,13 @@ def update_heatmap_1(
             'opacity': 1,
         }
 
+    #  and that model doesn't see (White)
         layout = go.Layout(
-            title="Things You See",
-            title_x=0.55,
+            title="Objects you SEE that the model also SEEs (green, agreement) and <br> that model FAIL to see (red, disagreement)",
+            title_x=0.10,
             title_y=0.95,
-            title_font=dict(color='rgb(6, 200, 115)', family='Arial Black' ),
+            # title_font=dict(color='rgb(6, 200, 115)', family='Arial Black', size=12 ),
+            title_font=dict(family='Arial Black', size=12 ),
             height=fixed_heatmap_height,
             width=fixed_heatmap_width,
             margin=dict(l=30, r=30, t=50, b=70),
@@ -795,6 +833,8 @@ def update_heatmap_2(
     dummy_1,
     dummy_2
 ):
+    model = models_to_show[model]
+
     if n_clicks > 0 and model and selected_file:
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
@@ -827,11 +867,16 @@ def update_heatmap_2(
         z_values = z_values_filtered
 
 
-        colorscale_heatmap2 = [                          
-                                 [0, 'rgb(255, 255, 255)'],
-                                 [1, 'rgb(211, 6, 50)'], 
-                               ]
+        # colorscale_heatmap2 = [                          
+        #                          [0, 'rgb(255, 255, 255)'],
+        #                          [1, 'rgb(211, 6, 50)'], 
+        #                        ]
 
+        colorscale_heatmap2 = [                          
+                                 [0, color_disagreement],
+                                 [1, color_agreement], 
+                               ]
+        
         x_labels = [label.replace('Frame-', '') for label in x_labels]
 
 
@@ -866,13 +911,15 @@ def update_heatmap_2(
         heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
         heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
-        print("heatmap-2: ", heatmap_cell_width, heatmap_cell_height)
+        print("heatmap-2: ", heatmap_cell_width, heatmap_cell_height)            
 
         layout = go.Layout(
-            title="Things You Do Not See",
-            title_x=0.55,
+            title="Objects you DON'T SEE that the model also DOESN'T SEE (green, <br> agreement) and that model does SEE (red, disagreement)",
+            # title="Things You Do Not See",
+            title_x=0.10,
             title_y=0.95,
-            title_font=dict(color='rgb(211, 6, 50)', family='Arial Black' ),
+            # title_font=dict(color='rgb(211, 6, 50)', family='Arial Black' ),
+            title_font=dict(family='Arial Black', size=12 ),
             height=fixed_heatmap_height,
             width=fixed_heatmap_width,
             margin=dict(l=5, r=0, t=50, b=70),
@@ -1016,16 +1063,18 @@ def update_heatmap_2(
     Input('model-dropdown', 'value'),
     prevent_initial_call=True
 )
-def update_model(model):        
+def update_model(model):
+    global current_model        
     current_model = model
-    return f"Model: {current_model}" if current_model else "Model: None"
+    return f"Model: {current_model}: {models_to_show[current_model]}" if current_model else "Model: None"
 
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True), 
     Input('video-dropdown', 'value'),
     prevent_initial_call=True
 )
-def update_file(selected_file):        
+def update_file(selected_file):
+    global current_file        
     current_file = selected_file
     return f"File: {current_file}" if current_file else "File: None"
 
@@ -1034,7 +1083,8 @@ def update_file(selected_file):
     Input('rating-slider', 'value'),
     prevent_initial_call=True
 )
-def update_rating(rating):        
+def update_rating(rating):
+    global current_rating        
     current_rating  = rating
     return f"Rating: {current_rating}" if current_rating else "Rating: None"
 
@@ -1043,7 +1093,8 @@ def update_rating(rating):
     Input('I-see', 'value'),    
     prevent_initial_call=True
 )
-def update_see(text_see):        
+def update_see(text_see):
+    global current_text_see        
     current_text_see  = text_see
     return f"I see: {current_text_see}" if current_text_see else "I see: None"
 
@@ -1054,6 +1105,7 @@ def update_see(text_see):
     prevent_initial_call=True
 )
 def update_donot_see(text_donot_see):        
+    global current_text_not_see
     current_text_not_see  = text_donot_see
     return f"I don't see: {current_text_not_see}" if current_text_not_see else "I don't see: None"
 
@@ -1063,6 +1115,7 @@ def update_donot_see(text_donot_see):
     prevent_initial_call=True
 )
 def update_comment(text_comments):        
+    global current_text_comments
     current_text_comments  = text_comments
     return f"Comments: {current_text_comments}" if current_text_comments else "Comments: None"
 
@@ -1078,7 +1131,7 @@ def save_data(n_clicks):
         current_time = datetime.datetime.now().strftime('%Y-%m-%d::%H:%M:%S')
         data = {'timestamp': str(current_time), 
                 'video': current_file, 
-                'model': current_model, 
+                'model': models_to_show[current_model], 
                 'see': current_text_see.lower(), 
                 'not_see': current_text_not_see.lower(), 
                 'score': current_rating, 
@@ -1086,10 +1139,32 @@ def save_data(n_clicks):
             }
 
         # write data to file        
+        print(data)
         save_log_file(data)
+
         return "**Saved at: " + current_time + "**"
     else:
         return "*Not Saved*"
+
+
+# convert models_to_show  to string
+
+
+
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True), 
+    Input('random-button', 'n_clicks'),
+    prevent_initial_call=True
+)
+def randomize_event(n_clicks):        
+    if n_clicks > 0:
+        randomize_data()
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d::%H:%M:%S')        
+        
+        return "**Randomized at: " + current_time + str(models_to_show) + "**"
+    else:
+        return "*Not Randomized*"    
+
 
 
 if __name__ == '__main__':
