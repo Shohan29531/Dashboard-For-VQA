@@ -30,6 +30,18 @@ models_to_show = ['Model-1', 'Model-2', 'Model-3', 'Model-4']
 
 available_models = ['GPV-1', 'BLIP', 'GT', 'Random']
 
+# a global log file contains the following columns: timestamp, video, model, score, comments
+COLUMNS = ['timestamp', 'video', 'model', 'see', 'not_see', 'score', 'comments']
+
+# default values
+current_model = 'GPV-1'
+current_file = 'video-1-segment-5'
+current_text_see = 'Wall, Bicycle, Bridge, Building, Bus, Bus Stop'
+current_text_not_see = 'Guide dog, Gutter, Hose, Lamp Post, Mail box'
+current_rating = 5
+current_text_comments = ''
+
+
 num_frames = 100
 max_frames = 14
 
@@ -41,13 +53,7 @@ heatmap_colorscale = [
     [1, 'rgb(6, 200, 115)']
 ]
 
-
-###################### helper functions #################################
-
-# Write and/or read files
-# a global log file contains the following columns: timestamp, video, model, score, comments
-COLUMNS = ['timestamp', 'video', 'model', 'see', 'not_see', 'score', 'comments']
-
+# Write or append log files
 def save_log_file(new_row):    
     log_file = os.path.join(LOG_DATA_DIR, 'user_log.csv')
     print(log_file, LOG_DATA_DIR)            
@@ -62,15 +68,10 @@ def save_log_file(new_row):
         df_log.to_csv(log_file, index=False)
 
 
-
-
 def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
-
-
-###################### helper functions end #################################
 
 # css framework for layout and style
 external_stylesheets = [ 'https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
@@ -87,7 +88,7 @@ top_row = html.Div(
                 options=[{'label': option, 'value': option} for option in all_video_files],
                 placeholder='Select a video file...',
                 # value=None,
-                value='video-1-segment-5',
+                value= current_file,
                 style={'border-color': 'gray'}            
                 # style={'width': '200px', 'margin': '10px'}
             )],
@@ -100,7 +101,7 @@ top_row = html.Div(
                 id='model-dropdown',
                 options=[{'label': model, 'value': model} for model in available_models],
                 placeholder='Select a Model',
-                value='GPV-1',
+                value= current_model,
                 style={'border-color': 'gray'}            
             )], className='row'
         ),
@@ -110,7 +111,7 @@ top_row = html.Div(
             dcc.Markdown(children = '*Objects I **see** in the video:*'),
             dcc.Textarea(
                 id='I-see',
-                value='Wall, Bicycle, Bridge, Building, Bus, Bus Stop',
+                value=current_text_see,
                 placeholder='Things I see',
                 style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
             )], className='two columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}
@@ -690,13 +691,9 @@ def update_heatmap_1(
                 'opacity': 0.5
             })
 
-
-
         if heatmap_clickData:
             x_coord = int(heatmap_clickData['points'][0]['x']) 
             y_coord = heatmap_clickData['points'][0]['y']
-
-
 
 
         layout['shapes'] = tuple(layout_shapes_list)
@@ -1012,39 +1009,80 @@ def update_heatmap_2(
 
     return {}
 
+                
 
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True), 
+    Input('model-dropdown', 'value'),
+    prevent_initial_call=True
+)
+def update_model(model):        
+    current_model = model
+    return f"Model: {current_model}" if current_model else "Model: None"
+
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True), 
+    Input('video-dropdown', 'value'),
+    prevent_initial_call=True
+)
+def update_file(selected_file):        
+    current_file = selected_file
+    return f"File: {current_file}" if current_file else "File: None"
+
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True), 
+    Input('rating-slider', 'value'),
+    prevent_initial_call=True
+)
+def update_rating(rating):        
+    current_rating  = rating
+    return f"Rating: {current_rating}" if current_rating else "Rating: None"
+
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True), 
+    Input('I-see', 'value'),    
+    prevent_initial_call=True
+)
+def update_see(text_see):        
+    current_text_see  = text_see
+    return f"I see: {current_text_see}" if current_text_see else "I see: None"
 
 
 @app.callback(
-    Output('status-textarea', 'children'), 
-    Input('model-dropdown', 'value'), 
-    Input('video-dropdown', 'value'),
-    Input('rating-slider', 'value'),    
-    Input('save-button', 'n_clicks'),
-    State('I-see', 'value'),          
-    State('I-dont-see', 'value'),
-    State('comments-textarea', 'value'),    
+    Output('status-textarea', 'children', allow_duplicate=True), 
+    Input('I-dont-see', 'value'),
+    prevent_initial_call=True
+)
+def update_donot_see(text_donot_see):        
+    current_text_not_see  = text_donot_see
+    return f"I don't see: {current_text_not_see}" if current_text_not_see else "I don't see: None"
+
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True), 
+    Input('comments-textarea', 'value'), 
+    prevent_initial_call=True
+)
+def update_comment(text_comments):        
+    current_text_comments  = text_comments
+    return f"Comments: {current_text_comments}" if current_text_comments else "Comments: None"
+
+
+@app.callback(
+    Output('status-textarea', 'children'),      
+    Input('save-button', 'n_clicks')
 )
 
-def save_data(
-    model, 
-    selected_file, 
-    rating,    
-    n_clicks,                      
-    text_see,
-    text_not_see,
-    text_comments
-):
-    if n_clicks > 0 and model and selected_file:
+def save_data(n_clicks):
+    if n_clicks > 0:
         
         current_time = datetime.datetime.now().strftime('%Y-%m-%d::%H:%M:%S')
         data = {'timestamp': str(current_time), 
-                'video': selected_file, 
-                'model': model, 
-                'see': text_see.lower(), 
-                'not_see': text_not_see.lower(), 
-                'score': int(rating), 
-                'comments': text_comments.lower() if text_comments else '' 
+                'video': current_file, 
+                'model': current_model, 
+                'see': current_text_see.lower(), 
+                'not_see': current_text_not_see.lower(), 
+                'score': current_rating, 
+                'comments': current_text_comments.lower() if current_text_comments else '' 
             }
 
         # write data to file        
