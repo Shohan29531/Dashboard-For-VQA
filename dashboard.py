@@ -41,19 +41,28 @@ heatmap_colorscale = [
     [1, 'rgb(6, 200, 115)']
 ]
 
-external_stylesheets = [ 'https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]  #
 
-    
-app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
+###################### helper functions #################################
 
 # Write and/or read files
-def save_log_file(df):
-    current_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    log_file = os.path.join(LOG_DATA_DIR, current_time + '.csv')    
-    # df = df.append(data, ignore_index=True)
-    df.to_csv(log_file, index=False)
-# pd.DataFrame({'a': [1, 2, 3], 'b': [3, 1, 2]}).to_csv(log_file, index=False)
-# df = pd.DataFrame(columns=['timestamp', 'video', 'model', 'I-see', 'I-dont-see'])
+# a global log file contains the following columns: timestamp, video, model, score, comments
+COLUMNS = ['timestamp', 'video', 'model', 'see', 'not_see', 'score', 'comments']
+
+def save_log_file(new_row):    
+    log_file = os.path.join(LOG_DATA_DIR, 'user_log.csv')
+    print(log_file, LOG_DATA_DIR)            
+    
+    if os.path.exists(log_file):        
+        df = pd.read_csv(log_file)
+        df.loc[len(df)] = new_row
+        # df = df.append(df_new, ignore_index=True)
+        df.to_csv(log_file, index=False)
+    else:
+        df_log = pd.DataFrame(new_row,  columns=COLUMNS, index=[0])        
+        df_log.to_csv(log_file, index=False)
+
+
+
 
 def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
@@ -61,24 +70,15 @@ def read_text_file_content(file_path):
     return content
 
 
-@app.callback(
-    Output('heatmap-1', 'style'), 
-    Input('heatmap-1', 'figure'))
-def show_hide_heatmap_1(heatmap_figure):
-    if not heatmap_figure:
-        return {'display': 'none'}
-    return {'height': '40vh', 'width': '100%'}
+###################### helper functions end #################################
 
+# css framework for layout and style
+external_stylesheets = [ 'https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
 
-@app.callback(
-    Output('heatmap-2', 'style'), 
-    Input('heatmap-2', 'figure'))
-def show_hide_heatmap_2(heatmap_figure):
-    if not heatmap_figure:
-        return {'display': 'none'}
-    return {'height': '40vh', 'width': '100%'}
+# create the dash app
+app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
 
-# top row
+# top row layout
 top_row = html.Div(
     [
         html.Div([
@@ -117,6 +117,7 @@ top_row = html.Div(
 
         ),
 
+        # Possible objects text area
         html.Div([
             dcc.Markdown(children = '*Possible Objects:*'),
 			dcc.Textarea(
@@ -128,7 +129,7 @@ top_row = html.Div(
         ),
 
 
-
+        # I don't see text area
         html.Div([
             dcc.Markdown('*Objects I **don\'t see** in the video:*'),            
             dcc.Textarea(
@@ -139,55 +140,55 @@ top_row = html.Div(
             )], className='two columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'} 
         ),
 
-        html.Div([
-            html.Button(
-                'Analyze', 
-                id='update-heatmap-button', 
-                n_clicks=0, 
-                style={'background-color': 'lightgray'}
-            )], className='row'
+        # analyze button
+        html.Div(
+            [
+                html.Button(
+                    'Analyze', 
+                    id='update-heatmap-button', 
+                    n_clicks=0, 
+                    style={'background-color': 'lightgray'}
+                )
+            ], className='row'
         )         
-    ], 
-        className='row',
+    ], className='row',
 ) 
 
-
-
+# 2nd row: heatmap layout
 heatmaps = html.Div(
     [        
-        html.Div([        
-            dcc.Graph(
-                id='heatmap-1',
-            ),
         html.Div(
-                id='heatmap-popover-1',
-                style={'position': 'relative'},
-            ),                  
+            [        
+                dcc.Graph(
+                    id='heatmap-1',
+                ),
+                html.Div(
+                    id='heatmap-popover-1',
+                    style={'position': 'relative'},
+                ),                  
             ], className='five columns'
         ),
 
-         html.Div([
+        html.Div([
 				# empty								
 			], className = 'one column'
         ),
 
-        html.Div([        
-            dcc.Graph(
-                id='heatmap-2',
-            ),
         html.Div(
-                id='heatmap-popover-2',
-                style={'position': 'relative'},
-            ),                  
-          ], className='five columns'
+            [        
+                dcc.Graph(
+                    id='heatmap-2',
+                ),
+                html.Div(
+                    id='heatmap-popover-2',
+                    style={'position': 'relative'},
+                ),                  
+            ], className='five columns'
         ),
-    ],
-        className='row', 
+    ], className='row'
 )
 
-
-
-
+# 3rd row: image layout
 image_map = html.Div(
     [
         html.Div(
@@ -199,38 +200,107 @@ image_map = html.Div(
      className= 'row'
 )
 
+second_and_third_row = html.Div(
+    [
+        html.Div(
+            [
+                heatmaps,
+                image_map,            
+            ], 
+        ),            
+        dcc.Store(id='last-clicked-image-id'),
+    ], className='row'
+)
 
-tab_1_layout = html.Div(
+# 4th row: rating layout
+rating_row = html.Div(
+    [        
+        # rating slider
+        html.Div(
+            [
+                dcc.Markdown(
+                '''
+                    #### Please rate the reliability of this model on a scale from 0 to 10
+                    *(0: not reliable at all; 5: neutral; 10: very reliable):*                    
+                '''),
+                dcc.Slider(
+                    id = "rating-slider",
+                    min = 0,
+                    max = 10,
+                    step = 1,
+                    value = 5,
+                    tooltip={"placement": "bottom", "always_visible": True},
+                    # marks = None,
+                ),
+            ], className='five columns'
+        ),
+
+        # raw feedback
+        html.Div(
+            [
+                dcc.Markdown('*Comments (optional):*'),            
+                dcc.Textarea(
+                    id='comments-textarea',
+                    value=None,
+                    placeholder='Please explain why did you rate the model this way',
+                    style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}      
+                )
+            ], className='four columns',  
+        ),
+
+        # status feedback
+        html.Div(
+            [
+                dcc.Markdown(
+                    id='status-textarea',
+                    children= '*Status:  Not saved*',                    
+                )                
+            ], className='two columns',  
+        ),
+
+        # save button
+        html.Div(
+            [
+                html.Button(
+                    'Record Response', 
+                    id='save-button', 
+                    n_clicks=0, 
+                    style={'background-color': 'lightgray'}
+                )
+            ], className='row'
+        )
+    ], className='row'
+)        
+
+# entire layout
+app.layout = html.Div(
     [        
         top_row,
         html.Div(id='output-folder-creation', style={'margin': '10px', 'display': 'none'}),
-
-        html.Div(
-            [
-                html.Div(
-                    [
-                        heatmaps,
-                        image_map,            
-                    ], 
-                ),            
-                dcc.Store(id='last-clicked-image-id'),
-            ], className='row'
-        )
+        second_and_third_row,    
+        rating_row
     ]
 )
 
+# callback for updating the heatmap
+@app.callback(
+    Output('heatmap-1', 'style'), 
+    Input('heatmap-1', 'figure')
+)
+def show_hide_heatmap_1(heatmap_figure):
+    if not heatmap_figure:
+        return {'display': 'none'}
+    return {'height': '40vh', 'width': '100%'}
 
-app.layout = html.Div([
-    html.Div(id="tab-content"),
-])
 
-@app.callback(Output("tab-content", "children"), Input("tabs", "value"))
-def render_tab_content(tab):
-    if tab == "tab-1":
-        return tab_1_layout
-
-app.layout.children[0].children = tab_1_layout
-
+@app.callback(
+    Output('heatmap-2', 'style'), 
+    Input('heatmap-2', 'figure')
+)
+def show_hide_heatmap_2(heatmap_figure):
+    if not heatmap_figure:
+        return {'display': 'none'}
+    return {'height': '40vh', 'width': '100%'}
 
 def extract_frame_number(filename):
     frame_match = re.search(r"frame-(\d+)\.jpeg", filename)
@@ -671,11 +741,6 @@ def render_popover_1(click_data):
 
     return html.Div(), {'display': 'none'}
 
-
-
-
-
-
 @app.callback(
     Output('heatmap-popover-2', 'children'),
     Output('heatmap-popover-2', 'style'),
@@ -708,12 +773,6 @@ def render_popover_2(click_data):
         return dropdown, dropdown_style
 
     return html.Div(), {'display': 'none'}
-
-
-
-
-
-
 
 
 @app.callback(
@@ -952,6 +1011,48 @@ def update_heatmap_2(
         return heat_map
 
     return {}
+
+
+
+
+@app.callback(
+    Output('status-textarea', 'children'), 
+    Input('model-dropdown', 'value'), 
+    Input('video-dropdown', 'value'),
+    Input('rating-slider', 'value'),    
+    Input('save-button', 'n_clicks'),
+    State('I-see', 'value'),          
+    State('I-dont-see', 'value'),
+    State('comments-textarea', 'value'),    
+)
+
+def save_data(
+    model, 
+    selected_file, 
+    rating,    
+    n_clicks,                      
+    text_see,
+    text_not_see,
+    text_comments
+):
+    if n_clicks > 0 and model and selected_file:
+        
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d::%H:%M:%S')
+        data = {'timestamp': str(current_time), 
+                'video': selected_file, 
+                'model': model, 
+                'see': text_see.lower(), 
+                'not_see': text_not_see.lower(), 
+                'score': int(rating), 
+                'comments': text_comments.lower() if text_comments else '' 
+            }
+
+        # write data to file        
+        save_log_file(data)
+        return "**Saved at: " + current_time + "**"
+    else:
+        return "*Not Saved*"
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
