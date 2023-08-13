@@ -26,7 +26,7 @@ all_video_files = natsorted(all_video_files)
 
 
 
-models_to_show = ['Model-1', 'Model-2']
+models_to_show = ['Model-1', 'Model-2', 'Model-3', 'Model-4']
 
 available_models = ['GPV-1', 'BLIP', 'GT', 'Random']
 
