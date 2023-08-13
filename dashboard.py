@@ -600,7 +600,7 @@ def update_heatmap_1(
 
     #  and that model doesn't see (White)
         layout = go.Layout(
-            title="Objects you SEE that the model also SEEs (green, agreement) and <br> that model FAIL to see (red, disagreement)",
+            title="Objects you SEE that the model also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement)",
             title_x=0.10,
             title_y=0.95,
             # title_font=dict(color='rgb(6, 200, 115)', family='Arial Black', size=12 ),
@@ -918,7 +918,7 @@ def update_heatmap_2(
         print("heatmap-2: ", heatmap_cell_width, heatmap_cell_height)            
 
         layout = go.Layout(
-            title="Objects you DON'T SEE that the model also DOESN'T SEE (green, <br> agreement) and that model does SEE (red, disagreement)",
+            title="Objects you DON'T SEE that the model also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement)",
             # title="Things You Do Not See",
             title_x=0.10,
             title_y=0.95,
