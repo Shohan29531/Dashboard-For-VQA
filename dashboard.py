@@ -551,6 +551,8 @@ def update_heatmap_1(
         #                         [1, 'rgb(6, 200, 115)'],
         #                       ]
         
+        ## for the "i see" heatmap (left one), 1 is agreement
+        ## because, 1 means the model sees, which is exactly what my view is
         colorscale_heatmap1 = [
                                 
                                 [0, color_disagreement], # disagreement
@@ -872,9 +874,11 @@ def update_heatmap_2(
         #                          [1, 'rgb(211, 6, 50)'], 
         #                        ]
 
+        ## for the "i don't see" heatmap (right one), 0 is agreement
+        ## because, 0 means the model does not see, which is exactly what my view is
         colorscale_heatmap2 = [                          
-                                 [0, color_disagreement],
-                                 [1, color_agreement], 
+                                 [0, color_agreement],
+                                 [1, color_disagreement], 
                                ]
         
         x_labels = [label.replace('Frame-', '') for label in x_labels]
