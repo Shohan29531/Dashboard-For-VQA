@@ -250,7 +250,7 @@ image_modal = html.Div(
         "height": "100%",
         "background-color": "rgba(0, 0, 0, 0.7)",
         "z-index": 1000,
-        "overflow": "auto"
+        "overflow": "auto",
     },
     children=[
         html.Div(
@@ -271,16 +271,16 @@ image_modal = html.Div(
                         "right": "10px",
                         "cursor": "pointer",
                         "font-size": "20px",
-                        "color": "red",  # Change the color to red
-                        "background-color": "white",  # Set background color to white
-                        "border-radius": "50%",  # Rounded shape
-                        "width": "30px",  # Adjust width and height for size
+                        "color": "red",  
+                        "background-color": "white",  
+                        "border-radius": "50%",  
+                        "width": "30px", 
                         "height": "30px",
                         "display": "flex",
                         "justify-content": "center",
                         "align-items": "center"
                     },
-                    children=["\u2716"],  # Cross symbol
+                    children=["\u2716"], 
                     id="close-custom-modal-button"
                 ),
                 dbc.CardImg(id="custom-modal-image", style={"max-width": "100%", "max-height": "80vh"}),
@@ -291,22 +291,30 @@ image_modal = html.Div(
 
 
 
-
-
-
-
 second_and_third_row = html.Div(
     [
         html.Div(
             [
                 heatmaps,
-                image_map,  
+                image_map   
+            ], 
+        ),           
+        dcc.Store(id='last-clicked-image-id'),
+    ], className='row'
+)
+
+
+modal_row = html.Div(
+    [
+        html.Div(
+            [
                 image_modal      
             ], 
         ),           
         dcc.Store(id='last-clicked-image-id'),
     ], className='row'
 )
+
 
 # 4th row: rating layout
 rating_row = html.Div(
@@ -373,9 +381,9 @@ app.layout = html.Div(
     [        
         top_row,
         html.Div(id='output-folder-creation', style={'margin': '10px', 'display': 'none'}),
-        second_and_third_row,    
+        second_and_third_row, 
+        modal_row,   
         rating_row,
-        dcc.Store(id='filtered-images'),
     ]
 )
 
@@ -418,28 +426,37 @@ def get_encoded_image(image_name):
     Output("custom-modal", "style"),
     Output("custom-modal-image", "src"),
     Output("custom-modal-image", "alt"),
+    Input('video-dropdown', 'value'),
     Input({"type": "popup-button", "index": ALL}, "n_clicks"),
     Input("close-custom-modal-button", "n_clicks"),
-    State("filtered-images", "data"),
-    prevent_initial_call=True
 )
-def open_custom_modal_from_button(popup_button_clicks, close_modal_clicks, filtered_images):
+def open_custom_modal_from_button(selected_option, popup_button_clicks, close_modal_clicks):
     ctx = dash.callback_context
-
-    print("popup button click")
 
     if "close-custom-modal-button" in ctx.triggered[0]["prop_id"]:
         return {"display": "none"}, "", ""
 
-    triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    if selected_option and any(clicks == 1 for clicks in popup_button_clicks):
+        print("popup button click", popup_button_clicks)
+        triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-    triggered_id = json.loads(triggered_id)
-    print("triggered_id:", triggered_id)
+        triggered_id = json.loads(triggered_id)
+        print("triggered_id:", triggered_id)
 
-    if "index" in triggered_id:
-        popup_button_index = triggered_id["index"]
-        image_name = filtered_images[popup_button_index]
-        return {"display": "block"}, get_encoded_image(image_name), image_name
+        image_names = os.listdir(images_source_folder)
+        selected_option = selected_option.lower()
+        image_names = [img.lower() for img in image_names]
+
+        filtered_images = [img.strip() for img in image_names if img.startswith(selected_option)]
+        filtered_images.sort(key=extract_frame_number)
+        filtered_images = filtered_images[:max_frames]
+
+        if "index" in triggered_id:
+            popup_button_index = triggered_id["index"]
+            image_name = filtered_images[popup_button_index]
+            return {"display": "block"}, get_encoded_image(image_name), image_name
+    
+    return {"display": "none"}, None, None  
 
 
 
@@ -497,7 +514,6 @@ def get_image_card(image_name, frame_number, is_selected):
 @app.callback(
     Output('image-container', 'children'),
     Output('last-clicked-image-id', 'data'),
-    Output("filtered-images", "data"),
     Input('video-dropdown', 'value'),
     Input('heatmap-1', 'hoverData'),
     Input('heatmap-2', 'hoverData'),
@@ -553,7 +569,7 @@ def update_image_container(
 
                 image_elements.append(image_element)
 
-            return image_elements, chosen_frame_number, filtered_images
+            return image_elements, chosen_frame_number
 
     else:
         if trigger == 'heatmap-1':
@@ -592,9 +608,9 @@ def update_image_container(
 
             image_elements.append(image_element)
 
-        return image_elements, None, filtered_images
+        return image_elements, None
     else:
-        return [], None, None
+        return [], None
 
 
 
