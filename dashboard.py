@@ -30,15 +30,14 @@ available_models = ['GPV-1', 'BLIP', 'GT', 'Random']
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
-
 # a global log file contains the following columns: timestamp, video, model, score, comments
 COLUMNS = ['timestamp', 'video', 'model', 'see', 'not_see', 'score', 'comments']
 
 # default values
 current_model = 'Model-0' #'GPV-1'
 current_file = 'video-1-segment-5' # 'video-1-segment-5'
-current_text_see = 'Wall, Bicycle, Bridge, Building, Bus, Bus Stop'
-current_text_not_see = 'Guide dog, Gutter, Hose, Lamp Post, Mail box'
+current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
+current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
 current_rating = 5
 current_text_comments = ''
 current_heatmap_type = 'Objects I See'
@@ -89,6 +88,11 @@ def read_text_file_content(file_path):
         content = file.read()
     return content
 
+
+suggestions = read_text_file_content('all_a11y_objects.txt').split(', ')
+
+
+
 # css framework for layout and style
 external_stylesheets = [ 'https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
 
@@ -132,40 +136,41 @@ top_row = html.Div(
             className='row'
         ),
         
-        # I don't see text area
+        # I see text area
         html.Div([
-            dcc.Markdown(children = '*Objects I **see** in the video:*'),
-            dcc.Textarea(
+            dcc.Markdown(children='*Objects I **see** in the video:*'),
+            dcc.Dropdown(
                 id='I-see',
+                options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
+                multi=True,
                 value=current_text_see,
                 placeholder='Things I see',
-                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
-            )], className='two columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}
-
-        ),
+            )
+        ], className='five columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
 
         # Possible objects text area
         html.Div([
-            dcc.Markdown(children = '*Possible Objects:*'),
+            dcc.Markdown(children = '*Possible Objects:*',                 style={'display' : 'none'}),
 			dcc.Textarea(
                 id='text-file-content',
                 value=read_text_file_content('all_a11y_objects.txt'),  
                 readOnly=True,
-                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
-            )], className = 'seven columns'
+                style={'width': '100%', 'color': 'grey', 'font-style': 'italic', 'display' : 'none'}
+            )], className = 'one column'
         ),
 
 
         # I don't see text area
         html.Div([
-            dcc.Markdown('*Objects I **don\'t see** in the video:*'),            
-            dcc.Textarea(
+            dcc.Markdown(children='*Objects I **don\'t see** in the video:*'),
+            dcc.Dropdown(
                 id='I-dont-see',
-                value='Guide dog, Gutter, Hose, Lamp Post, Mail box',
+                options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
+                multi=True,
+                value=current_text_not_see,
                 placeholder='Things I do not see',
-                style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}      
-            )], className='two columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'} 
-        ),
+            )
+        ], className='five columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'}),
 
         ## select the types of objects for which you wish to see the heatmaps 
         html.Div([
@@ -535,8 +540,9 @@ def update_heatmap_1(
         y_labels = list(heat_map_file.iloc[:80, 0])  
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
 
+        textarea_example_value_lower = [item.lower() for item in textarea_example_value]
 
-        filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_value.lower()]
+        filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_value_lower]
 
         
         filtered_indices = filtered_indices_see 
@@ -778,7 +784,9 @@ def update_heatmap_2(
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
 
 
-        filtered_indices_dont_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_2_value.lower()]
+        textarea_example_2_value_lower = [item.lower() for item in textarea_example_2_value]
+
+        filtered_indices_dont_see = [i for i, label in enumerate(y_labels) if label.lower() in textarea_example_2_value_lower]
         
  
         filtered_indices = filtered_indices_dont_see
