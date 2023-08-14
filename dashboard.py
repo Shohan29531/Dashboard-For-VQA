@@ -27,6 +27,8 @@ all_video_files = natsorted(all_video_files)
 
 
 available_models = ['GPV-1', 'BLIP', 'GT', 'Random']
+comparison_types = ['One Model', 'Two Models']
+heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
 
 # a global log file contains the following columns: timestamp, video, model, score, comments
@@ -39,6 +41,7 @@ current_text_see = 'Wall, Bicycle, Bridge, Building, Bus, Bus Stop'
 current_text_not_see = 'Guide dog, Gutter, Hose, Lamp Post, Mail box'
 current_rating = 5
 current_text_comments = ''
+current_heatmap_type = 'Objects I See'
 
 
 num_frames = 100
@@ -123,10 +126,8 @@ top_row = html.Div(
                 id='video-dropdown',
                 options=[{'label': option, 'value': option} for option in all_video_files],
                 placeholder='Select a video file...',
-                # value=None,
                 value= current_file,
                 style={'border-color': 'gray'}            
-                # style={'width': '200px', 'margin': '10px'}
             )],
             className='row'
         ),
@@ -164,6 +165,18 @@ top_row = html.Div(
                 placeholder='Things I do not see',
                 style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}      
             )], className='two columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'} 
+        ),
+
+        ## select the types of objects for which you wish to see the heatmaps 
+        html.Div([
+            dcc.Dropdown(
+                id='heatmap-type-dropdown',
+                options=[{'label': option, 'value': option} for option in heatmap_types],
+                placeholder='I wish to see the model results for...',
+                value= None,
+                style={'border-color': 'gray'}            
+            )],
+            className='row'
         ),
 
         # analyze button
@@ -493,10 +506,10 @@ color_disagreement = 'rgb(211, 6, 50)' # red
 @app.callback(
     Output('heatmap-1', 'figure'), 
     Input('model-dropdown', 'value'), 
-    Input('video-dropdown', 'value'),     
+    Input('video-dropdown', 'value'),  
+    Input('heatmap-type-dropdown', 'value'),   
     Input('heatmap-1', 'hoverData'),
     Input('heatmap-1', 'clickData'),
-    # Input('heatmap-dropdown-1', 'value'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
     State('last-clicked-image-id', 'data'),
@@ -505,7 +518,8 @@ color_disagreement = 'rgb(211, 6, 50)' # red
 )
 def update_heatmap_1(
     model, 
-    selected_file,     
+    selected_file,
+    selected_heatmap_type,     
     heatmap_hoverData,
     heatmap_clickData,
     # heatmap_dropdownData,
@@ -517,7 +531,7 @@ def update_heatmap_1(
 ):
     model = models_to_show[model]
 
-    if n_clicks > 0 and model and selected_file:
+    if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ):
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
 
@@ -545,22 +559,13 @@ def update_heatmap_1(
         y_labels = y_labels_filtered
         z_values = z_values_filtered
         
-        # colorscale_heatmap1 = [
-                                
-        #                         [0, 'rgb(255,255,255)'], # disagreement
-        #                         [1, 'rgb(6, 200, 115)'],
-        #                       ]
-        
         ## for the "i see" heatmap (left one), 1 is agreement
         ## because, 1 means the model sees, which is exactly what my view is
         colorscale_heatmap1 = [
                                 
-                                [0, color_disagreement], # disagreement
+                                [0, color_disagreement], 
                                 [1, color_agreement],
                               ]
-        
-        ## green means model sees
-        ## white means model does not see 
 
         x_labels = [label.replace('Frame-', '') for label in x_labels]
 
@@ -603,7 +608,6 @@ def update_heatmap_1(
             title="Objects you SEE that the model also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement)",
             title_x=0.10,
             title_y=0.95,
-            # title_font=dict(color='rgb(6, 200, 115)', family='Arial Black', size=12 ),
             title_font=dict(family='Arial Black', size=12 ),
             height=fixed_heatmap_height,
             width=fixed_heatmap_width,
@@ -816,7 +820,7 @@ def render_popover_2(click_data):
     Output('heatmap-2', 'figure'), 
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'), 
-    # Input('line-graph-1', 'clickData'),
+    Input('heatmap-type-dropdown', 'value'),
     Input('heatmap-2', 'hoverData'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-dont-see', 'value'),
@@ -827,7 +831,7 @@ def render_popover_2(click_data):
 def update_heatmap_2(
     model, 
     selected_file, 
-    # line_graph_clickData,
+    selected_heatmap_type, 
     heatmap_hoverData,
     n_clicks,                      
     textarea_example_2_value, 
@@ -837,7 +841,7 @@ def update_heatmap_2(
 ):
     model = models_to_show[model]
 
-    if n_clicks > 0 and model and selected_file:
+    if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I do not See' or selected_heatmap_type == 'Both' ):
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
 
@@ -868,11 +872,6 @@ def update_heatmap_2(
         y_labels = y_labels_filtered
         z_values = z_values_filtered
 
-
-        # colorscale_heatmap2 = [                          
-        #                          [0, 'rgb(255, 255, 255)'],
-        #                          [1, 'rgb(211, 6, 50)'], 
-        #                        ]
 
         ## for the "i don't see" heatmap (right one), 0 is agreement
         ## because, 0 means the model does not see, which is exactly what my view is
