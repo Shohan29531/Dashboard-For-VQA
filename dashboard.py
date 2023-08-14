@@ -200,11 +200,7 @@ heatmaps = html.Div(
             [        
                 dcc.Graph(
                     id='heatmap-1',
-                ),
-                html.Div(
-                    id='heatmap-popover-1',
-                    style={'position': 'relative'},
-                ),                  
+                ),                 
             ], className='five columns'
         ),
 
@@ -217,11 +213,7 @@ heatmaps = html.Div(
             [        
                 dcc.Graph(
                     id='heatmap-2',
-                ),
-                html.Div(
-                    id='heatmap-popover-2',
-                    style={'position': 'relative'},
-                ),                  
+                ),                
             ], className='five columns'
         ),
     ], className='row'
@@ -746,74 +738,6 @@ def update_heatmap_1(
         return heat_map
 
     return {}
-
-
-
-@app.callback(
-    Output('heatmap-popover-1', 'children'),
-    Output('heatmap-popover-1', 'style'),
-    Input('heatmap-1', 'clickData'),
-)
-def render_popover_1(click_data):
-    if click_data:
-        x_coord = int(click_data['points'][0]['x']) 
-        y_coord = click_data['points'][0]['y']
-        options = ['Minor', 'Moderate', 'Severe']
-
-        dropdown = dcc.Dropdown(
-            id='heatmap-dropdown-1',
-            options=[{'label': option, 'value': option} for option in options],
-            value=None,
-            clearable=True,
-            style={'width': '100px'},
-            placeholder='The Error Is:'
-        )
-
-        print(x_coord, y_coord)
-
-        dropdown_style = {
-            'position': 'absolute',
-            'left': f'{480}px',  
-            'top': f'{253}px', 
-            'z-index': 1000  
-        }
-
-        return dropdown, dropdown_style
-
-    return html.Div(), {'display': 'none'}
-
-@app.callback(
-    Output('heatmap-popover-2', 'children'),
-    Output('heatmap-popover-2', 'style'),
-    Input('heatmap-2', 'clickData'),
-)
-def render_popover_2(click_data):
-    if click_data:
-        x_coord = int(click_data['points'][0]['x']) 
-        y_coord = 5
-        options = ['Minor', 'Moderate', 'Severe']
-
-        dropdown = dcc.Dropdown(
-            id='heatmap-dropdown-2',
-            options=[{'label': option, 'value': option} for option in options],
-            value=None,
-            clearable=True,
-            style={'width': '100px'},
-            placeholder='The Error Is:'
-        )
-
-        print(x_coord, y_coord)
-
-        dropdown_style = {
-            'position': 'absolute',
-            'left': f'{1315}px',  
-            'top': f'{253}px', 
-            'z-index': 1000  
-        }
-
-        return dropdown, dropdown_style
-
-    return html.Div(), {'display': 'none'}
 
 
 @app.callback(
