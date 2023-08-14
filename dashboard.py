@@ -135,6 +135,18 @@ top_row = html.Div(
             )],
             className='row'
         ),
+
+        ## select the types of objects for which you wish to see the heatmaps 
+        html.Div([
+            dcc.Dropdown(
+                id='heatmap-type-dropdown',
+                options=[{'label': option, 'value': option} for option in heatmap_types],
+                placeholder='I wish to see the model results for...',
+                value= None,
+                style={'border-color': 'gray'}            
+            )],
+            className='row'
+        ),
         
         # I see text area
         html.Div([
@@ -172,17 +184,6 @@ top_row = html.Div(
             )
         ], className='five columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'}),
 
-        ## select the types of objects for which you wish to see the heatmaps 
-        html.Div([
-            dcc.Dropdown(
-                id='heatmap-type-dropdown',
-                options=[{'label': option, 'value': option} for option in heatmap_types],
-                placeholder='I wish to see the model results for...',
-                value= None,
-                style={'border-color': 'gray'}            
-            )],
-            className='row'
-        ),
 
         # analyze button
         html.Div(
