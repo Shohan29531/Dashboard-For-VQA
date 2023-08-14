@@ -12,6 +12,7 @@ from dash import ctx
 from natsort import natsorted
 import datetime
 import random
+import json
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
@@ -237,14 +238,72 @@ image_map = html.Div(
      className= 'row'
 )
 
+
+image_modal = html.Div(
+    id="custom-modal",
+    style={
+        "display": "none",
+        "position": "fixed",
+        "top": "0",
+        "left": "0",
+        "width": "100%",
+        "height": "100%",
+        "background-color": "rgba(0, 0, 0, 0.7)",
+        "z-index": 1000,
+        "overflow": "auto"
+    },
+    children=[
+        html.Div(
+            style={
+                "position": "relative",
+                "max-width": "40%",
+                "margin": "5px auto",
+                "background-color": "white",
+                "border-radius": "5px",
+                "padding": "5px",
+                "box-shadow": "0px 0px 10px rgba(0, 0, 0, 0.5)"
+            },
+            children=[
+                html.Div(
+                    style={
+                        "position": "absolute",
+                        "top": "10px",
+                        "right": "10px",
+                        "cursor": "pointer",
+                        "font-size": "20px",
+                        "color": "red",  # Change the color to red
+                        "background-color": "white",  # Set background color to white
+                        "border-radius": "50%",  # Rounded shape
+                        "width": "30px",  # Adjust width and height for size
+                        "height": "30px",
+                        "display": "flex",
+                        "justify-content": "center",
+                        "align-items": "center"
+                    },
+                    children=["\u2716"],  # Cross symbol
+                    id="close-custom-modal-button"
+                ),
+                dbc.CardImg(id="custom-modal-image", style={"max-width": "100%", "max-height": "80vh"}),
+            ]
+        )
+    ]
+)
+
+
+
+
+
+
+
 second_and_third_row = html.Div(
     [
         html.Div(
             [
                 heatmaps,
-                image_map,            
+                image_map,  
+                image_modal      
             ], 
-        ),            
+        ),           
         dcc.Store(id='last-clicked-image-id'),
     ], className='row'
 )
@@ -315,7 +374,8 @@ app.layout = html.Div(
         top_row,
         html.Div(id='output-folder-creation', style={'margin': '10px', 'display': 'none'}),
         second_and_third_row,    
-        rating_row
+        rating_row,
+        dcc.Store(id='filtered-images'),
     ]
 )
 
@@ -353,6 +413,37 @@ def get_encoded_image(image_name):
     return f"data:image/jpeg;base64,{encoded_image}"
 
 
+
+@app.callback(
+    Output("custom-modal", "style"),
+    Output("custom-modal-image", "src"),
+    Output("custom-modal-image", "alt"),
+    Input({"type": "popup-button", "index": ALL}, "n_clicks"),
+    Input("close-custom-modal-button", "n_clicks"),
+    State("filtered-images", "data"),
+    prevent_initial_call=True
+)
+def open_custom_modal_from_button(popup_button_clicks, close_modal_clicks, filtered_images):
+    ctx = dash.callback_context
+
+    print("popup button click")
+
+    if "close-custom-modal-button" in ctx.triggered[0]["prop_id"]:
+        return {"display": "none"}, "", ""
+
+    triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    triggered_id = json.loads(triggered_id)
+    print("triggered_id:", triggered_id)
+
+    if "index" in triggered_id:
+        popup_button_index = triggered_id["index"]
+        image_name = filtered_images[popup_button_index]
+        return {"display": "block"}, get_encoded_image(image_name), image_name
+
+
+
+
 def get_image_card(image_name, frame_number, is_selected):
     image_path = os.path.join(images_source_folder, image_name)
     encoded_image = get_encoded_image(image_name)
@@ -373,11 +464,20 @@ def get_image_card(image_name, frame_number, is_selected):
         style={'position': 'absolute', 'top': '0px', 'left': '0px', 'color': 'blue', 'background-color': 'rgb(232, 237, 235)', 'padding': '2px', 'font-weight': 'bold'}
     )
 
+    popup_button = dbc.Button(
+        "Zoom",
+        color="link",
+        id={"type": "popup-button", "index": frame_number},
+        n_clicks=0,
+        style={"font-size": "11px", "font-weight": "bold", 'position': 'absolute', 'top': '0', 'right': '0', 'background-color': 'rgb(232, 237, 235)'}
+    )
+
     image_div = html.Div(
         [
             dbc.CardImg(src=encoded_image, style={'width': '100%'}),
             action_button,
-            frame_number_label
+            frame_number_label,
+            popup_button
         ],
         style={'position': 'relative', 'width': '100%', 'height': '100%'}
     )
@@ -397,6 +497,7 @@ def get_image_card(image_name, frame_number, is_selected):
 @app.callback(
     Output('image-container', 'children'),
     Output('last-clicked-image-id', 'data'),
+    Output("filtered-images", "data"),
     Input('video-dropdown', 'value'),
     Input('heatmap-1', 'hoverData'),
     Input('heatmap-2', 'hoverData'),
@@ -452,7 +553,7 @@ def update_image_container(
 
                 image_elements.append(image_element)
 
-            return image_elements, chosen_frame_number
+            return image_elements, chosen_frame_number, filtered_images
 
     else:
         if trigger == 'heatmap-1':
@@ -491,9 +592,9 @@ def update_image_container(
 
             image_elements.append(image_element)
 
-        return image_elements, None
+        return image_elements, None, filtered_images
     else:
-        return [], None
+        return [], None, None
 
 
 
