@@ -151,7 +151,8 @@ top_row = html.Div(
         
         # I see text area
         html.Div([
-            dcc.Markdown(children='*Objects I **see** in the video:*'),
+            dcc.Markdown(children='*Objects I **see** in the video:*', 
+                         id='I-see-markdown'),
             dcc.Dropdown(
                 id='I-see',
                 options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
@@ -159,23 +160,13 @@ top_row = html.Div(
                 value=current_text_see,
                 placeholder='Things I see',
             )
-        ], className='five columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
-
-        # Possible objects text area
-        html.Div([
-            dcc.Markdown(children = '*Possible Objects:*',                 style={'display' : 'none'}),
-			dcc.Textarea(
-                id='text-file-content',
-                value=read_text_file_content('all_a11y_objects.txt'),  
-                readOnly=True,
-                style={'width': '100%', 'color': 'grey', 'font-style': 'italic', 'display' : 'none'}
-            )], className = 'one column'
-        ),
+        ], id= 'I-see-container', className='five columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
 
 
         # I don't see text area
         html.Div([
-            dcc.Markdown(children='*Objects I **don\'t see** in the video:*'),
+            dcc.Markdown(children='*Objects I **don\'t see** in the video:*', 
+                         id='I-dont-see-markdown'),
             dcc.Dropdown(
                 id='I-dont-see',
                 options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
@@ -183,7 +174,7 @@ top_row = html.Div(
                 value=current_text_not_see,
                 placeholder='Things I do not see',
             )
-        ], className='five columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'}),
+        ], id= 'I-dont-see-container', className='five columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'}),
 
 
         # analyze button
@@ -386,6 +377,45 @@ app.layout = html.Div(
         rating_row,
     ]
 )
+
+
+
+@app.callback(
+    Output('I-see-container', 'style'),
+    Output('I-see-markdown', 'style'),
+    Output('I-see', 'style'),
+    Output('I-dont-see-container', 'style'),
+    Output('I-dont-see-markdown', 'style'),
+    Output('I-dont-see', 'style'),
+    Input('heatmap-type-dropdown', 'value'),
+)
+def update_image_container(
+    selected_heatmap_type
+):
+    see_style_original = style={'background-color': 'rgba(6, 200, 115, 0.5)'}
+    see_style_white = style={'background-color': 'white'}
+    dont_see_style_original = style={'background-color': 'rgba(211, 6, 50, 0.5)'}
+    dont_see_style_white = style={'background-color': 'white'}
+
+    if selected_heatmap_type == 'Objects I See':
+        return see_style_original, {'display': 'block'}, {'display': 'block'}, dont_see_style_white, {'display': 'none'}, {'display': 'none'}
+    
+    elif selected_heatmap_type == 'Objects I do not See':
+        return see_style_white, {'display': 'none'}, {'display': 'none'}, dont_see_style_original, {'display': 'block'}, {'display': 'block'}
+    
+    elif selected_heatmap_type == 'Both':
+        return see_style_original, {'display': 'block'}, {'display': 'block'}, dont_see_style_original, {'display': 'block'}, {'display': 'block'} 
+    
+    return {'display': 'none'}, {'display': 'none'}, {'display': 'none'}, {'display': 'none'}, {'display': 'none'}, {'display': 'none'}
+
+
+
+
+
+
+
+
+
 
 # callback for updating the heatmap
 @app.callback(
