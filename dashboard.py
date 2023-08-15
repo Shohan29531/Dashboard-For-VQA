@@ -380,6 +380,7 @@ app.layout = html.Div(
 
 
 
+# to update the see/don't see input areas based on the heatmap type dropdown
 @app.callback(
     Output('I-see-container', 'style'),
     Output('I-see-markdown', 'style'),
@@ -733,22 +734,6 @@ def update_heatmap_1(
 
         print("heatmap-1: ", heatmap_cell_width, heatmap_cell_height)
 
-        border_line = {
-            'type': 'rect',
-            'x0': -0.5,  
-            'x1': len(x_labels)-0.5, 
-            'y0': -0.5,  
-            'y1': len(y_labels)-0.5,  
-            'xref': 'x',
-            'yref': 'y',
-            'line': {
-                'color': 'rgb(6, 200, 115)',  
-                'width': 5, 
-            },
-            'fillcolor': 'rgba(0,0,0,0)',  
-            'opacity': 1,
-        }
-
     #  and that model doesn't see (White)
         layout = go.Layout(
             title="Objects you SEE that the model also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement)",
@@ -791,9 +776,6 @@ def update_heatmap_1(
 
         layout_shapes_list = []
         
-        layout_shapes_list.append(border_line)
-       
-
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
             last_clicked_image_id = None
 
@@ -975,22 +957,6 @@ def update_heatmap_2(
             showscale = False
         ) 
 
-        border_line = {
-            'type': 'rect',
-            'x0': -0.5,  
-            'x1': len(x_labels)-0.5, 
-            'y0': -0.5,  
-            'y1': len(y_labels)-0.5,  
-            'xref': 'x',
-            'yref': 'y',
-            'line': {
-                'color': 'rgb(211, 6, 50)',  
-                'width': 5, 
-            },
-            'fillcolor': 'rgba(0,0,0,0)',  
-            'opacity': 1,
-        }
-
         heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
         heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
@@ -1040,9 +1006,6 @@ def update_heatmap_2(
             heatmap_hoverData = None
 
         layout_shapes_list = []
-
-        layout_shapes_list.append(border_line)
-
        
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
 
