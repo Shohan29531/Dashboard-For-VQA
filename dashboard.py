@@ -162,6 +162,10 @@ top_row = html.Div(
             )
         ], id= 'I-see-container', className='five columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
 
+        ## blank column
+        html.Div([
+        ], className='one column'),
+
 
         # I don't see text area
         html.Div([
