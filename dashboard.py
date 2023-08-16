@@ -14,6 +14,8 @@ import datetime
 import random
 import json
 
+## arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
+
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
@@ -136,17 +138,16 @@ top_row = html.Div(
 
 
         html.Div([
+            dcc.Store(id='current-second-model'),
             dcc.Dropdown(
                 id='model-dropdown-2',
                 options=[{'label': model, 'value': model} for model in models_to_show],
                 placeholder='Select Another Model to Comapre',
                 value= None,
                 style={'border-color': 'gray'}            
-            )], className='five columns'
+            )
+            ], className='five columns'
         ),
-
-
-        
         
         html.Div([
             dcc.Dropdown(
@@ -213,8 +214,9 @@ top_row = html.Div(
                     style={'background-color': 'lightgray'}
                 )
             ], className='row'
-        )         
+        ),       
     ], className='row',
+
 ) 
 
 # 2nd row: heatmap layout
@@ -316,7 +318,7 @@ second_and_third_row = html.Div(
                 image_map   
             ], 
         ),           
-        dcc.Store(id='last-clicked-image-id'),
+        dcc.Store(id='last-clicked-image-id'), 
     ], className='row'
 )
 
@@ -408,25 +410,36 @@ app.layout = html.Div(
 
 @app.callback(
     Output('heatmap-type-dropdown', 'options'),
+    Output('current-second-model', 'data'),
     Output('heatmap-1', 'figure', allow_duplicate = True),
     Output('heatmap-2', 'figure', allow_duplicate = True),
     Output('I-see-container', 'style', allow_duplicate = True),
     Output('I-dont-see-container', 'style', allow_duplicate = True),
     Output('heatmap-type-dropdown', 'value'),
     Input('model-dropdown-2', 'value'),
+    State('current-second-model', 'data'), 
     prevent_initial_call=True
     
 )
-def update_heatmap_and_reset_inputs(selected_model):
+def update_heatmap_and_reset_inputs(selected_model, previous_second_model):
+    print("previous_second_model: ", previous_second_model)
     if selected_model is None:
         options = [{'label': option, 'value': option} for option in heatmap_types]
+
+        return options, None, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
     else:
-        custom_heatmap_types = ['Objects I See', 'Objects I do not See']
-        options = [{'label': option, 'value': option} for option in custom_heatmap_types]  # Customize this list
+        if previous_second_model is None: 
+            custom_heatmap_types = ['Objects I See', 'Objects I do not See']
+            options = [{'label': option, 'value': option} for option in custom_heatmap_types]  # Customize this list
 
-        return options, {}, {}, {'display': 'none'}, {'display': 'none'}, None
+            return options, selected_model, {}, {}, {'display': 'none'}, {'display': 'none'}, None
+        else:
+            options = [{'label': option, 'value': option} for option in heatmap_types]
 
-    return options, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+            return options, selected_model, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+
+
+
 
 
 
@@ -460,13 +473,6 @@ def update_image_container(
         return see_style_original, {'display': 'block'}, {'display': 'block'}, dont_see_style_original, {'display': 'block'}, {'display': 'block'} 
     
     return {'display': 'none'}, {'display': 'none'}, {'display': 'none'}, {'display': 'none'}, {'display': 'none'}, {'display': 'none'}
-
-
-
-
-
-
-
 
 
 
