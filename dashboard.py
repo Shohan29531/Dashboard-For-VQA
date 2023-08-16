@@ -49,6 +49,7 @@ max_frames = 14
 
 fixed_heatmap_height = 350
 fixed_heatmap_width = 500
+heatmap_x_axis_title = 'Frames ➜'
 
 heatmap_colorscale = [
     [0, 'rgb(211, 6, 50)'],
@@ -122,6 +123,7 @@ top_row = html.Div(
                 options=[{'label': model, 'value': model} for model in models_to_show],
                 placeholder='Select a Model',
                 value= current_model,
+                clearable=False,
                 style={'border-color': 'gray'}            
             )], className='five columns'
         ),
@@ -808,7 +810,7 @@ def update_heatmap_1(
                     y=-0.15, 
                     xref='paper', 
                     yref='paper',  
-                    text='Frames',  
+                    text=heatmap_x_axis_title,  
                     showarrow=False,  
                     font=dict(size=12, family='Arial Black'),
                 )
@@ -993,7 +995,7 @@ def update_heatmap_1(
                         y=-0.15, 
                         xref='paper', 
                         yref='paper',  
-                        text='Frames',  
+                        text=heatmap_x_axis_title,  
                         showarrow=False,  
                         font=dict(size=12, family='Arial Black'),
                     )
@@ -1165,7 +1167,7 @@ def update_heatmap_1(
                         y=-0.15, 
                         xref='paper', 
                         yref='paper',  
-                        text='Frames',  
+                        text=heatmap_x_axis_title,  
                         showarrow=False,  
                         font=dict(size=12, family='Arial Black'),
                     )
@@ -1387,7 +1389,7 @@ def update_heatmap_2(
                     y=-0.15, 
                     xref='paper', 
                     yref='paper',  
-                    text='Frames',  
+                    text=heatmap_x_axis_title,  
                     showarrow=False,  
                     font=dict(size=12, family='Arial Black'),
                 )
@@ -1574,7 +1576,7 @@ def update_heatmap_2(
                         y=-0.15, 
                         xref='paper', 
                         yref='paper',  
-                        text='Frames',  
+                        text=heatmap_x_axis_title,  
                         showarrow=False,  
                         font=dict(size=12, family='Arial Black'),
                     )
@@ -1746,7 +1748,7 @@ def update_heatmap_2(
                         y=-0.15, 
                         xref='paper', 
                         yref='paper',  
-                        text='Frames',  
+                        text=heatmap_x_axis_title,  
                         showarrow=False,  
                         font=dict(size=12, family='Arial Black'),
                     )
