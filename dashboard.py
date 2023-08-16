@@ -219,7 +219,6 @@ top_row = html.Div(
 
 ) 
 
-# 2nd row: heatmap layout
 heatmaps = html.Div(
     [        
         html.Div(
@@ -228,13 +227,10 @@ heatmaps = html.Div(
                     id='heatmap-1',
                     config={'displayModeBar': False}
                 ),                 
-            ], className='five columns'
+            ], className='five columns', style={'margin-right': 'auto'}
         ),
 
-        html.Div([
-				# empty								
-			], className = 'one column'
-        ),
+        html.Div([], className='one column'),
 
         html.Div(
             [        
@@ -242,7 +238,7 @@ heatmaps = html.Div(
                     id='heatmap-2',
                     config={'displayModeBar': False}
                 ),                
-            ], className='five columns'
+            ], className='five columns', style={'margin-left': 'auto'}
         ),
     ], className='row'
 )
