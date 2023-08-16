@@ -782,7 +782,8 @@ def update_heatmap_1(
 
     #  and that model doesn't see (White)
         layout = go.Layout(
-            title="Objects you SEE that the model also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement)",
+            title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement) " 
+            ,
             title_x=0.10,
             title_y=0.95,
             title_font=dict(family='Arial Black', size=12 ),
@@ -1139,7 +1140,7 @@ def update_heatmap_1(
 
             #  and that model doesn't see (White)
             layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (green, agreement) and <br> that the model does SEE (red, disagreement) ", 
+                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement) ", 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1302,6 +1303,7 @@ def update_heatmap_2(
     dummy_2,
     second_model
 ):
+    first_model_name = model
     model = models_to_show[model]
 
     if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I do not See' or selected_heatmap_type == 'Both' ) and second_model == None:
@@ -1359,7 +1361,7 @@ def update_heatmap_2(
           
 
         layout = go.Layout(
-            title="Objects you DON'T SEE that the model also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement)",
+                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement) ", 
             title_x=0.10,
             title_y=0.95,
             # title_font=dict(color='rgb(211, 6, 50)', family='Arial Black' ),
@@ -1719,7 +1721,7 @@ def update_heatmap_2(
 
             #  and that model doesn't see (White)
             layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + second_model_name + "</span>"+ " also DOESN'T SEE (green, agreement) and <br> that the model does SEE (red, disagreement) ", 
+                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + second_model_name + "</span>"+ " also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement) ", 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
