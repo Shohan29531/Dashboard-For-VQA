@@ -748,7 +748,12 @@ def update_heatmap_1(
         length_of_longest_x_label = len(longest_x_label)
 
         y_labels = list(heat_map_file.iloc[:80, 0])  
-        z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
+        z_values = heat_map_file.iloc[:80, 1:].values.tolist()
+
+        for i in range(len(z_values)):
+            for j in range(len(z_values[i])):
+                if z_values[i][j] == -1:
+                    z_values[i][j] = 0  
 
         see_textarea_value_lower = [item.lower() for item in see_textarea_value]
 
@@ -935,6 +940,11 @@ def update_heatmap_1(
 
         y_labels = list(heat_map_file.iloc[:80, 0])  
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
+
+        for i in range(len(z_values)):
+            for j in range(len(z_values[i])):
+                if z_values[i][j] == -1:
+                    z_values[i][j] = 0  
 
         # ['Objects I See', 'Objects I do not See', 'Both']
 
@@ -1324,7 +1334,12 @@ def update_heatmap_2(
         length_of_longest_x_label = len(longest_x_label)
 
         y_labels = list(heat_map_file.iloc[:80, 0])  
-        z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
+        z_values = heat_map_file.iloc[:80, 1:].values.tolist()
+
+        for i in range(len(z_values)):
+            for j in range(len(z_values[i])):
+                if z_values[i][j] == -1:
+                    z_values[i][j] = 0    
 
 
         dont_see_textarea_value_lower = [item.lower() for item in dont_see_textarea_value]
@@ -1516,6 +1531,11 @@ def update_heatmap_2(
 
         y_labels = list(heat_map_file.iloc[:80, 0])  
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
+
+        for i in range(len(z_values)):
+            for j in range(len(z_values[i])):
+                if z_values[i][j] == -1:
+                    z_values[i][j] = 0  
 
         # ['Objects I See', 'Objects I do not See', 'Both']
 
