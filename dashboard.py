@@ -375,7 +375,6 @@ rating_row = html.Div(
 app.layout = html.Div(
     [        
         top_row,
-        html.Div(id='output-folder-creation', style={'margin': '10px', 'display': 'none'}),
         second_and_third_row, 
         modal_row,   
         rating_row,
