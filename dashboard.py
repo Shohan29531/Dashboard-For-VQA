@@ -422,7 +422,7 @@ app.layout = html.Div(
     
 )
 def update_heatmap_and_reset_inputs(selected_model, previous_second_model):
-    print("previous_second_model: ", previous_second_model)
+
     if selected_model is None:
         options = [{'label': option, 'value': option} for option in heatmap_types]
 
@@ -434,7 +434,8 @@ def update_heatmap_and_reset_inputs(selected_model, previous_second_model):
 
             return options, selected_model, {}, {}, {'display': 'none'}, {'display': 'none'}, None
         else:
-            options = [{'label': option, 'value': option} for option in heatmap_types]
+            custom_heatmap_types = ['Objects I See', 'Objects I do not See']
+            options = [{'label': option, 'value': option} for option in custom_heatmap_types] 
 
             return options, selected_model, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
