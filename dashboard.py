@@ -226,6 +226,7 @@ heatmaps = html.Div(
             [        
                 dcc.Graph(
                     id='heatmap-1',
+                    config={'displayModeBar': False}
                 ),                 
             ], className='five columns'
         ),
@@ -239,6 +240,7 @@ heatmaps = html.Div(
             [        
                 dcc.Graph(
                     id='heatmap-2',
+                    config={'displayModeBar': False}
                 ),                
             ], className='five columns'
         ),
@@ -788,7 +790,7 @@ def update_heatmap_1(
             y=y_labels,
             z=z_values,
             colorscale=colorscale_heatmap1,
-            showscale = False
+            showscale = False,
         )
 
         heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
