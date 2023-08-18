@@ -794,8 +794,7 @@ def update_heatmap_1(
 
     #  and that model doesn't see (White)
         layout = go.Layout(
-            title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement) " 
-            ,
+            title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ ")  <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
             title_x=0.10,
             title_y=0.95,
             title_font=dict(family='Arial Black', size=12 ),
@@ -842,36 +841,66 @@ def update_heatmap_1(
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
 
+            y_coord_index = y_labels.index(y_coord)
+
             layout_shapes_list.extend([
                 {
                     'type': 'line',
                     'x0': 0,
                     'x1': 1,
-                    'y0': y_coord,
-                    'y1': y_coord,
+                    'y0': y_coord_index - 0.5,
+                    'y1': y_coord_index - 0.5,
                     'xref': 'paper',
                     'yref': 'y',
                     'line': {
-                        'color': 'yellow',  
-                        'width': heatmap_cell_height, 
+                        'color': 'black',  
+                        'width': 3, 
                     },
-                    'opacity': 0.5
+                    'opacity': 1
                 },
                 {
                     'type': 'line',
-                    'x0': x_coord,
-                    'x1': x_coord,
+                    'x0': 0,
+                    'x1': 1,
+                    'y0': y_coord_index + 0.5,
+                    'y1': y_coord_index + 0.5,
+                    'xref': 'paper',
+                    'yref': 'y',
+                    'line': {
+                        'color': 'black',  
+                        'width': 3, 
+                    },
+                    'opacity': 1
+                },
+                {
+                    'type': 'line',
+                    'x0': float(x_coord) - 0.5,
+                    'x1': float(x_coord) - 0.5,
                     'y0': 0,
                     'y1': 1,
                     'xref': 'x',
                     'yref': 'paper',
                     'line': {
-                        'color': 'yellow',  
-                        'width': heatmap_cell_width, 
+                        'color': 'black',  
+                        'width': 3, 
                     },
-                    'opacity': 0.5
-                }
-            ])
+                    'opacity': 1
+                },
+                {
+                    'type': 'line',
+                    'x0': float(x_coord) + 0.5,
+                    'x1': float(x_coord) + 0.5,
+                    'y0': 0,
+                    'y1': 1,
+                    'xref': 'x',
+                    'yref': 'paper',
+                    'line': {
+                        'color': 'black',  
+                        'width': 3, 
+                    },
+                    'opacity': 1
+                },
+            ])    
 
 
         for i in range(len(x_labels)):
@@ -984,8 +1013,7 @@ def update_heatmap_1(
             heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
             layout = go.Layout(
-                title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement) " 
-               ,
+                title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ " ) <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1032,36 +1060,66 @@ def update_heatmap_1(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
+                y_coord_index = y_labels.index(y_coord)
+
                 layout_shapes_list.extend([
                     {
                         'type': 'line',
                         'x0': 0,
                         'x1': 1,
-                        'y0': y_coord,
-                        'y1': y_coord,
+                        'y0': y_coord_index - 0.5,
+                        'y1': y_coord_index - 0.5,
                         'xref': 'paper',
                         'yref': 'y',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_height, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
+                        'opacity': 1
                     },
                     {
                         'type': 'line',
-                        'x0': x_coord,
-                        'x1': x_coord,
+                        'x0': 0,
+                        'x1': 1,
+                        'y0': y_coord_index + 0.5,
+                        'y1': y_coord_index + 0.5,
+                        'xref': 'paper',
+                        'yref': 'y',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) - 0.5,
+                        'x1': float(x_coord) - 0.5,
                         'y0': 0,
                         'y1': 1,
                         'xref': 'x',
                         'yref': 'paper',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_width, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
-                    }
-                ])
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) + 0.5,
+                        'x1': float(x_coord) + 0.5,
+                        'y0': 0,
+                        'y1': 1,
+                        'xref': 'x',
+                        'yref': 'paper',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                ])    
 
 
             for i in range(len(x_labels)):
@@ -1157,7 +1215,7 @@ def update_heatmap_1(
 
             #  and that model doesn't see (White)
             layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement) ", 
+                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1204,36 +1262,66 @@ def update_heatmap_1(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
+                y_coord_index = y_labels.index(y_coord)
+
                 layout_shapes_list.extend([
                     {
                         'type': 'line',
                         'x0': 0,
                         'x1': 1,
-                        'y0': y_coord,
-                        'y1': y_coord,
+                        'y0': y_coord_index - 0.5,
+                        'y1': y_coord_index - 0.5,
                         'xref': 'paper',
                         'yref': 'y',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_height, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
+                        'opacity': 1
                     },
                     {
                         'type': 'line',
-                        'x0': x_coord,
-                        'x1': x_coord,
+                        'x0': 0,
+                        'x1': 1,
+                        'y0': y_coord_index + 0.5,
+                        'y1': y_coord_index + 0.5,
+                        'xref': 'paper',
+                        'yref': 'y',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) - 0.5,
+                        'x1': float(x_coord) - 0.5,
                         'y0': 0,
                         'y1': 1,
                         'xref': 'x',
                         'yref': 'paper',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_width, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
-                    }
-                ])
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) + 0.5,
+                        'x1': float(x_coord) + 0.5,
+                        'y0': 0,
+                        'y1': 1,
+                        'xref': 'x',
+                        'yref': 'paper',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                ])    
 
 
             for i in range(len(x_labels)):
@@ -1383,7 +1471,7 @@ def update_heatmap_2(
           
 
         layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement) ", 
+                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
             title_x=0.10,
             title_y=0.95,
             # title_font=dict(color='rgb(211, 6, 50)', family='Arial Black' ),
@@ -1432,36 +1520,66 @@ def update_heatmap_2(
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
 
+            y_coord_index = y_labels.index(y_coord)
+
             layout_shapes_list.extend([
                 {
                     'type': 'line',
                     'x0': 0,
                     'x1': 1,
-                    'y0': y_coord,
-                    'y1': y_coord,
+                    'y0': y_coord_index - 0.5,
+                    'y1': y_coord_index - 0.5,
                     'xref': 'paper',
                     'yref': 'y',
                     'line': {
-                        'color': 'yellow', 
-                        'width': heatmap_cell_height,  
+                        'color': 'black',  
+                        'width': 3, 
                     },
-                    'opacity': 0.5
+                    'opacity': 1
                 },
                 {
                     'type': 'line',
-                    'x0': x_coord,
-                    'x1': x_coord,
+                    'x0': 0,
+                    'x1': 1,
+                    'y0': y_coord_index + 0.5,
+                    'y1': y_coord_index + 0.5,
+                    'xref': 'paper',
+                    'yref': 'y',
+                    'line': {
+                        'color': 'black',  
+                        'width': 3, 
+                    },
+                    'opacity': 1
+                },
+                {
+                    'type': 'line',
+                    'x0': float(x_coord) - 0.5,
+                    'x1': float(x_coord) - 0.5,
                     'y0': 0,
                     'y1': 1,
                     'xref': 'x',
                     'yref': 'paper',
                     'line': {
-                        'color': 'yellow', 
-                        'width': heatmap_cell_width, 
+                        'color': 'black',  
+                        'width': 3, 
                     },
-                    'opacity': 0.5
-                }
-            ])
+                    'opacity': 1
+                },
+                {
+                    'type': 'line',
+                    'x0': float(x_coord) + 0.5,
+                    'x1': float(x_coord) + 0.5,
+                    'y0': 0,
+                    'y1': 1,
+                    'xref': 'x',
+                    'yref': 'paper',
+                    'line': {
+                        'color': 'black',  
+                        'width': 3, 
+                    },
+                    'opacity': 1
+                },
+            ])    
 
 
         for i in range(len(x_labels)):
@@ -1575,8 +1693,7 @@ def update_heatmap_2(
             heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
             layout = go.Layout(
-                title="Objects you SEE that "  + "<span style='color:blue;'>"  + second_model_name + "</span>"+ " also SEEs (green, agreement) and <br> that the model DOESN'T SEE (red, disagreement) " 
-               ,
+                title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ ") <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1623,36 +1740,66 @@ def update_heatmap_2(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
+                y_coord_index = y_labels.index(y_coord)
+
                 layout_shapes_list.extend([
                     {
                         'type': 'line',
                         'x0': 0,
                         'x1': 1,
-                        'y0': y_coord,
-                        'y1': y_coord,
+                        'y0': y_coord_index - 0.5,
+                        'y1': y_coord_index - 0.5,
                         'xref': 'paper',
                         'yref': 'y',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_height, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
+                        'opacity': 1
                     },
                     {
                         'type': 'line',
-                        'x0': x_coord,
-                        'x1': x_coord,
+                        'x0': 0,
+                        'x1': 1,
+                        'y0': y_coord_index + 0.5,
+                        'y1': y_coord_index + 0.5,
+                        'xref': 'paper',
+                        'yref': 'y',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) - 0.5,
+                        'x1': float(x_coord) - 0.5,
                         'y0': 0,
                         'y1': 1,
                         'xref': 'x',
                         'yref': 'paper',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_width, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
-                    }
-                ])
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) + 0.5,
+                        'x1': float(x_coord) + 0.5,
+                        'y0': 0,
+                        'y1': 1,
+                        'xref': 'x',
+                        'yref': 'paper',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                ])    
 
 
             for i in range(len(x_labels)):
@@ -1748,7 +1895,7 @@ def update_heatmap_2(
 
             #  and that model doesn't see (White)
             layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + second_model_name + "</span>"+ " also DOESN'T SEE (green, <br> agreement) and that the model does SEE (red, disagreement) ", 
+                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1795,36 +1942,66 @@ def update_heatmap_2(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
+                y_coord_index = y_labels.index(y_coord)
+
                 layout_shapes_list.extend([
                     {
                         'type': 'line',
                         'x0': 0,
                         'x1': 1,
-                        'y0': y_coord,
-                        'y1': y_coord,
+                        'y0': y_coord_index - 0.5,
+                        'y1': y_coord_index - 0.5,
                         'xref': 'paper',
                         'yref': 'y',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_height, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
+                        'opacity': 1
                     },
                     {
                         'type': 'line',
-                        'x0': x_coord,
-                        'x1': x_coord,
+                        'x0': 0,
+                        'x1': 1,
+                        'y0': y_coord_index + 0.5,
+                        'y1': y_coord_index + 0.5,
+                        'xref': 'paper',
+                        'yref': 'y',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) - 0.5,
+                        'x1': float(x_coord) - 0.5,
                         'y0': 0,
                         'y1': 1,
                         'xref': 'x',
                         'yref': 'paper',
                         'line': {
-                            'color': 'yellow',  
-                            'width': heatmap_cell_width, 
+                            'color': 'black',  
+                            'width': 3, 
                         },
-                        'opacity': 0.5
-                    }
-                ])
+                        'opacity': 1
+                    },
+                    {
+                        'type': 'line',
+                        'x0': float(x_coord) + 0.5,
+                        'x1': float(x_coord) + 0.5,
+                        'y0': 0,
+                        'y1': 1,
+                        'xref': 'x',
+                        'yref': 'paper',
+                        'line': {
+                            'color': 'black',  
+                            'width': 3, 
+                        },
+                        'opacity': 1
+                    },
+                ])    
 
 
             for i in range(len(x_labels)):
