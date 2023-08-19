@@ -48,6 +48,7 @@ current_heatmap_type = 'Objects I See'
 
 num_frames = 100
 max_frames = 14
+heatmap_highlight_line_width = 5
 
 fixed_heatmap_height = 350
 fixed_heatmap_width = 500
@@ -108,7 +109,7 @@ def get_vetical_axis_lines(x_labels):
                 'color': 'black', 
                 'width': 1,  
             },
-            'opacity': 0.2
+            'opacity': 0.5
     })
         
     return vertical_lines
@@ -131,7 +132,7 @@ def get_horizontal_axis_lines(y_labels):
                 'color': 'black', 
                 'width': 1, 
             },
-            'opacity': 0.2
+            'opacity': 0.5
         })
 
     return horizontal_lines    
@@ -157,7 +158,7 @@ def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, 
             'yref': 'y',
             'line': {
                 'color': 'yellow',  
-                'width': 3, 
+                'width': heatmap_highlight_line_width, 
             },
             'opacity': 1
         },
@@ -171,7 +172,7 @@ def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, 
             'yref': 'y',
             'line': {
                 'color': 'yellow',  
-                'width': 3, 
+                'width': heatmap_highlight_line_width, 
             },
             'opacity': 1
         },
@@ -185,7 +186,7 @@ def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, 
             'yref': 'paper',
             'line': {
                 'color': 'yellow',  
-                'width': 3, 
+                'width': heatmap_highlight_line_width, 
             },
             'opacity': 1
         },
@@ -199,7 +200,7 @@ def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, 
             'yref': 'paper',
             'line': {
                 'color': 'yellow',  
-                'width': 3, 
+                'width': heatmap_highlight_line_width, 
             },
             'opacity': 1
         },
@@ -224,7 +225,7 @@ def get_heatmap_highlight_lines_from_image_container_click(x_coord):
             'yref': 'paper',
             'line': {
                 'color': 'yellow',  
-                'width': 3, 
+                'width': heatmap_highlight_line_width, 
             },
             'opacity': 1
         },
@@ -238,7 +239,7 @@ def get_heatmap_highlight_lines_from_image_container_click(x_coord):
             'yref': 'paper',
             'line': {
                 'color': 'yellow',  
-                'width': 3, 
+                'width': heatmap_highlight_line_width, 
             },
             'opacity': 1
         },
@@ -464,7 +465,7 @@ image_modal = html.Div(
                         "justify-content": "center",
                         "align-items": "center"
                     },
-                    children=["\u2716"], 
+                    children=["❌"], 
                     id="close-custom-modal-button"
                 ),
                 dbc.CardImg(id="custom-modal-image", style={"max-width": "100%", "max-height": "80vh"}),
@@ -701,6 +702,7 @@ def open_custom_modal_from_button(selected_option, popup_button_clicks, close_mo
     return {"display": "none"}, None, None  
 
 
+
 def get_image_card(image_name, frame_number, is_selected):
     image_path = os.path.join(images_source_folder, image_name)
     encoded_image = get_encoded_image(image_name)
@@ -722,12 +724,25 @@ def get_image_card(image_name, frame_number, is_selected):
     )
 
     popup_button = dbc.Button(
-        "Zoom",
+        "🔍",  # You can change this to another zoom icon from Font Awesome
         color="link",
+        size="sm",
         id={"type": "popup-button", "index": frame_number},
         n_clicks=0,
-        style={"font-size": "11px", "font-weight": "bold", 'position': 'absolute', 'top': '0', 'right': '0', 'background-color': 'rgb(232, 237, 235)'}
+        style={
+            "font-size": "16px",  # Increase the font size for better visibility
+            "font-weight": "bold",
+            "text-decoration": "none",  # Remove the underline
+            "padding": "0px 0px",  # Adjust padding (top/bottom and left/right)
+            "margin": "0",  # Remove margin
+            'position': 'absolute',
+            'top': '0',
+            'right': '0',
+            'background-color': 'rgb(232, 237, 235)',
+            'border': 'none'  # Remove the button border
+        }
     )
+
 
     image_div = html.Div(
         [
@@ -982,8 +997,6 @@ def update_heatmap_1(
             heatmap_hoverData = None
 
         layout_shapes_list = []
-        layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
-        layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
         
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
             last_clicked_image_id = None
@@ -994,9 +1007,11 @@ def update_heatmap_1(
 
             layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-
         if heatmap_line_column is not None:
             layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
+
+        layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+        layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))    
 
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1099,8 +1114,7 @@ def update_heatmap_1(
                 heatmap_hoverData = None
 
             layout_shapes_list = []
-            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
-            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
+
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -1111,9 +1125,11 @@ def update_heatmap_1(
 
                 layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-
             if heatmap_line_column is not None:
                 layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
+
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))    
 
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1197,8 +1213,6 @@ def update_heatmap_1(
                 heatmap_hoverData = None
 
             layout_shapes_list = []
-            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
-            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -1209,9 +1223,11 @@ def update_heatmap_1(
 
                 layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-
             if heatmap_line_column is not None:
-                layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))            
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column)) 
+
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))               
 
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1352,8 +1368,6 @@ def update_heatmap_2(
             heatmap_hoverData = None
 
         layout_shapes_list = []
-        layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
-        layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
             last_clicked_image_id = None
@@ -1364,9 +1378,11 @@ def update_heatmap_2(
 
             layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-
         if heatmap_line_column is not None:
             layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
+
+        layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+        layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))    
 
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1470,8 +1486,6 @@ def update_heatmap_2(
                 heatmap_hoverData = None
 
             layout_shapes_list = []
-            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
-            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -1482,9 +1496,11 @@ def update_heatmap_2(
 
                 layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-
             if heatmap_line_column is not None:
                 layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
+
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))    
             
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1570,8 +1586,6 @@ def update_heatmap_2(
                 heatmap_hoverData = None
 
             layout_shapes_list = []
-            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
-            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -1582,9 +1596,11 @@ def update_heatmap_2(
 
                 layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-
             if heatmap_line_column is not None:
                 layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
+
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))    
 
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
