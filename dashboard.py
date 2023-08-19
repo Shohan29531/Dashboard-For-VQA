@@ -53,11 +53,9 @@ fixed_heatmap_height = 350
 fixed_heatmap_width = 500
 heatmap_x_axis_title = 'Frames ➜'
 
-heatmap_colorscale = [
-    [0, 'rgb(211, 6, 50)'],
-    [1, 'rgb(6, 200, 115)']
-]
-
+color_white = 'rgb(255,255,255)' # white
+color_agreement = 'rgb(6, 200, 115)' # green
+color_disagreement = 'rgb(211, 6, 50)' # red
 
 def randomize_data():
     random_model = random.sample(range(0, len(available_models)), len(available_models))        
@@ -91,6 +89,176 @@ def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
+
+
+def get_vetical_axis_lines(x_labels):
+
+    vertical_lines = []
+
+    for i in range(len(x_labels)):
+        vertical_lines.append({
+            'type': 'line',
+            'x0': i / len(x_labels),
+            'x1': i / len(x_labels),
+            'y0': 0,
+            'y1': 1,
+            'xref': 'paper',  
+            'yref': 'paper',  
+            'line': {
+                'color': 'black', 
+                'width': 1,  
+            },
+            'opacity': 0.2
+    })
+        
+    return vertical_lines
+
+
+def get_horizontal_axis_lines(y_labels):
+
+    horizontal_lines = []
+
+    for i in range(len(y_labels) + 1):
+        horizontal_lines.append({
+            'type': 'line',
+            'x0': 0,
+            'x1': 1,
+            'y0': i / len(y_labels),
+            'y1': i / len(y_labels),
+            'xref': 'paper',
+            'yref': 'paper', 
+            'line': {
+                'color': 'black', 
+                'width': 1, 
+            },
+            'opacity': 0.2
+        })
+
+    return horizontal_lines    
+
+
+def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord):
+    if y_coord not in y_labels:
+        return [] 
+
+    y_coord_index = y_labels.index(y_coord)
+
+
+    highlight_lines = []
+
+    highlight_lines.extend([
+        {
+            'type': 'line',
+            'x0': 0,
+            'x1': 1,
+            'y0': y_coord_index - 0.5,
+            'y1': y_coord_index - 0.5,
+            'xref': 'paper',
+            'yref': 'y',
+            'line': {
+                'color': 'yellow',  
+                'width': 3, 
+            },
+            'opacity': 1
+        },
+        {
+            'type': 'line',
+            'x0': 0,
+            'x1': 1,
+            'y0': y_coord_index + 0.5,
+            'y1': y_coord_index + 0.5,
+            'xref': 'paper',
+            'yref': 'y',
+            'line': {
+                'color': 'yellow',  
+                'width': 3, 
+            },
+            'opacity': 1
+        },
+        {
+            'type': 'line',
+            'x0': float(x_coord) - 0.5,
+            'x1': float(x_coord) - 0.5,
+            'y0': 0,
+            'y1': 1,
+            'xref': 'x',
+            'yref': 'paper',
+            'line': {
+                'color': 'yellow',  
+                'width': 3, 
+            },
+            'opacity': 1
+        },
+        {
+            'type': 'line',
+            'x0': float(x_coord) + 0.5,
+            'x1': float(x_coord) + 0.5,
+            'y0': 0,
+            'y1': 1,
+            'xref': 'x',
+            'yref': 'paper',
+            'line': {
+                'color': 'yellow',  
+                'width': 3, 
+            },
+            'opacity': 1
+        },
+    ])
+    
+    return highlight_lines
+
+
+
+def get_heatmap_highlight_lines_from_image_container_click(x_coord):
+
+    highlight_lines = []
+
+    highlight_lines.extend([
+        {
+            'type': 'line',
+            'x0': float(x_coord) - 0.5,
+            'x1': float(x_coord) - 0.5,
+            'y0': 0,
+            'y1': 1,
+            'xref': 'x',
+            'yref': 'paper',
+            'line': {
+                'color': 'yellow',  
+                'width': 3, 
+            },
+            'opacity': 1
+        },
+        {
+            'type': 'line',
+            'x0': float(x_coord) + 0.5,
+            'x1': float(x_coord) + 0.5,
+            'y0': 0,
+            'y1': 1,
+            'xref': 'x',
+            'yref': 'paper',
+            'line': {
+                'color': 'yellow',  
+                'width': 3, 
+            },
+            'opacity': 1
+        },
+    ])
+    
+    return highlight_lines
+
+
+
+def get_see_text(model_name):
+    title = "Objects you SEE that "  + "<span style='color:blue;'>"  + model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ ") <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") "
+
+    return title     
+
+
+def get_dont_see_text(model_name):
+    title = "Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") "  
+
+    return title
+
 
 
 suggestions = read_text_file_content('all_a11y_objects.txt').split(', ')
@@ -255,7 +423,6 @@ image_map = html.Div(
      className= 'row'
 )
 
-
 image_modal = html.Div(
     id="custom-modal",
     style={
@@ -306,8 +473,6 @@ image_modal = html.Div(
     ]
 )
 
-
-
 second_and_third_row = html.Div(
     [
         html.Div(
@@ -320,7 +485,6 @@ second_and_third_row = html.Div(
     ], className='row'
 )
 
-
 modal_row = html.Div(
     [
         html.Div(
@@ -330,7 +494,6 @@ modal_row = html.Div(
         ),           
     ], className='row'
 )
-
 
 # 4th row: rating layout
 rating_row = html.Div(
@@ -403,9 +566,6 @@ app.layout = html.Div(
 )
 
 
-
-
-
 @app.callback(
     Output('heatmap-type-dropdown', 'options'),
     Output('current-second-model', 'data'),
@@ -436,12 +596,6 @@ def update_heatmap_and_reset_inputs(selected_model, previous_second_model):
             options = [{'label': option, 'value': option} for option in custom_heatmap_types] 
 
             return options, selected_model, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
-
-
-
-
-
-
 
 
 # to update the see/don't see input areas based on the heatmap type dropdown
@@ -545,8 +699,6 @@ def open_custom_modal_from_button(selected_option, popup_button_clicks, close_mo
             return {"display": "block"}, get_encoded_image(image_name), image_name
     
     return {"display": "none"}, None, None  
-
-
 
 
 def get_image_card(image_name, frame_number, is_selected):
@@ -702,9 +854,7 @@ def update_image_container(
 
 
 
-color_white = 'rgb(255,255,255)' # white
-color_agreement = 'rgb(6, 200, 115)' # green
-color_disagreement = 'rgb(211, 6, 50)' # red
+
 
 @app.callback(
     Output('heatmap-1', 'figure'), 
@@ -725,6 +875,7 @@ def update_heatmap_1(
     selected_file,
     selected_heatmap_type,     
     heatmap_hoverData,
+    # heatmap_dropdownData,
     n_clicks,                  
     see_textarea_value,
     dont_see_textarea_value,    
@@ -791,9 +942,8 @@ def update_heatmap_1(
         heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
         heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
-    #  and that model doesn't see (White)
         layout = go.Layout(
-            title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ ")  <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
+            title = get_see_text(first_model_name), 
             title_x=0.10,
             title_y=0.95,
             title_font=dict(family='Arial Black', size=12 ),
@@ -825,80 +975,16 @@ def update_heatmap_1(
             ]
         )
 
-        layout_shapes_list = []
-        
- 
-        for i in range(len(x_labels)):
-            layout_shapes_list.append({
-                'type': 'line',
-                'x0': i / len(x_labels),
-                'x1': i / len(x_labels),
-                'y0': 0,
-                'y1': 1,
-                'xref': 'paper',  
-                'yref': 'paper',  
-                'line': {
-                    'color': 'black', 
-                    'width': 1,  
-                },
-                'opacity': 0.2
-            })
-
-        for i in range(len(y_labels) + 1):
-            layout_shapes_list.append({
-                'type': 'line',
-                'x0': 0,
-                'x1': 1,
-                'y0': i / len(y_labels),
-                'y1': i / len(y_labels),
-                'xref': 'paper',
-                'yref': 'paper', 
-                'line': {
-                    'color': 'black', 
-                    'width': 1, 
-                },
-                'opacity': 0.2
-            })
-
         heatmap_line_column = None
         if last_clicked_image_id:
             clicked_frame_number = last_clicked_image_id
             heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
-            heatmap_hoverData = None    
+            heatmap_hoverData = None
 
-        if heatmap_line_column is not None:
-            layout_shapes_list.extend([
-                {
-                    'type': 'line',
-                    'x0': float(heatmap_line_column) - 0.5,
-                    'x1': float(heatmap_line_column) - 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': float(heatmap_line_column) + 0.5,
-                    'x1': float(heatmap_line_column) + 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                }
-                ]
-            )
-
+        layout_shapes_list = []
+        layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+        layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
+        
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
             last_clicked_image_id = None
 
@@ -906,66 +992,11 @@ def update_heatmap_1(
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
 
-            y_coord_index = y_labels.index(y_coord)
+            layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-            layout_shapes_list.extend([
-                {
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': y_coord_index - 0.5,
-                    'y1': y_coord_index - 0.5,
-                    'xref': 'paper',
-                    'yref': 'y',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': y_coord_index + 0.5,
-                    'y1': y_coord_index + 0.5,
-                    'xref': 'paper',
-                    'yref': 'y',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': float(x_coord) - 0.5,
-                    'x1': float(x_coord) - 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': float(x_coord) + 0.5,
-                    'x1': float(x_coord) + 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-            ])       
+
+        if heatmap_line_column is not None:
+            layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
 
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1029,7 +1060,7 @@ def update_heatmap_1(
             heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
             layout = go.Layout(
-                title="Objects you SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ " ) <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
+                title = get_see_text(first_model_name),  
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1061,80 +1092,15 @@ def update_heatmap_1(
                 ]
             )
 
-
-
-            layout_shapes_list = []
-            
-            for i in range(len(x_labels)):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': i / len(x_labels),
-                    'x1': i / len(x_labels),
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'paper',  
-                    'yref': 'paper',  
-                    'line': {
-                        'color': 'black', 
-                        'width': 1,  
-                    },
-                    'opacity': 0.2
-                })
-
-            for i in range(len(y_labels) + 1):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': i / len(y_labels),
-                    'y1': i / len(y_labels),
-                    'xref': 'paper',
-                    'yref': 'paper', 
-                    'line': {
-                        'color': 'black', 
-                        'width': 1, 
-                    },
-                    'opacity': 0.2
-                })
-
             heatmap_line_column = None
             if last_clicked_image_id:
                 clicked_frame_number = last_clicked_image_id
                 heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
                 heatmap_hoverData = None
 
-            if heatmap_line_column is not None:
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) - 0.5,
-                        'x1': float(heatmap_line_column) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) + 0.5,
-                        'x1': float(heatmap_line_column) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    }
-                    ]
-                )
+            layout_shapes_list = []
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -1143,74 +1109,17 @@ def update_heatmap_1(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
-                y_coord_index = y_labels.index(y_coord)
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index - 0.5,
-                        'y1': y_coord_index - 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index + 0.5,
-                        'y1': y_coord_index + 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) - 0.5,
-                        'x1': float(x_coord) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) + 0.5,
-                        'x1': float(x_coord) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                ])        
+
+            if heatmap_line_column is not None:
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
 
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
 
             return heat_map
             
-        
-
         else:
             dont_see_textarea_value_lower = [item.lower() for item in dont_see_textarea_value]
 
@@ -1249,7 +1158,7 @@ def update_heatmap_1(
 
             #  and that model doesn't see (White)
             layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
+                title = get_dont_see_text(first_model_name), 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1281,80 +1190,15 @@ def update_heatmap_1(
                 ]
             )
 
-
-
-            layout_shapes_list = []
-
-            for i in range(len(x_labels)):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': i / len(x_labels),
-                    'x1': i / len(x_labels),
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'paper',  
-                    'yref': 'paper',  
-                    'line': {
-                        'color': 'black', 
-                        'width': 1,  
-                    },
-                    'opacity': 0.2
-                })
-
-            for i in range(len(y_labels) + 1):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': i / len(y_labels),
-                    'y1': i / len(y_labels),
-                    'xref': 'paper',
-                    'yref': 'paper', 
-                    'line': {
-                        'color': 'black', 
-                        'width': 1, 
-                    },
-                    'opacity': 0.2
-                })
-
             heatmap_line_column = None
             if last_clicked_image_id:
                 clicked_frame_number = last_clicked_image_id
                 heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
-                heatmap_hoverData = None    
+                heatmap_hoverData = None
 
-            if heatmap_line_column is not None:
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) - 0.5,
-                        'x1': float(heatmap_line_column) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) + 0.5,
-                        'x1': float(heatmap_line_column) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    }
-                    ]
-                )
+            layout_shapes_list = []
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -1363,66 +1207,11 @@ def update_heatmap_1(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
-                y_coord_index = y_labels.index(y_coord)
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index - 0.5,
-                        'y1': y_coord_index - 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index + 0.5,
-                        'y1': y_coord_index + 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) - 0.5,
-                        'x1': float(x_coord) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) + 0.5,
-                        'x1': float(x_coord) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                ])       
+
+            if heatmap_line_column is not None:
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))            
 
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1523,7 +1312,7 @@ def update_heatmap_2(
           
 
         layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + first_model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
+            title = get_dont_see_text(first_model_name), 
             title_x=0.10,
             title_y=0.95,
             # title_font=dict(color='rgb(211, 6, 50)', family='Arial Black' ),
@@ -1556,148 +1345,28 @@ def update_heatmap_2(
             ]
         )
 
-        layout_shapes_list = []
-       
-        for i in range(len(x_labels)):
-            layout_shapes_list.append({
-                'type': 'line',
-                'x0': i / len(x_labels),
-                'x1': i / len(x_labels),
-                'y0': 0,
-                'y1': 1,
-                'xref': 'paper', 
-                'yref': 'paper',  
-                'line': {
-                    'color': 'black',  
-                    'width': 1,  
-                },
-                'opacity': 0.2
-            })
-
-        for i in range(len(y_labels) + 1):
-            layout_shapes_list.append({
-                'type': 'line',
-                'x0': 0,
-                'x1': 1,
-                'y0': i / len(y_labels),
-                'y1': i / len(y_labels),
-                'xref': 'paper',
-                'yref': 'paper',  
-                'line': {
-                    'color': 'black',  
-                    'width': 1,  
-                },
-                'opacity': 0.2
-            })
-
-
         heatmap_line_column = None
         if last_clicked_image_id:
             clicked_frame_number = last_clicked_image_id
             heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
             heatmap_hoverData = None
 
-        if heatmap_line_column is not None:
-            layout_shapes_list.extend([
-                {
-                    'type': 'line',
-                    'x0': float(heatmap_line_column) - 0.5,
-                    'x1': float(heatmap_line_column) - 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': float(heatmap_line_column) + 0.5,
-                    'x1': float(heatmap_line_column) + 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                }
-                ]
-            )
+        layout_shapes_list = []
+        layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+        layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
-
             last_clicked_image_id = None
 
             clicked_point = heatmap_hoverData['points'][0]
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
 
-            y_coord_index = y_labels.index(y_coord)
+            layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-            layout_shapes_list.extend([
-                {
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': y_coord_index - 0.5,
-                    'y1': y_coord_index - 0.5,
-                    'xref': 'paper',
-                    'yref': 'y',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': y_coord_index + 0.5,
-                    'y1': y_coord_index + 0.5,
-                    'xref': 'paper',
-                    'yref': 'y',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': float(x_coord) - 0.5,
-                    'x1': float(x_coord) - 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-                {
-                    'type': 'line',
-                    'x0': float(x_coord) + 0.5,
-                    'x1': float(x_coord) + 0.5,
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'x',
-                    'yref': 'paper',
-                    'line': {
-                        'color': 'yellow',  
-                        'width': 3, 
-                    },
-                    'opacity': 1
-                },
-            ])       
+
+        if heatmap_line_column is not None:
+            layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
 
         layout['shapes'] = tuple(layout_shapes_list)
         heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1762,7 +1431,7 @@ def update_heatmap_2(
             heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
 
             layout = go.Layout(
-                title="Objects you SEE that "  + "<span style='color:blue;'>"  + second_model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ ") <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
+                title = get_see_text(second_model_name),   
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -1794,79 +1463,15 @@ def update_heatmap_2(
                 ]
             )
 
-            layout_shapes_list = []   
-
-            for i in range(len(x_labels)):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': i / len(x_labels),
-                    'x1': i / len(x_labels),
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'paper',  
-                    'yref': 'paper',  
-                    'line': {
-                        'color': 'black', 
-                        'width': 1,  
-                    },
-                    'opacity': 0.2
-                })
-
-            for i in range(len(y_labels) + 1):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': i / len(y_labels),
-                    'y1': i / len(y_labels),
-                    'xref': 'paper',
-                    'yref': 'paper', 
-                    'line': {
-                        'color': 'black', 
-                        'width': 1, 
-                    },
-                    'opacity': 0.2
-                })
-
-            
             heatmap_line_column = None
             if last_clicked_image_id:
                 clicked_frame_number = last_clicked_image_id
                 heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
-                heatmap_hoverData = None    
+                heatmap_hoverData = None
 
-            if heatmap_line_column is not None:
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) - 0.5,
-                        'x1': float(heatmap_line_column) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) + 0.5,
-                        'x1': float(heatmap_line_column) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    }
-                    ]
-                )
+            layout_shapes_list = []
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -1875,67 +1480,12 @@ def update_heatmap_2(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
-                y_coord_index = y_labels.index(y_coord)
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index - 0.5,
-                        'y1': y_coord_index - 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index + 0.5,
-                        'y1': y_coord_index + 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) - 0.5,
-                        'x1': float(x_coord) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) + 0.5,
-                        'x1': float(x_coord) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                ])     
 
+            if heatmap_line_column is not None:
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
+            
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
 
@@ -1981,7 +1531,7 @@ def update_heatmap_2(
 
             #  and that model doesn't see (White)
             layout = go.Layout(
-                title="Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + second_model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") ", 
+                title= get_dont_see_text(second_model_name), 
                 title_x=0.10,
                 title_y=0.95,
                 title_font=dict(family='Arial Black', size=12 ),
@@ -2013,78 +1563,15 @@ def update_heatmap_2(
                 ]
             )
 
-            layout_shapes_list = []
-            
-            for i in range(len(x_labels)):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': i / len(x_labels),
-                    'x1': i / len(x_labels),
-                    'y0': 0,
-                    'y1': 1,
-                    'xref': 'paper',  
-                    'yref': 'paper',  
-                    'line': {
-                        'color': 'black', 
-                        'width': 1,  
-                    },
-                    'opacity': 0.2
-                })
-
-            for i in range(len(y_labels) + 1):
-                layout_shapes_list.append({
-                    'type': 'line',
-                    'x0': 0,
-                    'x1': 1,
-                    'y0': i / len(y_labels),
-                    'y1': i / len(y_labels),
-                    'xref': 'paper',
-                    'yref': 'paper', 
-                    'line': {
-                        'color': 'black', 
-                        'width': 1, 
-                    },
-                    'opacity': 0.2
-                })
-
             heatmap_line_column = None
             if last_clicked_image_id:
                 clicked_frame_number = last_clicked_image_id
                 heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
                 heatmap_hoverData = None
 
-            if heatmap_line_column is not None:
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) - 0.5,
-                        'x1': float(heatmap_line_column) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(heatmap_line_column) + 0.5,
-                        'x1': float(heatmap_line_column) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    }
-                    ]
-                )
+            layout_shapes_list = []
+            layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+            layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
 
             if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
                 last_clicked_image_id = None
@@ -2093,67 +1580,11 @@ def update_heatmap_2(
                 x_coord = clicked_point['x']
                 y_coord = clicked_point['y']
 
-                y_coord_index = y_labels.index(y_coord)
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
-                layout_shapes_list.extend([
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index - 0.5,
-                        'y1': y_coord_index - 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': 0,
-                        'x1': 1,
-                        'y0': y_coord_index + 0.5,
-                        'y1': y_coord_index + 0.5,
-                        'xref': 'paper',
-                        'yref': 'y',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) - 0.5,
-                        'x1': float(x_coord) - 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                    {
-                        'type': 'line',
-                        'x0': float(x_coord) + 0.5,
-                        'x1': float(x_coord) + 0.5,
-                        'y0': 0,
-                        'y1': 1,
-                        'xref': 'x',
-                        'yref': 'paper',
-                        'line': {
-                            'color': 'yellow',  
-                            'width': 3, 
-                        },
-                        'opacity': 1
-                    },
-                ])    
-    
+
+            if heatmap_line_column is not None:
+                layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
 
             layout['shapes'] = tuple(layout_shapes_list)
             heat_map = go.Figure(data=heatmap, layout=layout)
@@ -2162,7 +1593,6 @@ def update_heatmap_2(
 
     return {}
 
-                
 
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True), 
