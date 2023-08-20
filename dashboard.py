@@ -13,6 +13,7 @@ from natsort import natsorted
 import datetime
 import random
 import json
+import dash_draggable
 
 ## arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
 
@@ -409,8 +410,67 @@ heatmaps = html.Div(
                 ),                
             ], className='five columns', style={'margin-left': 'auto'}
         ),
-    ], className='row'
+    ], className='row', style={'margin-right': '0', 'margin-left': '0'}
 )
+
+
+
+
+image_modal = dash_draggable.GridLayout(
+    children=[
+        html.Div(
+            id="custom-modal",
+            style={
+                "display": "none",
+                "position": "fixed",
+                "top": "0",
+                "left": "0",
+                "width": "100%",
+                "height": "100%",
+                "background-color": "rgba(0, 0, 0, 0.7)",
+                "overflow": "auto",
+                "display": "flex",
+                "z-index": 1001,
+            },
+            children=[
+                html.Div(
+                    style={
+                        "max-width": "100%",
+                        "max-height": "90vh",
+                        "background-color": "white",
+                        "border-radius": "5px",
+                        "box-shadow": "0px 0px 10px rgba(0, 0, 0, 0.5)",
+                        "overflow": "hidden",
+                    },
+                    children=[
+                        html.Div(
+                            style={
+                                "position": "absolute",
+                                "top": "10px",
+                                "right": "10px",
+                                "cursor": "pointer",
+                                "font-size": "20px",
+                                "color": "red",
+                                "background-color": "white",
+                                "border-radius": "50%",
+                                "width": "30px",
+                                "height": "30px",
+                                "display": "flex",
+                                "justify-content": "center",
+                                "align-items": "center",
+                            },
+                            children=["❌"],
+                            id="close-custom-modal-button",
+                        ),
+                        dbc.CardImg(id="custom-modal-image", style={"max-width": "100%"}),
+                    ],
+                )
+            ],
+        )
+    ],
+)
+
+
 
 # 3rd row: image layout
 image_map = html.Div(
@@ -418,61 +478,18 @@ image_map = html.Div(
         html.Div(
             id='image-container', 
             style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
-            children=[]
-        )
-    ],
-     className= 'row'
-)
+            children=[],
+            className='seven columns',  
+        ),
 
-image_modal = html.Div(
-    id="custom-modal",
-    style={
-        "display": "none",
-        "position": "fixed",
-        "top": "0",
-        "left": "0",
-        "width": "100%",
-        "height": "100%",
-        "background-color": "rgba(0, 0, 0, 0.7)",
-        "z-index": 1000,
-        "overflow": "auto",
-    },
-    children=[
         html.Div(
-            style={
-                "position": "relative",
-                "max-width": "40%",
-                "margin": "5px auto",
-                "background-color": "white",
-                "border-radius": "5px",
-                "padding": "5px",
-                "box-shadow": "0px 0px 10px rgba(0, 0, 0, 0.5)"
-            },
-            children=[
-                html.Div(
-                    style={
-                        "position": "absolute",
-                        "top": "10px",
-                        "right": "10px",
-                        "cursor": "pointer",
-                        "font-size": "20px",
-                        "color": "red",  
-                        "background-color": "white",  
-                        "border-radius": "50%",  
-                        "width": "30px", 
-                        "height": "30px",
-                        "display": "flex",
-                        "justify-content": "center",
-                        "align-items": "center"
-                    },
-                    children=["❌"], 
-                    id="close-custom-modal-button"
-                ),
-                dbc.CardImg(id="custom-modal-image", style={"max-width": "100%", "max-height": "80vh"}),
-            ]
-        )
-    ]
-)
+            [
+                image_modal      
+            ], 
+            className='four columns', 
+        ), 
+    ], 
+)   
 
 second_and_third_row = html.Div(
     [
@@ -560,10 +577,9 @@ rating_row = html.Div(
 app.layout = html.Div(
     [        
         top_row,
-        second_and_third_row, 
-        modal_row,   
+        second_and_third_row,   
         rating_row,
-    ]
+    ],
 )
 
 
