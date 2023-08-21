@@ -48,7 +48,7 @@ current_heatmap_type = 'Objects I See'
 
 
 num_frames = 100
-max_frames = 14
+max_frames = 12
 heatmap_highlight_line_width = 5
 
 fixed_heatmap_height = 350
@@ -417,6 +417,8 @@ heatmaps = html.Div(
 
 
 image_modal = dash_draggable.GridLayout(
+    id = 'modal-container',
+    style = {'display': 'block'},
     children=[
         html.Div(
             id="custom-modal",
@@ -701,6 +703,7 @@ def get_encoded_image(image_name):
     Output("custom-modal-image", "src"),
     Output("custom-modal-image", "alt"),
     Output("modal-frame-label", "children"),
+    Output("modal-container", "style"),
     Input('video-dropdown', 'value'),
     Input("close-custom-modal-button", "n_clicks"),
     State('last-clicked-image-id', 'data'),
@@ -721,9 +724,9 @@ def open_custom_modal_from_button(selected_option,
     ctx = dash.callback_context
 
     if "close-custom-modal-button" in ctx.triggered[0]["prop_id"]:
-        return {"display": "none"}, "", ""
+        return {"display": "none"}, "", "", "", {"display": "none"}
 
-    if selected_option and last_clicked_image_id:
+    if selected_option and last_clicked_image_id is not None:
         image_names = os.listdir(images_source_folder)
         selected_option = selected_option.lower()
         image_names = [img.lower() for img in image_names]
@@ -736,7 +739,7 @@ def open_custom_modal_from_button(selected_option,
         print("popup_button_index", popup_button_index)
         image_name = filtered_images[popup_button_index]
 
-        return {"display": "block"}, get_encoded_image(image_name), image_name, "Frame " + str(last_clicked_image_id)
+        return {"display": "block"}, get_encoded_image(image_name), image_name, "Frame " + str(last_clicked_image_id), {"display": "block"}
     
     trigger = ctx.triggered_id
     x_coord, y_coord = None, None
@@ -767,13 +770,12 @@ def open_custom_modal_from_button(selected_option,
             frame_number = extract_frame_number(image_name)
 
             if x_coord is not None and int(frame_number) == int(x_coord):
-                return {"display": "block"}, get_encoded_image(image_name), image_name, "Frame " + str(frame_number)
+                return {"display": "block"}, get_encoded_image(image_name), image_name, "Frame " + str(frame_number), {"display": "block"}
             
-
-        return dash.no_update, dash.no_update, dash.no_update, dash.no_update    
+        
+        return dash.no_update, dash.no_update, dash.no_update, dash.no_update, {"display": "block"}    
             
-
-    return dash.no_update, dash.no_update, dash.no_update, dash.no_update  
+    return dash.no_update, dash.no_update, dash.no_update, dash.no_update, {"display": "block"}  
 
 
 
