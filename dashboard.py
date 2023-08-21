@@ -433,6 +433,20 @@ image_modal = dash_draggable.GridLayout(
                 "z-index": 1001,
             },
             children=[
+                html.Label(
+                    id="modal-frame-label",
+                    children="No Frame Selected", 
+                    style={
+                        'position': 'absolute',
+                        'top': '10px',
+                        'left': '0px',
+                        'color': 'blue',
+                        'background-color': 'rgb(232, 237, 235)',
+                        'padding': '2px',
+                        'font-weight': 'bold',
+                        'font-size': '16px',
+                    }
+                ),
                 html.Div(
                     style={
                         "max-width": "100%",
@@ -447,7 +461,7 @@ image_modal = dash_draggable.GridLayout(
                             style={
                                 "position": "absolute",
                                 "top": "10px",
-                                "right": "1px",
+                                "right": "0px",
                                 "cursor": "pointer",
                                 "font-size": "20px",
                                 "color": "red",
@@ -469,6 +483,7 @@ image_modal = dash_draggable.GridLayout(
         )
     ],
 )
+
 
 
 
@@ -685,6 +700,7 @@ def get_encoded_image(image_name):
     Output("custom-modal", "style"),
     Output("custom-modal-image", "src"),
     Output("custom-modal-image", "alt"),
+    Output("modal-frame-label", "children"),
     Input('video-dropdown', 'value'),
     Input("close-custom-modal-button", "n_clicks"),
     State('last-clicked-image-id', 'data'),
@@ -720,7 +736,7 @@ def open_custom_modal_from_button(selected_option,
         print("popup_button_index", popup_button_index)
         image_name = filtered_images[popup_button_index]
 
-        return {"display": "block"}, get_encoded_image(image_name), image_name
+        return {"display": "block"}, get_encoded_image(image_name), image_name, "Frame " + str(last_clicked_image_id)
     
     trigger = ctx.triggered_id
     x_coord, y_coord = None, None
@@ -751,13 +767,13 @@ def open_custom_modal_from_button(selected_option,
             frame_number = extract_frame_number(image_name)
 
             if x_coord is not None and int(frame_number) == int(x_coord):
-                return {"display": "block"}, get_encoded_image(image_name), image_name
+                return {"display": "block"}, get_encoded_image(image_name), image_name, "Frame " + str(frame_number)
             
 
-        return dash.no_update, dash.no_update, dash.no_update    
+        return dash.no_update, dash.no_update, dash.no_update, dash.no_update    
             
 
-    return dash.no_update, dash.no_update, dash.no_update  
+    return dash.no_update, dash.no_update, dash.no_update, dash.no_update  
 
 
 
@@ -778,8 +794,18 @@ def get_image_card(image_name, frame_number, is_selected):
 
     frame_number_label = html.Label(
         frame_number,
-        style={'position': 'absolute', 'top': '0px', 'left': '0px', 'color': 'blue', 'background-color': 'rgb(232, 237, 235)', 'padding': '2px', 'font-weight': 'bold'}
+        style={
+            'position': 'absolute',
+            'top': '0px',
+            'left': '0px',
+            'color': 'blue',
+            'background-color': 'rgb(232, 237, 235)',
+            'padding': '2px',
+            'font-weight': 'bold',
+            'font-size': '16px' 
+        }
     )
+
 
     image_div = html.Div(
         [
