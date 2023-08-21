@@ -447,7 +447,7 @@ image_modal = dash_draggable.GridLayout(
                             style={
                                 "position": "absolute",
                                 "top": "10px",
-                                "right": "10px",
+                                "right": "1px",
                                 "cursor": "pointer",
                                 "font-size": "20px",
                                 "color": "red",
@@ -686,22 +686,28 @@ def get_encoded_image(image_name):
     Output("custom-modal-image", "src"),
     Output("custom-modal-image", "alt"),
     Input('video-dropdown', 'value'),
-    Input({"type": "popup-button", "index": ALL}, "n_clicks"),
     Input("close-custom-modal-button", "n_clicks"),
+    State('last-clicked-image-id', 'data'),
+    [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
+    State({"type": "image-card", "index": ALL}, "id"),
+    Input('heatmap-1', 'hoverData'),
+    Input('heatmap-2', 'hoverData'),
+    
 )
-def open_custom_modal_from_button(selected_option, popup_button_clicks, close_modal_clicks):
+def open_custom_modal_from_button(selected_option,
+                                     close_modal_clicks,
+                                        last_clicked_image_id,
+                                         dummy_1,
+                                         dummy_2,
+                                         hoverData_heatmap1,
+                                         hoverData_heatmap2
+                                         ):
     ctx = dash.callback_context
 
     if "close-custom-modal-button" in ctx.triggered[0]["prop_id"]:
         return {"display": "none"}, "", ""
 
-    if selected_option and any(clicks == 1 for clicks in popup_button_clicks):
-        print("popup button click", popup_button_clicks)
-        triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
-        triggered_id = json.loads(triggered_id)
-        print("triggered_id:", triggered_id)
-
+    if selected_option and last_clicked_image_id:
         image_names = os.listdir(images_source_folder)
         selected_option = selected_option.lower()
         image_names = [img.lower() for img in image_names]
@@ -710,12 +716,48 @@ def open_custom_modal_from_button(selected_option, popup_button_clicks, close_mo
         filtered_images.sort(key=extract_frame_number)
         filtered_images = filtered_images[:max_frames]
 
-        if "index" in triggered_id:
-            popup_button_index = triggered_id["index"]
-            image_name = filtered_images[popup_button_index]
-            return {"display": "block"}, get_encoded_image(image_name), image_name
+        popup_button_index = last_clicked_image_id
+        print("popup_button_index", popup_button_index)
+        image_name = filtered_images[popup_button_index]
+
+        return {"display": "block"}, get_encoded_image(image_name), image_name
     
-    return {"display": "none"}, None, None  
+    trigger = ctx.triggered_id
+    x_coord, y_coord = None, None
+    if trigger == 'heatmap-1' or trigger == 'heatmap-2' and selected_option:
+        if trigger == 'heatmap-1':
+            hovered_point = hoverData_heatmap1['points'][0]
+            x_coord = str(hovered_point['x']).lower()
+            y_coord = hovered_point['y']
+        elif trigger == 'heatmap-2':
+            hovered_point = hoverData_heatmap2['points'][0]
+            x_coord = str(hovered_point['x']).lower()
+            y_coord = hovered_point['y']
+        else:
+            x_coord, y_coord = None, None
+
+        image_names = os.listdir(images_source_folder)
+        selected_option = selected_option.lower()
+        image_names = [img.lower() for img in image_names]
+
+        filtered_images = [img.strip() for img in image_names if img.startswith(selected_option)]
+
+        filtered_images.sort(key=extract_frame_number)
+
+        filtered_images = filtered_images[:max_frames]
+
+        for image_name in filtered_images:
+            
+            frame_number = extract_frame_number(image_name)
+
+            if x_coord is not None and int(frame_number) == int(x_coord):
+                return {"display": "block"}, get_encoded_image(image_name), image_name
+            
+
+        return dash.no_update, dash.no_update, dash.no_update    
+            
+
+    return dash.no_update, dash.no_update, dash.no_update  
 
 
 
@@ -739,33 +781,11 @@ def get_image_card(image_name, frame_number, is_selected):
         style={'position': 'absolute', 'top': '0px', 'left': '0px', 'color': 'blue', 'background-color': 'rgb(232, 237, 235)', 'padding': '2px', 'font-weight': 'bold'}
     )
 
-    popup_button = dbc.Button(
-        "🔍",  # You can change this to another zoom icon from Font Awesome
-        color="link",
-        size="sm",
-        id={"type": "popup-button", "index": frame_number},
-        n_clicks=0,
-        style={
-            "font-size": "16px",  # Increase the font size for better visibility
-            "font-weight": "bold",
-            "text-decoration": "none",  # Remove the underline
-            "padding": "0px 0px",  # Adjust padding (top/bottom and left/right)
-            "margin": "0",  # Remove margin
-            'position': 'absolute',
-            'top': '0',
-            'right': '0',
-            'background-color': 'rgb(232, 237, 235)',
-            'border': 'none'  # Remove the button border
-        }
-    )
-
-
     image_div = html.Div(
         [
             dbc.CardImg(src=encoded_image, style={'width': '100%'}),
             action_button,
             frame_number_label,
-            popup_button
         ],
         style={'position': 'relative', 'width': '100%', 'height': '100%'}
     )
