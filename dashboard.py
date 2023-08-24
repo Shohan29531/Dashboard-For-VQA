@@ -48,7 +48,7 @@ current_heatmap_type = 'Objects I See'
 
 
 num_frames = 100
-max_frames = 12
+max_frames = 14
 heatmap_highlight_line_width = 5
 
 fixed_heatmap_height = 350
@@ -496,15 +496,15 @@ image_map = html.Div(
             id='image-container', 
             style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
             children=[],
-            className='seven columns',  
+            className='row',  
         ),
 
-        html.Div(
-            [
-                image_modal      
-            ], 
-            className='four columns', 
-        ), 
+        # html.Div(
+        #     [
+        #         image_modal      
+        #     ], 
+        #     className='four columns', 
+        # ), 
     ], 
 )   
 
