@@ -14,6 +14,21 @@ import datetime
 import random
 import json
 import dash_draggable
+from PIL import Image
+import threading
+import numpy as np
+import plotly.express as px
+
+
+class ImageViewerThread(threading.Thread):
+    def __init__(self, image):
+        super().__init__()
+        self.image = image
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.image.show()
+
 
 ## arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
 
@@ -866,7 +881,6 @@ def update_image_container(
             if trigger != "video-dropdown":
                 chosen_frame_number = trigger["index"]
 
-
             image_names = os.listdir(images_source_folder)
             selected_option = selected_option.lower()
             image_names = [img.lower() for img in image_names]
@@ -883,6 +897,15 @@ def update_image_container(
                 frame_number = extract_frame_number(image_name)
                 if frame_number == chosen_frame_number:
                     image_element = get_image_card(image_name, frame_number, True)
+                    print(image_name)
+                    pop_img = Image.open(
+                        os.path.join(
+                            images_source_folder,
+                            image_name
+                        )
+                    )
+                    ImageViewerThread(image=pop_img).start()
+                    # pop_img.show(title=f"Image {frame_number}")
                 else:
                     image_element = get_image_card(image_name, frame_number, False)
 
