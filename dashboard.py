@@ -46,7 +46,7 @@ all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(
 all_video_files = natsorted(all_video_files)
 
 
-available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'GT', 'Random']
+available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random']
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
