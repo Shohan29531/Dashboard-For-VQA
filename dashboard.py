@@ -27,7 +27,8 @@ class ImageViewerThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        self.image.show()
+        # self.image.show(title="image")
+        os.system(f'open "{self.image}"')
 
 
 ## arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
@@ -45,7 +46,7 @@ all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(
 all_video_files = natsorted(all_video_files)
 
 
-available_models = ['GPV-1', 'BLIP', 'GT', 'Random']
+available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'GT', 'Random']
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
@@ -904,7 +905,10 @@ def update_image_container(
                             image_name
                         )
                     )
-                    ImageViewerThread(image=pop_img).start()
+                    ImageViewerThread(image=os.path.join(
+                            images_source_folder,
+                            image_name
+                        )).start()
                     # pop_img.show(title=f"Image {frame_number}")
                 else:
                     image_element = get_image_card(image_name, frame_number, False)
