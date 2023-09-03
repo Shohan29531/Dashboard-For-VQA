@@ -1300,7 +1300,7 @@ def update_heatmap_1(
             )
 
             heatmap_line_column = None
-            if last_clicked_image_id:
+            if last_clicked_image_id is not None:
                 clicked_frame_number = last_clicked_image_id
                 heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
                 heatmap_hoverData = None
@@ -1455,7 +1455,7 @@ def update_heatmap_2(
         )
 
         heatmap_line_column = None
-        if last_clicked_image_id:
+        if last_clicked_image_id is not None:
             clicked_frame_number = last_clicked_image_id
             heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
             heatmap_hoverData = None
@@ -1573,7 +1573,7 @@ def update_heatmap_2(
             )
 
             heatmap_line_column = None
-            if last_clicked_image_id:
+            if last_clicked_image_id is not None:
                 clicked_frame_number = last_clicked_image_id
                 heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
                 heatmap_hoverData = None
@@ -1673,7 +1673,7 @@ def update_heatmap_2(
             )
 
             heatmap_line_column = None
-            if last_clicked_image_id:
+            if last_clicked_image_id is not None:
                 clicked_frame_number = last_clicked_image_id
                 heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
                 heatmap_hoverData = None
