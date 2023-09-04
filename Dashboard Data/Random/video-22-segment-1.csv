@@ -1,0 +1,80 @@
+Object,Frame-0,Frame-1,Frame-2,Frame-3,Frame-4,Frame-5,Frame-6,Frame-7,Frame-8,Frame-9
+Accent Paving,0,0,1,0,0,0,0,0,1,1
+Barrier Post,1,1,0,0,0,0,1,1,1,1
+Barrier Stump,0,0,0,1,0,0,0,0,1,1
+Bench,1,1,0,1,1,1,0,1,0,0
+Bicycle,0,0,0,1,0,1,1,1,1,0
+Bridge,0,1,0,1,0,1,1,1,0,0
+Building,1,1,1,1,0,1,1,1,0,0
+Bus,1,1,0,1,1,0,1,0,0,1
+Bus Stop,1,0,1,0,1,0,0,0,0,1
+Car,1,1,0,1,0,1,1,0,0,0
+Chair,0,0,0,1,0,0,0,1,0,1
+Closed Sidewalk,0,0,1,0,0,1,0,1,1,0
+Counter,0,0,0,0,1,1,1,0,1,1
+Crosswalk,1,1,0,1,0,1,0,1,0,0
+Curb,0,1,0,1,0,1,0,0,0,0
+Dog,1,0,1,0,1,0,0,1,0,1
+Driveway(flat),0,0,0,0,0,1,0,1,1,0
+Elevator,1,1,0,0,1,1,1,1,1,0
+Escalator,0,0,1,0,1,0,1,0,1,0
+Fence,1,1,1,1,0,0,1,0,0,1
+Fire hydrant,0,0,1,1,0,1,0,0,1,1
+Flush Door,0,0,1,1,1,1,1,1,1,1
+Foldout Sign,0,1,1,1,1,0,0,0,1,0
+Fountain,1,0,1,0,1,0,0,1,1,1
+Gate,1,1,0,0,1,1,0,1,1,0
+Guide dog,0,0,0,1,0,0,1,0,0,0
+Gutter,0,1,0,0,1,1,1,1,0,1
+Hose,1,0,0,1,0,1,1,0,1,0
+Lamp Post,1,0,0,0,1,0,0,1,0,1
+Mail box,1,1,0,1,1,1,0,1,1,0
+Maintenance Vehicle,0,1,1,1,0,0,0,0,0,0
+Motorcycle,0,1,0,0,0,0,1,0,1,0
+Parallel Parking Spot,1,0,0,0,1,1,0,1,1,1
+Paratransit vehicle,0,0,0,0,1,1,0,1,1,1
+Pedestrian Crossing,1,1,0,0,1,0,1,1,0,1
+Person,0,1,1,1,0,1,0,0,0,1
+Person with a disability,1,0,0,1,0,1,0,0,1,1
+Pillar,1,1,1,0,0,0,1,0,1,0
+Pole,0,0,0,1,0,1,1,0,0,1
+Puddle,1,1,1,0,0,0,0,0,1,1
+Push button,1,1,1,1,1,1,1,0,0,1
+Railing,0,0,0,1,1,1,1,0,0,1
+Raised Entryway,0,0,1,0,1,1,1,1,1,0
+Retaining Wall,1,0,1,0,1,0,1,1,1,1
+Road,0,1,1,1,1,1,0,1,0,0
+Road Divider,1,0,0,0,1,0,0,1,0,1
+Road Shoulder,1,0,0,0,0,0,1,0,0,1
+Roadside Parking,0,0,0,0,1,1,0,0,1,1
+Sidewalk,0,1,0,0,1,0,0,1,0,1
+Sidewalk pits,0,1,0,0,1,0,1,1,1,0
+Sign,0,1,1,1,0,0,0,1,0,0
+Sign Post,1,1,0,1,0,1,1,1,1,1
+Sloped Driveway,1,0,1,1,1,0,1,1,0,1
+Slopped Curb,1,0,1,1,0,1,1,0,1,1
+Snow,0,1,0,1,0,0,1,0,1,1
+Stairs,0,1,0,0,0,0,0,1,1,1
+Stop sign,1,1,0,0,0,1,0,0,1,1
+Street Vendor,1,1,0,0,1,1,0,1,1,0
+Table,1,0,0,0,0,1,1,0,1,1
+Tactile Paving,1,1,1,0,0,1,1,1,1,1
+Traffic Signals,0,0,1,1,1,0,1,0,1,1
+Train Platform,1,1,1,0,1,0,0,0,0,0
+Train Tracks,1,1,1,1,0,0,1,1,0,0
+Trash bins,0,0,0,1,1,0,1,0,1,1
+Trash on roads,1,1,1,1,1,0,1,1,1,0
+Tree,0,0,1,0,0,1,1,0,0,1
+Turnstile,1,0,0,1,0,1,0,0,1,0
+Uncontrolled Crossing,1,1,1,0,0,0,0,1,0,0
+Uneven Stairs,0,1,1,0,1,0,1,1,0,0
+Unpaved Road,1,0,1,1,1,1,0,1,1,0
+Unpaved Sidewalk,0,0,0,1,0,0,1,1,0,1
+Vegetation,0,1,0,1,1,0,1,1,1,0
+Wall,0,0,1,1,1,1,1,1,1,0
+Water leakage,1,1,1,0,1,1,0,1,0,1
+Water Pipes,0,0,0,0,0,0,1,0,0,1
+Wet surface,0,0,0,0,0,0,1,0,0,0
+Wheelchair,0,1,1,1,1,1,0,1,1,1
+White Cane,0,1,0,0,1,0,0,0,1,1
+Yard Waste,0,1,1,0,1,1,1,0,0,0
