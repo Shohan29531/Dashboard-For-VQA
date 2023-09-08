@@ -37,7 +37,7 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard D
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
-
+PARTICIPANT_NAME = "Touhid"
 
 base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
@@ -90,7 +90,7 @@ randomize_data()
 
 # Write or append log files
 def save_log_file(new_row):    
-    log_file = os.path.join(LOG_DATA_DIR, 'user_log.csv')
+    log_file = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
     print(log_file, LOG_DATA_DIR)            
     
     if os.path.exists(log_file):        
@@ -1777,8 +1777,8 @@ def save_data(n_clicks):
         data = {'timestamp': str(current_time), 
                 'video': current_file, 
                 'model': models_to_show[current_model], 
-                'see': current_text_see.lower(), 
-                'not_see': current_text_not_see.lower(), 
+                'see': ','.join(current_text_see),
+                'not_see': ','.join(current_text_not_see),
                 'score': current_rating, 
                 'comments': current_text_comments.lower() if current_text_comments else '' 
             }
