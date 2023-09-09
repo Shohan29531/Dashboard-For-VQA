@@ -75,18 +75,32 @@ color_white = 'rgb(255,255,255)' # white
 color_agreement = 'rgb(6, 200, 115)' # green
 color_disagreement = 'rgb(211, 6, 50)' # red
 
+
+model_to_compare = {
+    'GPV-1': ['BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+    'BLIP': ['GPV-1', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+    'faster_rcnn': ['GPV-1', 'BLIP', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+    'mask_rcnn': ['GPV-1', 'BLIP', 'faster_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+    'yolo_v7': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'HRNet_V2', 'GT', 'Random'],
+    'HRNet_V2': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'GT', 'Random'],
+    'GT': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
+    'Random': []
+}
+
+# 'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
+
 def randomize_data():
     random_model = random.sample(range(0, len(available_models)), len(available_models))        
     # a dictionary that maps model-{} to available models randomly
-    global models_to_show
+    global models_to_show, reverse_model_map
     models_to_show = {}
+    reverse_model_map = {}
     for i in range(len(available_models)):
         models_to_show['Model-{}'.format(i)] = available_models[random_model[i]]
-
+        reverse_model_map[available_models[random_model[i]]] = 'Model-{}'.format(i)
 
 # update models_to_show, a dictionary that maps model-{} to available models
 randomize_data()
-
 
 # Write or append log files
 def save_log_file(new_row):    
@@ -102,12 +116,10 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row,  columns=COLUMNS, index=[0])        
         df_log.to_csv(log_file, index=False)
 
-
 def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
-
 
 def get_vetical_axis_lines(x_labels):
 
@@ -131,7 +143,6 @@ def get_vetical_axis_lines(x_labels):
         
     return vertical_lines
 
-
 def get_horizontal_axis_lines(y_labels):
 
     horizontal_lines = []
@@ -153,7 +164,6 @@ def get_horizontal_axis_lines(y_labels):
         })
 
     return horizontal_lines    
-
 
 def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord):
     if y_coord not in y_labels:
@@ -225,8 +235,6 @@ def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, 
     
     return highlight_lines
 
-
-
 def get_heatmap_highlight_lines_from_image_container_click(x_coord):
 
     highlight_lines = []
@@ -264,24 +272,17 @@ def get_heatmap_highlight_lines_from_image_container_click(x_coord):
     
     return highlight_lines
 
-
-
 def get_see_text(model_name):
     title = "Objects you SEE that "  + "<span style='color:blue;'>"  + model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ ") <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") "
 
-    return title     
-
+    return title
 
 def get_dont_see_text(model_name):
     title = "Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") "  
 
     return title
 
-
-
 suggestions = read_text_file_content('all_a11y_objects.txt').split(', ')
-
-
 
 # css framework for layout and style
 external_stylesheets = [ 'https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
@@ -402,9 +403,7 @@ top_row = html.Div(
             ], className='row'
         ),       
     ], className='row',
-
-) 
-
+)
 heatmaps = html.Div(
     [        
         html.Div(
@@ -428,10 +427,6 @@ heatmaps = html.Div(
         ),
     ], className='row', style={'margin-right': '0', 'margin-left': '0'}
 )
-
-
-
-
 image_modal = dash_draggable.GridLayout(
     id = 'modal-container',
     style = {'display': 'block'},
@@ -501,10 +496,6 @@ image_modal = dash_draggable.GridLayout(
         )
     ],
 )
-
-
-
-
 # 3rd row: image layout
 image_map = html.Div(
     [
@@ -522,8 +513,7 @@ image_map = html.Div(
         #     className='four columns', 
         # ), 
     ], 
-)   
-
+)
 second_and_third_row = html.Div(
     [
         html.Div(
@@ -535,7 +525,6 @@ second_and_third_row = html.Div(
         dcc.Store(id='last-clicked-image-id'), 
     ], className='row'
 )
-
 modal_row = html.Div(
     [
         html.Div(
@@ -545,7 +534,6 @@ modal_row = html.Div(
         ),           
     ], className='row'
 )
-
 # 4th row: rating layout
 rating_row = html.Div(
     [        
@@ -566,7 +554,25 @@ rating_row = html.Div(
                     tooltip={"placement": "bottom", "always_visible": True},
                     # marks = None,
                 ),
-            ], className='five columns'
+            ], id="slider-div", className='five columns', style={'display': 'block'}
+        ),
+
+        html.Div(
+            [
+                dcc.Markdown(
+                '''
+                    #### Please select the model that performs better between the two selected models                   
+                '''),
+                dcc.RadioItems(
+                    id="rating-radio-button",
+                    options=[
+                        {'label': 'Left Model', 'value': 'L'},
+                        {'label': 'Right Model', 'value': 'R'},
+                        {'label': 'Indistinguishable', 'value': 'E'}
+                    ],
+                    # marks = None,
+                ),
+            ], id="radio-button-div", className='five columns', style={'display': 'none'}
         ),
 
         # raw feedback
@@ -604,8 +610,7 @@ rating_row = html.Div(
             ], className='row'
         ),        
     ], className='row'
-)        
-
+)
 # entire layout
 app.layout = html.Div(
     [        
@@ -614,6 +619,41 @@ app.layout = html.Div(
         rating_row,
     ],
 )
+
+
+@app.callback(
+    Output('model-dropdown-2', 'options'),
+    Output(component_id='slider-div', component_property='style'),
+    Output(component_id='radio-button-div', component_property='style'),
+    Input('model-dropdown', 'value'),
+    Input(component_id='model-dropdown-2', component_property='value'),
+    prevent_initial_call=True
+)
+def update_second_model_filed(model_left_pseudonym, model_right_pseudonym):
+    model_left_orig = models_to_show[model_left_pseudonym]
+    comparable_models = model_to_compare[model_left_orig]
+    models_right_pseudonyms = [reverse_model_map[mk] for mk in comparable_models]
+
+    print('updated')
+    if model_right_pseudonym in models_right_pseudonyms:
+        return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'none'}, {
+            'display': 'block'}
+    else:
+        return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'block'}, {
+            'display': 'none'}
+
+
+@app.callback(
+    Output(component_id='slider-div', component_property='style', allow_duplicate=True),
+    Output(component_id='radio-button-div', component_property='style', allow_duplicate=True),
+    Input(component_id='model-dropdown-2', component_property='value'),
+    prevent_initial_call=True
+)
+def hide_show_slider_radio(model_right_pseudonym):
+    if model_right_pseudonym in models_to_show:
+        return {'display': 'none'}, {'display': 'block'}
+    else:
+        return {'display': 'block'}, {'display': 'none'}
 
 
 @app.callback(
