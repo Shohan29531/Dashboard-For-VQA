@@ -68,7 +68,6 @@ observe_typ = 'single'
 
 best_model_side = ''
 
-
 num_frames = 100
 max_frames = 14
 heatmap_highlight_line_width = 5
