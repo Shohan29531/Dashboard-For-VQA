@@ -51,16 +51,22 @@ comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
 # a global log file contains the following columns: timestamp, video, model, score, comments
-COLUMNS = ['timestamp', 'video', 'model', 'see', 'not_see', 'score', 'comments']
+
+COLUMNS = ['timestamp', 'video', 'model left', 'model right', 'winner model', 'see', 'not_see', 'score', 'comments', 'mode']
 
 # default values
 current_model = 'Model-0' #'GPV-1'
+current_model_right = ""
 current_file = 'video-1-segment-5' # 'video-1-segment-5'
 current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
 current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
 current_rating = 5
 current_text_comments = ''
 current_heatmap_type = 'Objects I See'
+
+observe_typ = 'single'
+
+best_model_side = ''
 
 
 num_frames = 100
@@ -630,6 +636,7 @@ app.layout = html.Div(
     prevent_initial_call=True
 )
 def update_second_model_filed(model_left_pseudonym, model_right_pseudonym):
+    global observe_typ
     model_left_orig = models_to_show[model_left_pseudonym]
     comparable_models = model_to_compare[model_left_orig]
     models_right_pseudonyms = [reverse_model_map[mk] for mk in comparable_models]
@@ -638,9 +645,11 @@ def update_second_model_filed(model_left_pseudonym, model_right_pseudonym):
     if model_right_pseudonym in models_right_pseudonyms:
         return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'none'}, {
             'display': 'block'}
+        observe_typ = 'double'
     else:
         return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'block'}, {
             'display': 'none'}
+        observe_typ = 'single'
 
 
 @app.callback(
@@ -650,10 +659,29 @@ def update_second_model_filed(model_left_pseudonym, model_right_pseudonym):
     prevent_initial_call=True
 )
 def hide_show_slider_radio(model_right_pseudonym):
+    global observe_typ
+    global current_model_right
+
+    current_model_right = model_right_pseudonym
+
     if model_right_pseudonym in models_to_show:
+        observe_typ = 'double'
         return {'display': 'none'}, {'display': 'block'}
     else:
+        observe_typ = 'single'
         return {'display': 'block'}, {'display': 'none'}
+
+
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True),
+    Input(component_id='rating-radio-button', component_property='value'),
+    prevent_initial_call=True
+)
+def get_comparing_result(radio_button_value):
+    global best_model_side
+    print(radio_button_value)
+    best_model_side = radio_button_value
+    return f"Selected: {best_model_side}, Type: {observe_typ}" if best_model_side else "Rating: None"
 
 
 @app.callback(
@@ -997,9 +1025,6 @@ def update_image_container(
         return image_elements, None
     else:
         return [], None
-
-
-
 
 
 @app.callback(
@@ -1814,14 +1839,18 @@ def save_data(n_clicks):
     if n_clicks > 0:
         
         current_time = datetime.datetime.now().strftime('%Y-%m-%d::%H:%M:%S')
-        data = {'timestamp': str(current_time), 
-                'video': current_file, 
-                'model': models_to_show[current_model], 
-                'see': ','.join(current_text_see),
-                'not_see': ','.join(current_text_not_see),
-                'score': current_rating, 
-                'comments': current_text_comments.lower() if current_text_comments else '' 
-            }
+        data = {
+            'timestamp': str(current_time),
+            'video': current_file,
+            'model left': models_to_show[current_model],
+            'model right': models_to_show[current_model_right] if current_model_right else 'N/A',
+            'winner model': best_model_side if observe_typ=='double' else 'N/A',
+            'see': ','.join(current_text_see),
+            'not_see': ','.join(current_text_not_see),
+            'score': current_rating if observe_typ=='single' else 'N/A',
+            'comments': current_text_comments.lower() if current_text_comments else '',
+            'mode': observe_typ
+        }
 
         # write data to file        
         print(data)

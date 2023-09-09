@@ -1,8 +1,0 @@
-timestamp,video,model,see,not_see,score,comments
-2023-08-13::13:39:49,video-1-segment-5,GPV-1,"wall, bicycle, bridge, building, bus, bus stop","guide dog, gutter, hose, lamp post, mail box",5,
-2023-08-13::13:39:54,video-1-segment-5,BLIP,"wall, bicycle, bridge, building, bus, bus stop","guide dog, gutter, hose, lamp post, mail box",5,
-2023-08-13::13:39:59,video-1-segment-5,BLIP,"wall, bicycle, bridge, building, bus, bus stop","guide dog, gutter, hose, lamp post, mail box",5,
-2023-08-13::13:40:04,video-1-segment-5,GT,"wall, bicycle, bridge, building, bus, bus stop","guide dog, gutter, hose, lamp post, mail box",5,
-2023-08-13::13:40:09,video-1-segment-5,GT,"wall, bicycle, bridge, building, bus, bus stop","guide dog, gutter, hose, lamp post, mail box",5,
-2023-08-13::13:40:53,video-1-segment-5,Random,"wall, bicycle, bridge, building, bus, bus stop","guide dog, gutter, hose, lamp post, mail box",5,
-2023-08-13::17:32:45,video-1-segment-5,Random,"wall, bicycle, bridge, building, bus, bus stop","guide dog, gutter, hose, lamp post, mail box",2,
