@@ -80,19 +80,34 @@ color_white = 'rgb(255,255,255)' # white
 color_agreement = 'rgb(6, 200, 115)' # green
 color_disagreement = 'rgb(211, 6, 50)' # red
 
+completed_comparison = []
+
+
+# model_to_compare = {
+#     'GPV-1': ['BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+#     'BLIP': ['GPV-1', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+#     'faster_rcnn': ['GPV-1', 'BLIP', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+#     'mask_rcnn': ['GPV-1', 'BLIP', 'faster_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
+#     'yolo_v7': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'HRNet_V2', 'GT', 'Random'],
+#     'HRNet_V2': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'GT', 'Random'],
+#     'GT': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
+#     'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
+# }
 
 model_to_compare = {
-    'GPV-1': ['BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
-    'BLIP': ['GPV-1', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
-    'faster_rcnn': ['GPV-1', 'BLIP', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
-    'mask_rcnn': ['GPV-1', 'BLIP', 'faster_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
-    'yolo_v7': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'HRNet_V2', 'GT', 'Random'],
-    'HRNet_V2': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'GT', 'Random'],
-    'GT': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
-    'Random': []
+    'GPV-1': ['mask_rcnn', 'yolo_v7', 'HRNet_V2'],
+    'BLIP': ['mask_rcnn', 'yolo_v7', 'GT', 'Random'],
+    'faster_rcnn': ['HRNet_V2', 'GT', 'Random'],
+    'mask_rcnn': ['GPV-1', 'BLIP', 'Random'],
+    'yolo_v7': ['GPV-1', 'BLIP', 'HRNet_V2'],
+    'HRNet_V2': ['GPV-1', 'faster_rcnn', 'yolo_v7', 'GT'],
+    'GT': ['BLIP', 'faster_rcnn', 'HRNet_V2'],
+    'Random': ['BLIP', 'faster_rcnn', 'mask_rcnn']
 }
 
 # 'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
+models_to_show, reverse_model_map = [], []
+
 
 def randomize_data():
     random_model = random.sample(range(0, len(available_models)), len(available_models))        
@@ -105,11 +120,42 @@ def randomize_data():
         reverse_model_map[available_models[random_model[i]]] = 'Model-{}'.format(i)
 
 # update models_to_show, a dictionary that maps model-{} to available models
+
+
 randomize_data()
 
+model_right_models = sorted([reverse_model_map[model] for model in model_to_compare[models_to_show['Model-0']]])
+
+
+def get_done_pairs(csv_path):
+    df = pd.read_csv(csv_path)
+
+    comp_df = df.loc[df['mode']=='double']
+
+    done_pairs = []
+
+    for _, row in comp_df.iterrows():
+        left_model = row['model left']
+        right_model = row['model right']
+        if f'{left_model} vs {right_model}' not in done_pairs or \
+                f'{right_model} vs {left_model}' not in done_pairs:
+            done_pairs.append(f'{left_model} vs {right_model}')
+            done_pairs.append(f'{right_model} vs {left_model}')
+
+    return done_pairs
+
+
+user_log_path = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
+
+if os.path.exists(user_log_path):
+    completed_comparison = get_done_pairs(user_log_path)
+
 # Write or append log files
-def save_log_file(new_row):    
-    log_file = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
+
+
+def save_log_file(new_row):
+    global completed_comparison
+    log_file = user_log_path  # os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
     print(log_file, LOG_DATA_DIR)            
     
     if os.path.exists(log_file):        
@@ -121,10 +167,14 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row,  columns=COLUMNS, index=[0])        
         df_log.to_csv(log_file, index=False)
 
+    completed_comparison = get_done_pairs(log_file)
+
+
 def read_text_file_content(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
+
 
 def get_vetical_axis_lines(x_labels):
 
@@ -148,6 +198,7 @@ def get_vetical_axis_lines(x_labels):
         
     return vertical_lines
 
+
 def get_horizontal_axis_lines(y_labels):
 
     horizontal_lines = []
@@ -169,6 +220,7 @@ def get_horizontal_axis_lines(y_labels):
         })
 
     return horizontal_lines    
+
 
 def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord):
     if y_coord not in y_labels:
@@ -240,6 +292,7 @@ def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, 
     
     return highlight_lines
 
+
 def get_heatmap_highlight_lines_from_image_container_click(x_coord):
 
     highlight_lines = []
@@ -277,15 +330,18 @@ def get_heatmap_highlight_lines_from_image_container_click(x_coord):
     
     return highlight_lines
 
+
 def get_see_text(model_name):
     title = "Objects you SEE that "  + "<span style='color:blue;'>"  + model_name + "</span>"+ " also SEEs (" + "<span style='color:rgb(6, 200, 115);'>"+"green, agreement"+ "</span>"+ ") <br> and that the model DOESN'T SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") "
 
     return title
 
+
 def get_dont_see_text(model_name):
     title = "Objects you DON'T SEE that "  + "<span style='color:blue;'>"  + model_name + "</span>"+ " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>"+"green, <br> agreement"+ "</span>"+ ") and that the model does SEE ("+ "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") "  
 
     return title
+
 
 suggestions = read_text_file_content('all_a11y_objects.txt').split(', ')
 
@@ -333,7 +389,7 @@ top_row = html.Div(
             dcc.Store(id='current-second-model'),
             dcc.Dropdown(
                 id='model-dropdown-2',
-                options=[{'label': model, 'value': model} for model in models_to_show],
+                options=[{'label': model, 'value': model} for model in model_right_models],
                 placeholder='Select Another Model to Comapre',
                 value= None,
                 style={'border-color': 'gray'}            
@@ -622,6 +678,10 @@ app.layout = html.Div(
         top_row,
         second_and_third_row,   
         rating_row,
+        dcc.ConfirmDialog(
+            id='confirm-danger',
+            message='You have already studied this pair, Please try another pair!',
+        ),
     ],
 )
 
@@ -669,6 +729,22 @@ def hide_show_slider_radio(model_right_pseudonym):
     else:
         observe_typ = 'single'
         return {'display': 'block'}, {'display': 'none'}
+
+
+@app.callback(
+    Output('confirm-danger', 'displayed'),
+    Input('model-dropdown', 'value'),
+    Input(component_id='model-dropdown-2', component_property='value'),
+)
+def show_warn(model_left_pseudonym, model_right_pseudonym):
+    if model_left_pseudonym is None or model_right_pseudonym is None:
+        return False
+    model_pair = f'{models_to_show[model_left_pseudonym]} vs {models_to_show[model_right_pseudonym]}'
+    print(model_pair, completed_comparison)
+    if model_pair in completed_comparison:
+        return True
+    else:
+        return False
 
 
 @app.callback(
@@ -1876,8 +1952,7 @@ def randomize_event(n_clicks):
         
         return "**Randomized at: " + current_time + str(models_to_show) + "**"
     else:
-        return "*Not Randomized*"    
-
+        return "*Not Randomized*"
 
 
 if __name__ == '__main__':
