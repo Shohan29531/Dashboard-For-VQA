@@ -31,7 +31,8 @@ class ImageViewerThread(threading.Thread):
         os.system(f'open "{self.image}"')
 
 
-## arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
+#  arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
+
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
