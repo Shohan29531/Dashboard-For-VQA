@@ -738,7 +738,8 @@ def hide_show_slider_radio(model_right_pseudonym):
     Input(component_id='model-dropdown-2', component_property='value'),
 )
 def show_warn(model_left_pseudonym, model_right_pseudonym):
-    if model_left_pseudonym is None or model_right_pseudonym is None:
+    if model_left_pseudonym is None or model_right_pseudonym is None or \
+            model_right_pseudonym == '' or model_left_pseudonym == '':
         return False
     model_pair = f'{models_to_show[model_left_pseudonym]} vs {models_to_show[model_right_pseudonym]}'
     print(model_pair, completed_comparison)
@@ -1845,14 +1846,15 @@ def update_heatmap_2(
 
 
 @app.callback(
-    Output('status-textarea', 'children', allow_duplicate=True), 
+    Output('status-textarea', 'children', allow_duplicate=True),
+    Output('model-dropdown-2', 'value'),
     Input('model-dropdown', 'value'),
     prevent_initial_call=True
 )
 def update_model(model):
     global current_model        
     current_model = model
-    return f"Model: {current_model}: {models_to_show[current_model]}" if current_model else "Model: None"
+    return f"Model: {current_model}: {models_to_show[current_model]}" if current_model else "Model: None", ""
 
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True), 
