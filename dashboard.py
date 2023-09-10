@@ -138,10 +138,11 @@ def get_done_pairs(csv_path):
     for _, row in comp_df.iterrows():
         left_model = row['model left']
         right_model = row['model right']
+        video = row['video']
         if f'{left_model} vs {right_model}' not in done_pairs or \
                 f'{right_model} vs {left_model}' not in done_pairs:
-            done_pairs.append(f'{left_model} vs {right_model}')
-            done_pairs.append(f'{right_model} vs {left_model}')
+            done_pairs.append(f'{left_model} vs {right_model} in {video}')
+            done_pairs.append(f'{right_model} vs {left_model} in {video}')
 
     return done_pairs
 
@@ -736,12 +737,14 @@ def hide_show_slider_radio(model_right_pseudonym):
     Output('confirm-danger', 'displayed'),
     Input('model-dropdown', 'value'),
     Input(component_id='model-dropdown-2', component_property='value'),
+    Input('video-dropdown', 'value'),
 )
-def show_warn(model_left_pseudonym, model_right_pseudonym):
+def show_warn(model_left_pseudonym, model_right_pseudonym, video_name):
     if model_left_pseudonym is None or model_right_pseudonym is None or \
-            model_right_pseudonym == '' or model_left_pseudonym == '':
+            model_right_pseudonym == '' or model_left_pseudonym == '' or \
+            video_name == '' or video_name is None:
         return False
-    model_pair = f'{models_to_show[model_left_pseudonym]} vs {models_to_show[model_right_pseudonym]}'
+    model_pair = f'{models_to_show[model_left_pseudonym]} vs {models_to_show[model_right_pseudonym]} in {video_name}'
     print(model_pair, completed_comparison)
     if model_pair in completed_comparison:
         return True
