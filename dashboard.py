@@ -38,7 +38,7 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard D
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
-PARTICIPANT_NAME = "Touhid"
+PARTICIPANT_NAME = "Fuad"
 
 base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
@@ -59,10 +59,10 @@ COLUMNS = ['timestamp', 'video', 'model left', 'model right', 'winner model', 's
 current_model = 'Model-0' #'GPV-1'
 current_model_right = ""
 current_file = 'video-1-segment-5' # 'video-1-segment-5'
-# current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
-# current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
-current_text_see = []
-current_text_not_see = []
+current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
+current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
+# current_text_see = []
+# current_text_not_see = []
 current_rating = 5
 current_text_comments = ''
 current_heatmap_type = 'Objects I See'
@@ -1140,13 +1140,15 @@ def update_heatmap_1(
     first_model_name = model
     model = models_to_show[model]
 
-    # print('>>', last_clicked_image_id)
+    print('>>', last_clicked_image_id)
+    print(n_clicks, model, selected_file, selected_heatmap_type, second_model)
     
-    if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ) and second_model == None:
+    if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ) and (second_model == None or second_model == ''):
+        print("aaaaaa aaaa")
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
 
-        x_labels = [col for col in heat_map_file.columns if col != "Object"] 
+        x_labels = [col for col in heat_map_file.columns if col != "Object"]
 
         longest_x_label = max(x_labels, key=len)
         length_of_longest_x_label = len(longest_x_label)
@@ -1162,7 +1164,6 @@ def update_heatmap_1(
         see_textarea_value_lower = [item.lower() for item in see_textarea_value]
 
         filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
-
         
         filtered_indices = filtered_indices_see 
         y_labels_filtered = []
@@ -1473,7 +1474,6 @@ def update_heatmap_1(
             heat_map = go.Figure(data=heatmap, layout=layout)
 
             return heat_map            
-
 
     return {}
 
