@@ -61,7 +61,7 @@ current_model_right = ""
 current_file = 'video-1-segment-5' # 'video-1-segment-5'
 # current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
 # current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
-current_text_see = []
+current_text_see = ['Person', 'White Cane', 'Car', 'Road']
 current_text_not_see = []
 current_rating = 5
 current_text_comments = ''
@@ -85,7 +85,14 @@ color_disagreement = 'rgb(211, 6, 50)' # red
 
 completed_comparison = []
 
+heatmap_1_clicks = []
 
+click_log_style = {
+                        'width': '100%',
+                        'height': '230px',
+                        'margin-top': '33pt',
+                        'fontSize': '16px',
+                }
 # model_to_compare = {
 #     'GPV-1': ['BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
 #     'BLIP': ['GPV-1', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
@@ -469,8 +476,10 @@ top_row = html.Div(
         ),       
     ], className='row',
 )
+
+
 heatmaps = html.Div(
-    [        
+    [
         html.Div(
             [        
                 dcc.Graph(
@@ -483,15 +492,33 @@ heatmaps = html.Div(
         html.Div([], className='one column'),
 
         html.Div(
+            [
+                html.Div(id='heatmap-1-clicks-output'),
+                dcc.Textarea(
+                    id='heatmap-1-clicks-textarea',
+                    value='',
+                    style = click_log_style,
+                    readOnly=True,
+                )
+            ], className='four columns'
+        ),
+
+
+        html.Div(
             [        
                 dcc.Graph(
                     id='heatmap-2',
                     config={'displayModeBar': False}
                 ),                
-            ], className='five columns', style={'margin-left': 'auto'}
+            ], className='one column'  # Change to one column
         ),
+        
+
     ], className='row', style={'margin-right': '0', 'margin-left': '0'}
 )
+
+
+
 image_modal = dash_draggable.GridLayout(
     id = 'modal-container',
     style = {'display': 'block'},
@@ -841,6 +868,20 @@ def show_hide_heatmap_1(heatmap_figure):
     return {'height': '40vh', 'width': '100%'}
 
 
+
+@app.callback(
+    Output('heatmap-1-clicks-textarea', 'style'), 
+    Input('heatmap-1', 'clickData')
+)
+def show_hide_click_log(clickData):
+    if clickData:
+        return click_log_style
+    return {'display': 'none'}
+    
+
+
+
+
 @app.callback(
     Output('heatmap-2', 'style'), 
     Input('heatmap-2', 'figure')
@@ -1110,26 +1151,37 @@ def update_image_container(
         return [], None
 
 
+
+
+def flip (val):
+    if val == 1:
+        return 0
+    return 1
+
 @app.callback(
-    Output('heatmap-1', 'figure'), 
+    Output('heatmap-1', 'figure'),
+    Output('heatmap-1-clicks-textarea', 'value'),
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'),  
     Input('heatmap-type-dropdown', 'value'),
     Input('heatmap-1', 'hoverData'),
+    Input('heatmap-1', 'clickData'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
     State('I-dont-see', 'value'), 
     State('last-clicked-image-id', 'data'),
     [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
     State({"type": "image-card", "index": ALL}, "id"),
-    Input('model-dropdown-2', 'value'), 
+    Input('model-dropdown-2', 'value'),
+    prevent_initial_call=True
+    
 )
 def update_heatmap_1(
     model, 
     selected_file,
     selected_heatmap_type,     
     heatmap_hoverData,
-    # heatmap_dropdownData,
+    heatmap_clickData,
     n_clicks,                  
     see_textarea_value,
     dont_see_textarea_value,    
@@ -1142,11 +1194,10 @@ def update_heatmap_1(
     first_model_name = model
     model = models_to_show[model]
 
-    print('>>', last_clicked_image_id)
     print(n_clicks, model, selected_file, selected_heatmap_type, second_model)
     
     if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ) and (second_model == None or second_model == ''):
-        # print("aaaaaa aaaa")
+
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
 
@@ -1188,14 +1239,6 @@ def update_heatmap_1(
         x_labels = x_labels[:max_frames]
         y_labels = y_labels[:max_frames]
         z_values = z_values[:max_frames]
-
-        heatmap = go.Heatmap(
-            x=x_labels,
-            y=y_labels,
-            z=z_values,
-            colorscale=colorscale_heatmap1,
-            showscale = False,
-        )
 
         heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
         heatmap_cell_height = ( fixed_heatmap_height - 125 )/ len(y_labels)
@@ -1250,6 +1293,37 @@ def update_heatmap_1(
 
             layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
+        if heatmap_clickData and 'points' in heatmap_clickData and heatmap_clickData['points']:
+
+            clicked_point = heatmap_clickData['points'][0]
+            x_coord = clicked_point['x']
+            y_coord = clicked_point['y']
+            z_coord = clicked_point['z']
+
+            x_index = x_labels.index(x_coord)
+            y_index = y_labels.index(y_coord)
+            
+            candidate_entry = [y_index, x_index, flip(z_coord)]
+
+            latest_entry = None
+
+            for entry in reversed(heatmap_1_clicks):
+                if entry[:2] == [y_index, x_index]:
+                    latest_entry = entry
+                    break
+
+            if latest_entry == None:
+                heatmap_1_clicks.append(candidate_entry) 
+            else:
+                if latest_entry[2] != candidate_entry[2]:
+                    heatmap_1_clicks.append(candidate_entry)
+            
+
+        for click in heatmap_1_clicks:
+            z_values[click[0]][click[1]] = flip(z_values[click[0]][click[1]])
+ 
+
+
         if heatmap_line_column is not None:
             layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
 
@@ -1257,9 +1331,46 @@ def update_heatmap_1(
         layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))    
 
         layout['shapes'] = tuple(layout_shapes_list)
+
+        heatmap = go.Heatmap(
+            x=x_labels,
+            y=y_labels,
+            z=z_values,
+            colorscale=colorscale_heatmap1,
+            showscale = False,
+        )
+
         heat_map = go.Figure(data=heatmap, layout=layout)
 
-        return heat_map
+
+        filtered_heatmap_1_clicks = []
+
+        for i, entry1 in enumerate(heatmap_1_clicks):
+            x1, y1, z1 = entry1
+            opposite_z1 = 1 if z1 == 0 else 0  
+            is_duplicate = False
+
+            for j, entry2 in enumerate(heatmap_1_clicks):
+                x2, y2, z2 = entry2
+
+                if i != j and x1 == x2 and y1 == y2 and z1 == 1 - z2:
+                    is_duplicate = True
+                    break
+
+            if not is_duplicate:
+                filtered_heatmap_1_clicks.append(entry1)
+
+
+        print(heatmap_1_clicks)
+        print(filtered_heatmap_1_clicks)
+
+        size_text = f"Number of Modifications: {len(filtered_heatmap_1_clicks)}"
+
+        log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {y_labels[entry[0]]} to {'True' if entry[2] == 1 else 'False'}" for entry in heatmap_1_clicks])
+
+        final_log_text = f"{size_text}\n------------\n{log_text}\n------------\n{size_text}"
+
+        return heat_map, final_log_text
     
        
     if n_clicks > 0 and model and selected_file and selected_heatmap_type and second_model:
@@ -1477,7 +1588,7 @@ def update_heatmap_1(
 
             return heat_map            
 
-    return {}
+    return {}, ''
 
 
 @app.callback(
