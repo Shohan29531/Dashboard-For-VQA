@@ -59,10 +59,10 @@ COLUMNS = ['timestamp', 'video', 'model left', 'model right', 'winner model', 's
 current_model = 'Model-0' #'GPV-1'
 current_model_right = ""
 current_file = 'video-1-segment-5' # 'video-1-segment-5'
-current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
-current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
-# current_text_see = []
-# current_text_not_see = []
+# current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
+# current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
+current_text_see = []
+current_text_not_see = []
 current_rating = 5
 current_text_comments = ''
 current_heatmap_type = 'Objects I See'
@@ -379,7 +379,7 @@ top_row = html.Div(
                 value= current_model,
                 clearable=False,
                 style={'border-color': 'gray'}            
-            )], className='five columns'
+            )], className='row'
         ),
 
 
@@ -396,7 +396,7 @@ top_row = html.Div(
                 options=[{'label': model, 'value': model} for model in model_right_models],
                 placeholder='Select Another Model to Comapre',
                 value= None,
-                style={'border-color': 'gray'}            
+                style={'border-color': 'gray', 'display': 'none'}
             )
             ], className='five columns'
         ),
@@ -416,10 +416,10 @@ top_row = html.Div(
         html.Div([
             dcc.Dropdown(
                 id='heatmap-type-dropdown',
-                options=[{'label': option, 'value': option} for option in heatmap_types],
+                options=[{'label': option, 'value': option} for option in heatmap_types[:1]],
                 placeholder='I wish to see the model results for...',
-                value= None,
-                style={'border-color': 'gray'}            
+                value= heatmap_types[0],
+                style={'border-color': 'gray', 'display': 'none'}
             )],
             className='row'
         ),
@@ -811,6 +811,7 @@ def update_heatmap_and_reset_inputs(selected_model, previous_second_model):
 def update_image_container(
     selected_heatmap_type
 ):
+    selected_heatmap_type = 'Objects I See'
     see_style_original = style={'background-color': 'rgba(6, 200, 115, 0.5)'}
     see_style_white = style={'background-color': 'white'}
     dont_see_style_original = style={'background-color': 'rgba(211, 6, 50, 0.5)'}
@@ -1113,7 +1114,7 @@ def update_image_container(
     Output('heatmap-1', 'figure'), 
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'),  
-    Input('heatmap-type-dropdown', 'value'),   
+    Input('heatmap-type-dropdown', 'value'),
     Input('heatmap-1', 'hoverData'),
     Input('update-heatmap-button', 'n_clicks'),
     State('I-see', 'value'), 
@@ -1137,6 +1138,7 @@ def update_heatmap_1(
     dummy_2,
     second_model
 ):
+    selected_heatmap_type = heatmap_types[0]
     first_model_name = model
     model = models_to_show[model]
 
@@ -1144,7 +1146,7 @@ def update_heatmap_1(
     print(n_clicks, model, selected_file, selected_heatmap_type, second_model)
     
     if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ) and (second_model == None or second_model == ''):
-        print("aaaaaa aaaa")
+        # print("aaaaaa aaaa")
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
 
@@ -1505,6 +1507,7 @@ def update_heatmap_2(
     dummy_2,
     second_model
 ):
+    selected_heatmap_type = heatmap_types[0]
     first_model_name = model
     model = models_to_show[model]
 
