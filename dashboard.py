@@ -18,6 +18,7 @@ from PIL import Image
 import threading
 import numpy as np
 import plotly.express as px
+import csv
 
 
 class ImageViewerThread(threading.Thread):
@@ -87,12 +88,17 @@ completed_comparison = []
 
 heatmap_1_clicks = []
 
+present_model = ''
+present_selected_file = ''
+first_test = True
+
 click_log_style = {
                         'width': '100%',
                         'height': '230px',
                         'margin-top': '33pt',
                         'fontSize': '16px',
                 }
+
 # model_to_compare = {
 #     'GPV-1': ['BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
 #     'BLIP': ['GPV-1', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random'],
@@ -1293,34 +1299,50 @@ def update_heatmap_1(
 
             layout_shapes_list.extend(get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
 
+
+        global present_model
+        global present_selected_file
+        global heatmap_1_clicks
+        global first_test
+
+        if first_test == False:
+            if model != present_model or selected_file != present_selected_file:
+                heatmap_1_clicks = []
+                present_model = model 
+                present_selected_file = selected_file
+                heatmap_clickData = None
+
+        print(heatmap_clickData)
         if heatmap_clickData and 'points' in heatmap_clickData and heatmap_clickData['points']:
 
             clicked_point = heatmap_clickData['points'][0]
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
             z_coord = clicked_point['z']
-
-            x_index = x_labels.index(x_coord)
-            y_index = y_labels.index(y_coord)
             
-            candidate_entry = [y_index, x_index, flip(z_coord)]
+            candidate_entry = [y_coord, x_coord, flip(z_coord)]
 
             latest_entry = None
 
             for entry in reversed(heatmap_1_clicks):
-                if entry[:2] == [y_index, x_index]:
+                if entry[:2] == [y_coord, x_coord]:
                     latest_entry = entry
                     break
 
             if latest_entry == None:
-                heatmap_1_clicks.append(candidate_entry) 
+                heatmap_1_clicks.append(candidate_entry)
+                present_model = model 
+                present_selected_file = selected_file
+                first_test = False
             else:
                 if latest_entry[2] != candidate_entry[2]:
                     heatmap_1_clicks.append(candidate_entry)
             
 
         for click in heatmap_1_clicks:
-            z_values[click[0]][click[1]] = flip(z_values[click[0]][click[1]])
+            x_number = x_labels.index(click[1])
+            y_number = y_labels.index(click[0])
+            z_values[y_number][x_number] = flip(z_values[y_number][x_number])
  
 
 
@@ -1366,9 +1388,19 @@ def update_heatmap_1(
 
         size_text = f"Number of Modifications: {len(filtered_heatmap_1_clicks)}"
 
-        log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {y_labels[entry[0]]} to {'True' if entry[2] == 1 else 'False'}" for entry in heatmap_1_clicks])
+        log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {entry[0]} to {'True' if entry[2] == 1 else 'False'}" for entry in heatmap_1_clicks])
 
         final_log_text = f"{size_text}\n------------\n{log_text}\n------------\n{size_text}"
+
+        header = ['Object', 'Frame', 'Presence']
+
+        # Specify the file path where you want to save the CSV file
+        click_log_file = LOG_DATA_DIR + '/' + PARTICIPANT_NAME + '-' + model + '-' + selected_file  + '.csv'
+
+        with open(click_log_file, 'w', newline='') as csvfile:
+            csv_writer = csv.writer(csvfile)
+            csv_writer.writerow(header)
+            csv_writer.writerows(heatmap_1_clicks)
 
         return heat_map, final_log_text
     
