@@ -91,6 +91,7 @@ heatmap_1_clicks = []
 present_model = ''
 present_selected_file = ''
 first_test = True
+last_entry = []
 
 click_log_style = {
                         'width': '100%',
@@ -1303,16 +1304,14 @@ def update_heatmap_1(
         global present_model
         global present_selected_file
         global heatmap_1_clicks
-        global first_test
+        global last_entry
 
-        if first_test == False:
-            if model != present_model or selected_file != present_selected_file:
-                heatmap_1_clicks = []
-                present_model = model 
-                present_selected_file = selected_file
-                heatmap_clickData = None
 
-        print(heatmap_clickData)
+        if model != present_model or selected_file != present_selected_file:
+            heatmap_1_clicks = []
+            present_model = model 
+            present_selected_file = selected_file
+
         if heatmap_clickData and 'points' in heatmap_clickData and heatmap_clickData['points']:
 
             clicked_point = heatmap_clickData['points'][0]
@@ -1322,21 +1321,24 @@ def update_heatmap_1(
             
             candidate_entry = [y_coord, x_coord, flip(z_coord)]
 
-            latest_entry = None
+            if candidate_entry != last_entry:
+                latest_entry = None
 
-            for entry in reversed(heatmap_1_clicks):
-                if entry[:2] == [y_coord, x_coord]:
-                    latest_entry = entry
-                    break
+                for entry in reversed(heatmap_1_clicks):
+                    if entry[:2] == [y_coord, x_coord]:
+                        latest_entry = entry
+                        break
 
-            if latest_entry == None:
-                heatmap_1_clicks.append(candidate_entry)
-                present_model = model 
-                present_selected_file = selected_file
-                first_test = False
-            else:
-                if latest_entry[2] != candidate_entry[2]:
+                if latest_entry == None:
                     heatmap_1_clicks.append(candidate_entry)
+                    last_entry = candidate_entry
+                    present_model = model 
+                    present_selected_file = selected_file
+                    first_test = False
+                else:
+                    if latest_entry[2] != candidate_entry[2]:
+                        heatmap_1_clicks.append(candidate_entry)
+                        last_entry = candidate_entry
             
 
         for click in heatmap_1_clicks:
