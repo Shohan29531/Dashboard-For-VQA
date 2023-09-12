@@ -2061,16 +2061,16 @@ def update_heatmap_2(
     return {}
 
 
-@app.callback(
-    Output('status-textarea', 'children', allow_duplicate=True),
-    Output('model-dropdown-2', 'value'),
-    Input('model-dropdown', 'value'),
-    prevent_initial_call=True
-)
-def update_model(model):
-    global current_model        
-    current_model = model
-    return f"Model: {current_model}: {models_to_show[current_model]}" if current_model else "Model: None", ""
+# @app.callback(
+#     Output('status-textarea', 'children', allow_duplicate=True),
+#     Output('model-dropdown-2', 'value'),
+#     Input('model-dropdown', 'value'),
+#     prevent_initial_call=True
+# )
+# def update_model(model):
+#     global current_model        
+#     current_model = model
+#     return f"Model: {current_model}: {models_to_show[current_model]}" if current_model else "Model: None", ""
 
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True), 
