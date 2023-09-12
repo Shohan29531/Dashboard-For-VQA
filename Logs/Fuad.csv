@@ -1,0 +1,3 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode
+2023-09-11::20:10:45,video-1-segment-5,faster_rcnn,,,"Person,White Cane,Car,Road",,5,,single
+2023-09-11::20:12:12,video-1-segment-5,BLIP,N/A,N/A,"Person,White Cane,Car,Road",,8,,single

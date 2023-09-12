@@ -97,7 +97,8 @@ click_log_style = {
                         'width': '100%',
                         'height': '230px',
                         'margin-top': '33pt',
-                        'fontSize': '16px',
+                        'fontSize': '12px',
+                        'color': 'gray',
                 }
 
 # model_to_compare = {
@@ -1390,9 +1391,9 @@ def update_heatmap_1(
 
         size_text = f"Number of Modifications: {len(filtered_heatmap_1_clicks)}"
 
-        log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {entry[0]} to {'True' if entry[2] == 1 else 'False'}" for entry in heatmap_1_clicks])
+        log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {entry[0]} to {'Visible' if entry[2] == 1 else 'Invisible'}" for entry in heatmap_1_clicks])
 
-        final_log_text = f"{size_text}\n------------\n{log_text}\n------------\n{size_text}"
+        final_log_text = f"{size_text}\n------------------------------------\n{log_text}"
 
         header = ['Object', 'Frame', 'Presence']
 

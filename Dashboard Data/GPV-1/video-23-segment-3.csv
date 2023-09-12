@@ -4,7 +4,6 @@ Barrier Post,0,1,0,0,1,1,1,1
 Barrier Stump,0,0,0,0,0,0,0,0
 Bench,0,0,0,0,1,1,1,1
 Bicycle,0,0,0,0,0,0,0,0
-Brick,0,0,1,1,1,1,1,1
 Bridge,1,0,1,0,1,1,1,0
 Building,1,1,1,1,1,1,1,1
 Bus,0,0,0,0,0,0,0,0
@@ -12,11 +11,9 @@ Bus Stop,1,1,1,1,1,1,1,0
 Car,0,0,0,0,0,0,0,0
 Chair,0,0,0,0,0,1,1,1
 Closed Sidewalk,1,1,1,1,1,1,1,1
-Cloudy,0,0,0,0,0,0,0,0
 Counter,1,1,0,1,1,1,0,0
 Crosswalk,0,0,0,0,1,1,0,0
 Curb,0,1,0,0,1,1,1,1
-Day,0,0,1,0,0,0,0,1
 Dog,0,0,0,0,0,0,0,1
 Driveway(flat),0,0,0,0,0,0,0,1
 Elevator,0,0,1,0,0,1,1,1
@@ -30,14 +27,10 @@ Gate,1,1,1,0,0,1,1,1
 Guide dog,0,0,0,0,0,0,0,0
 Gutter,1,1,1,1,1,1,1,1
 Hose,1,1,1,1,1,1,1,1
-Jaywalker,0,0,0,0,0,0,0,0
 Lamp Post,1,0,1,0,0,1,1,1
 Mail box,1,1,1,1,1,1,1,1
 Maintenance Vehicle,0,0,0,0,0,0,0,1
 Motorcycle,0,0,0,0,0,0,0,0
-Night,0,0,0,0,0,0,1,0
-Obstacle on the sidewalk,0,0,0,0,0,0,0,0
-Obstacle on the street,0,0,0,0,0,0,0,0
 Parallel Parking Spot,0,0,0,0,0,0,0,0
 Paratransit vehicle,0,0,0,0,0,0,0,1
 Pedestrian Crossing,0,1,1,1,1,1,0,0
@@ -48,7 +41,6 @@ Pole,0,1,0,0,0,0,1,1
 Puddle,1,0,1,0,1,0,0,0
 Push button,0,0,0,0,0,1,1,1
 Railing,0,1,1,0,1,1,1,1
-Raining,0,0,0,0,0,0,0,0
 Raised Entryway,1,1,1,1,1,1,1,1
 Retaining Wall,0,0,1,0,1,1,1,0
 Road,0,0,0,1,0,1,0,1
@@ -63,10 +55,8 @@ Sloped Driveway,1,0,0,0,1,1,0,1
 Slopped Curb,1,0,0,1,1,1,0,1
 Snow,0,0,0,0,0,0,0,0
 Stairs,0,0,0,0,0,1,1,0
-Stone Block,1,1,1,1,1,1,0,0
 Stop sign,0,0,0,0,0,0,0,0
 Street Vendor,1,1,1,0,1,0,0,0
-Sunny,1,1,1,1,0,0,1,1
 Table,0,0,0,0,0,0,1,1
 Tactile Paving,1,1,1,1,1,1,1,1
 Traffic Signals,0,0,0,0,0,0,0,0
@@ -88,4 +78,3 @@ Wet surface,1,0,0,0,0,0,0,1
 Wheelchair,0,0,0,0,0,0,0,1
 White Cane,1,0,0,0,0,0,0,0
 Yard Waste,1,0,0,0,1,1,0,0
-Zebra Crossing,0,0,0,0,0,0,0,0

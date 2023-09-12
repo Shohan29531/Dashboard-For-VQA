@@ -4,7 +4,6 @@ Barrier Post,1,1
 Barrier Stump,1,1
 Bench,0,0
 Bicycle,0,0
-Brick,0,0
 Bridge,1,1
 Building,1,1
 Bus,0,1
@@ -12,11 +11,9 @@ Bus Stop,0,1
 Car,1,1
 Chair,0,0
 Closed Sidewalk,1,1
-Cloudy,1,0
 Counter,1,1
 Crosswalk,1,1
 Curb,1,1
-Day,0,1
 Dog,0,0
 Driveway(flat),1,1
 Elevator,0,0
@@ -30,14 +27,10 @@ Gate,1,0
 Guide dog,0,0
 Gutter,1,1
 Hose,0,0
-Jaywalker,1,0
 Lamp Post,1,1
 Mail box,1,1
 Maintenance Vehicle,0,1
 Motorcycle,0,0
-Night,0,0
-Obstacle on the sidewalk,1,1
-Obstacle on the street,1,1
 Parallel Parking Spot,1,1
 Paratransit vehicle,0,0
 Pedestrian Crossing,1,1
@@ -48,7 +41,6 @@ Pole,1,0
 Puddle,1,0
 Push button,0,0
 Railing,1,0
-Raining,0,0
 Raised Entryway,1,0
 Retaining Wall,1,1
 Road,1,1
@@ -63,10 +55,8 @@ Sloped Driveway,1,1
 Slopped Curb,1,1
 Snow,0,0
 Stairs,0,1
-Stone Block,1,1
 Stop sign,0,1
 Street Vendor,1,0
-Sunny,0,1
 Table,0,0
 Tactile Paving,1,1
 Traffic Signals,0,0
@@ -88,4 +78,3 @@ Wet surface,0,0
 Wheelchair,0,0
 White Cane,0,1
 Yard Waste,1,0
-Zebra Crossing,0,0
