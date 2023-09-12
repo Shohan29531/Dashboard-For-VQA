@@ -438,6 +438,8 @@ top_row = html.Div(
             )],
             className='row'
         ),
+
+
         
         # I see text area
         html.Div([
@@ -450,11 +452,7 @@ top_row = html.Div(
                 value=current_text_see,
                 placeholder='Things I see',
             )
-        ], id= 'I-see-container', className='five columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
-
-        ## blank column
-        html.Div([
-        ], className='one column'),
+        ], id= 'I-see-container', className='eleven columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
 
 
         # I don't see text area
