@@ -164,10 +164,26 @@ def get_done_pairs(csv_path):
     return done_pairs
 
 
+def get_done_models_vid(csv_path):
+    df = pd.read_csv(csv_path)
+
+    comp_df = df.loc[df['mode']=='single']
+
+    done_setup = []
+
+    for _, row in comp_df.iterrows():
+        left_model = row['model left']
+        video = row['video']
+        if f'{left_model} in {video}' not in done_setup:
+            done_setup.append(f'{left_model} in {video}')
+
+    return done_setup
+
+
 user_log_path = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
 
 if os.path.exists(user_log_path):
-    completed_comparison = get_done_pairs(user_log_path)
+    completed_comparison = get_done_models_vid(user_log_path)
 
 # Write or append log files
 
@@ -186,7 +202,7 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row,  columns=COLUMNS, index=[0])        
         df_log.to_csv(log_file, index=False)
 
-    completed_comparison = get_done_pairs(log_file)
+    completed_comparison = get_done_models_vid(log_file)
 
 
 def read_text_file_content(file_path):
@@ -768,20 +784,42 @@ def hide_show_slider_radio(model_right_pseudonym):
         return {'display': 'block'}, {'display': 'none'}
 
 
+# @app.callback(
+#     Output('confirm-danger', 'displayed'),
+#     Input('model-dropdown', 'value'),
+#     Input(component_id='model-dropdown-2', component_property='value'),
+#     Input('video-dropdown', 'value'),
+# )
+# def show_warn(model_left_pseudonym, model_right_pseudonym, video_name):
+#     if model_left_pseudonym is None or model_right_pseudonym is None or \
+#             model_right_pseudonym == '' or model_left_pseudonym == '' or \
+#             video_name == '' or video_name is None:
+#         return False
+#     model_pair = f'{models_to_show[model_left_pseudonym]} vs {models_to_show[model_right_pseudonym]} in {video_name}'
+#     print(model_pair, completed_comparison)
+#     if model_pair in completed_comparison:
+#         return True
+#     else:
+#         return False
+
+
 @app.callback(
     Output('confirm-danger', 'displayed'),
     Input('model-dropdown', 'value'),
-    Input(component_id='model-dropdown-2', component_property='value'),
     Input('video-dropdown', 'value'),
 )
-def show_warn(model_left_pseudonym, model_right_pseudonym, video_name):
-    if model_left_pseudonym is None or model_right_pseudonym is None or \
-            model_right_pseudonym == '' or model_left_pseudonym == '' or \
+def show_warn(model_left_pseudonym, video_name):
+    if model_left_pseudonym is None or model_left_pseudonym == '' or \
             video_name == '' or video_name is None:
         return False
-    model_pair = f'{models_to_show[model_left_pseudonym]} vs {models_to_show[model_right_pseudonym]} in {video_name}'
-    print(model_pair, completed_comparison)
-    if model_pair in completed_comparison:
+    model_vid_setup = f'{models_to_show[model_left_pseudonym]} in {video_name}'
+
+    prev_log = os.listdir(LOG_DATA_DIR)
+
+    print()
+
+    print(model_vid_setup, completed_comparison)
+    if model_vid_setup in completed_comparison:
         return True
     else:
         return False
