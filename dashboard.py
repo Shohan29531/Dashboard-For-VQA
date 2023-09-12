@@ -22,6 +22,9 @@ import csv
 from copy import deepcopy
 
 
+PARTICIPANT_NAME = "Test"
+
+
 class ImageViewerThread(threading.Thread):
     def __init__(self, image):
         super().__init__()
@@ -40,7 +43,6 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard D
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
-PARTICIPANT_NAME = "Test"
 
 base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
@@ -443,7 +445,7 @@ top_row = html.Div(
                 id='video-dropdown',
                 options=[{'label': option, 'value': option} for option in all_video_files],
                 placeholder='Select a video file...',
-                value= current_file,
+
                 style={'border-color': 'gray'}            
             )],
             className='row'

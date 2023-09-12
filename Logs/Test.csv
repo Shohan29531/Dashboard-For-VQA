@@ -1,4 +1,6 @@
 timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode
 2023-09-12::03:19:37,video-1-segment-5,mask_rcnn,,,"Person,White Cane,Car,Road",,3,,single
 2023-09-12::03:20:12,video-2-segment-1,mask_rcnn,,,"Person,White Cane,Car,Road",,4,,single
-2023-09-12::03:20:35,video-4-segment-1,GT,N/A,N/A,"Person,White Cane,Car,Road",,6,,single
+2023-09-12::03:20:35,video-4-segment-1,GT,,,"Person,White Cane,Car,Road",,6,,single
+2023-09-12::10:16:14,video-1-segment-4,yolo_v7,,,"Person,White Cane,Car,Road",,5,,single
+2023-09-12::10:23:52,video-4-segment-3,faster_rcnn,N/A,N/A,"Person,White Cane,Car,Road",,5,,single
