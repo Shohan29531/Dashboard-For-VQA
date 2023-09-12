@@ -40,7 +40,7 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard D
 GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
-PARTICIPANT_NAME = "Fuad"
+PARTICIPANT_NAME = "Test"
 
 base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
@@ -722,7 +722,7 @@ rating_row = html.Div(
         html.Div(
             [
                 html.Button(
-                    'Record Response', 
+                    'Record Response and Resest', 
                     id='save-button', 
                     n_clicks=0, 
                     style={'background-color': 'lightgray'}
@@ -2125,6 +2125,10 @@ def update_comment(text_comments):
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True),
     Output('video-dropdown', 'options', allow_duplicate=True),
+    Output('video-dropdown', 'value', allow_duplicate=True),
+    Output('image-container', 'children', allow_duplicate = True),
+    Output('heatmap-1', 'figure', allow_duplicate = True),
+    Output('heatmap-1-clicks-textarea', 'style', allow_duplicate = True), 
     Input('save-button', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -2157,9 +2161,9 @@ def save_data(n_clicks):
                 updated_list.append({"label": v_, "value": v_})
 
         if len(updated_list) == 0:
-            return "**Saved at: " + current_time + "**", dash.no_update
+            return "**Saved at: " + current_time + "**", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
-        return "**Saved at: " + current_time + "**", updated_list
+        return "**Saved at: " + current_time + "**", updated_list, None, [], {}, {'display' : 'none'}
     else:
         return "*Not Saved*"
 
