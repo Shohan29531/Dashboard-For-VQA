@@ -22,7 +22,7 @@ import csv
 from copy import deepcopy
 
 
-PARTICIPANT_NAME = "Test"
+PARTICIPANT_NAME = "Dummy"
 
 
 class ImageViewerThread(threading.Thread):
