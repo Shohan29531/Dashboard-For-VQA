@@ -2129,7 +2129,8 @@ def update_comment(text_comments):
     Output('video-dropdown', 'value', allow_duplicate=True),
     Output('image-container', 'children', allow_duplicate = True),
     Output('heatmap-1', 'figure', allow_duplicate = True),
-    Output('heatmap-1-clicks-textarea', 'style', allow_duplicate = True), 
+    Output('heatmap-1-clicks-textarea', 'style', allow_duplicate = True),
+    Output('comments-textarea', 'value'),
     Input('save-button', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -2162,11 +2163,11 @@ def save_data(n_clicks):
                 updated_list.append({"label": v_, "value": v_})
 
         if len(updated_list) == 0:
-            return "**Saved at: " + current_time + "**", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+            return "**Saved at: " + current_time + "**", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
-        return "**Saved at: " + current_time + "**", updated_list, None, [], {}, {'display' : 'none'}
+        return "**Saved at: " + current_time + "**", updated_list, None, [], {}, {'display' : 'none'}, ''
     else:
-        return "*Not Saved*"
+        return "*Not Saved*", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
 
 # convert models_to_show  to string
