@@ -22,7 +22,7 @@ import csv
 from copy import deepcopy
 
 
-PARTICIPANT_NAME = "Dummy"
+PARTICIPANT_NAME = "Test"
 
 
 class ImageViewerThread(threading.Thread):
@@ -2061,16 +2061,15 @@ def update_heatmap_2(
     return {}
 
 
-# @app.callback(
-#     Output('status-textarea', 'children', allow_duplicate=True),
-#     Output('model-dropdown-2', 'value'),
-#     Input('model-dropdown', 'value'),
-#     prevent_initial_call=True
-# )
-# def update_model(model):
-#     global current_model        
-#     current_model = model
-#     return f"Model: {current_model}: {models_to_show[current_model]}" if current_model else "Model: None", ""
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True),
+    Input('model-dropdown', 'value'),
+    prevent_initial_call=True
+)
+def update_model(model):
+    global current_model
+    current_model = model
+    return dash.no_update
 
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True), 
@@ -2154,8 +2153,8 @@ def save_data(n_clicks):
         # write data to file        
         print(data)
         save_log_file(data)
-        if len(heatmap_1_clicks) > 0:
-            save_heatmap_click_log()
+        # if len(heatmap_1_clicks) > 0:
+        save_heatmap_click_log()
 
         updated_list = []
         for v_ in all_video_files:
