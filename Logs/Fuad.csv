@@ -1,14 +1,1 @@
 timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode
-2023-09-11::21:56:40,video-4-segment-1,Random,,,"Person,White Cane,Car,Road",,8,,single
-2023-09-11::21:56:55,video-1-segment-5,Random,,,"Person,White Cane,Car,Road",,6,,single
-2023-09-11::21:57:10,video-3-segment-2,HRNet_V2,,,"Person,White Cane,Car,Road",,4,,single
-2023-09-11::21:58:06,video-3-segment-2,HRNet_V2,,,"Person,White Cane,Car,Road",,4,,single
-2023-09-11::22:30:02,video-1-segment-5,Random,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:30:59,video-1-segment-5,Random,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:31:18,video-1-segment-5,Random,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:37:39,video-1-segment-5,faster_rcnn,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:37:42,video-1-segment-5,faster_rcnn,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:38:18,video-1-segment-5,faster_rcnn,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:38:45,video-1-segment-5,faster_rcnn,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:39:39,video-1-segment-5,faster_rcnn,,,"Person,White Cane,Car,Road",,5,,single
-2023-09-11::22:40:13,video-1-segment-5,BLIP,N/A,N/A,"Person,White Cane,Car,Road",,5,,single

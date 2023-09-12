@@ -19,6 +19,7 @@ import threading
 import numpy as np
 import plotly.express as px
 import csv
+from copy import deepcopy
 
 
 class ImageViewerThread(threading.Thread):
@@ -85,6 +86,7 @@ color_agreement = 'rgb(6, 200, 115)' # green
 color_disagreement = 'rgb(211, 6, 50)' # red
 
 completed_comparison = []
+completed_videos = []
 
 heatmap_1_clicks = []
 
@@ -170,6 +172,7 @@ def get_done_models_vid(csv_path):
     comp_df = df.loc[df['mode']=='single']
 
     done_setup = []
+    done_videos = []
 
     for _, row in comp_df.iterrows():
         left_model = row['model left']
@@ -177,19 +180,22 @@ def get_done_models_vid(csv_path):
         if f'{left_model} in {video}' not in done_setup:
             done_setup.append(f'{left_model} in {video}')
 
-    return done_setup
+        if video not in done_videos:
+            done_videos.append(video)
+
+    return done_setup, done_videos
 
 
 user_log_path = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
 
 if os.path.exists(user_log_path):
-    completed_comparison = get_done_models_vid(user_log_path)
+    completed_comparison, completed_videos = get_done_models_vid(user_log_path)
 
 # Write or append log files
 
 
 def save_log_file(new_row):
-    global completed_comparison
+    global completed_comparison, completed_videos
     log_file = user_log_path  # os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
     print(log_file, LOG_DATA_DIR)            
     
@@ -202,7 +208,7 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row,  columns=COLUMNS, index=[0])        
         df_log.to_csv(log_file, index=False)
 
-    completed_comparison = get_done_models_vid(log_file)
+    completed_comparison, completed_videos = get_done_models_vid(log_file)
 
 
 def read_text_file_content(file_path):
@@ -804,11 +810,27 @@ def hide_show_slider_radio(model_right_pseudonym):
 
 
 @app.callback(
+    Output('video-dropdown', 'options'),
+    Input('model-dropdown', 'value'),
+)
+def update_video_list(model_left_pseudonym):
+    updated_list = []
+    for v_ in all_video_files:
+        if v_ not in completed_videos:
+            updated_list.append({"label": v_, "value": v_})
+
+    if len(updated_list) == 0:
+        return dash.no_update
+    return updated_list
+
+
+@app.callback(
     Output('confirm-danger', 'displayed'),
     Input('model-dropdown', 'value'),
     Input('video-dropdown', 'value'),
 )
 def show_warn(model_left_pseudonym, video_name):
+
     if model_left_pseudonym is None or model_left_pseudonym == '' or \
             video_name == '' or video_name is None:
         return False
@@ -2101,10 +2123,11 @@ def update_comment(text_comments):
 
 
 @app.callback(
-    Output('status-textarea', 'children'),      
-    Input('save-button', 'n_clicks')
+    Output('status-textarea', 'children', allow_duplicate=True),
+    Output('video-dropdown', 'options', allow_duplicate=True),
+    Input('save-button', 'n_clicks'),
+    prevent_initial_call=True
 )
-
 def save_data(n_clicks):
     if n_clicks > 0:
         
@@ -2128,7 +2151,15 @@ def save_data(n_clicks):
         if len(heatmap_1_clicks) > 0:
             save_heatmap_click_log()
 
-        return "**Saved at: " + current_time + "**"
+        updated_list = []
+        for v_ in all_video_files:
+            if v_ not in completed_videos:
+                updated_list.append({"label": v_, "value": v_})
+
+        if len(updated_list) == 0:
+            return "**Saved at: " + current_time + "**", dash.no_update
+
+        return "**Saved at: " + current_time + "**", updated_list
     else:
         return "*Not Saved*"
 
