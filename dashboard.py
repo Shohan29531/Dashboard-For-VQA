@@ -1159,10 +1159,26 @@ def update_image_container(
 
 
 
+
+def save_heatmap_click_log():
+    header = ['Object', 'Frame', 'Presence']
+
+    model = present_model
+    selected_file = present_selected_file
+
+    click_log_file = LOG_DATA_DIR + '/' + PARTICIPANT_NAME + '-' + model + '-' + selected_file  + '.csv'
+
+    with open(click_log_file, 'w', newline='') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(header)
+        csv_writer.writerows(heatmap_1_clicks)
+
+
 def flip (val):
     if val == 1:
         return 0
     return 1
+
 
 @app.callback(
     Output('heatmap-1', 'figure'),
@@ -1383,25 +1399,11 @@ def update_heatmap_1(
             if not is_duplicate:
                 filtered_heatmap_1_clicks.append(entry1)
 
-
-        print(heatmap_1_clicks)
-        print(filtered_heatmap_1_clicks)
-
         size_text = f"Number of Modifications: {len(filtered_heatmap_1_clicks)}"
 
         log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {entry[0]} to {'Visible' if entry[2] == 1 else 'Invisible'}" for entry in heatmap_1_clicks])
 
         final_log_text = f"{size_text}\n------------------------------------\n{log_text}"
-
-        header = ['Object', 'Frame', 'Presence']
-
-        # Specify the file path where you want to save the CSV file
-        click_log_file = LOG_DATA_DIR + '/' + PARTICIPANT_NAME + '-' + model + '-' + selected_file  + '.csv'
-
-        with open(click_log_file, 'w', newline='') as csvfile:
-            csv_writer = csv.writer(csvfile)
-            csv_writer.writerow(header)
-            csv_writer.writerows(heatmap_1_clicks)
 
         return heat_map, final_log_text
     
@@ -2085,6 +2087,8 @@ def save_data(n_clicks):
         # write data to file        
         print(data)
         save_log_file(data)
+        if len(heatmap_1_clicks) > 0:
+            save_heatmap_click_log()
 
         return "**Saved at: " + current_time + "**"
     else:
