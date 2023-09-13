@@ -38,4 +38,3 @@ def calculate_entropy(p_g_transition, p_r_transition):
     entropy2 = -1 * sum_en
 
     return entropy, entropy2
-
