@@ -76,32 +76,63 @@ def get_transition_probabilities(h_m_row):
 def calculate_chain_entropy(h_m_row, p_g_steady, p_r_steady):
     tran_prob_matrix = [p_g_steady, p_r_steady]
     ent_sum = 0
-    for i in range(len(h_m_row)):
-        if i == 0:
-            tmp_sum = 0
-            for x in range(2):
-                if tran_prob_matrix[x] == 0:
-                    log_x = 0
+    for i in range(1, len(h_m_row)):
+        # if i == 0:
+        #     continue
+        #     tmp_sum = 0
+        #     for x in range(2):
+        #         if tran_prob_matrix[x] == 0:
+        #             log_x = 0
+        #         else:
+        #             log_x = math.log2(tran_prob_matrix[x])
+        #         tmp_sum = tmp_sum + tran_prob_matrix[x] * log_x
+        # else:
+        tmp_sum = 0
+        for x1 in range(2):
+            for x2 in range(2):
+                joint_prob = tran_prob_matrix[x1] * tran_prob_matrix[x2]
+                p_x1 = tran_prob_matrix[x2]
+                if p_x1 == 0 or joint_prob == 0:
+                    log_x1_x2 = 0
                 else:
-                    log_x = math.log2(tran_prob_matrix[x])
-                tmp_sum = tmp_sum + tran_prob_matrix[x] * log_x
-        else:
-            tmp_sum = 1
-            for x1 in range(2):
-                for x2 in range(2):
-                    joint_prob = tran_prob_matrix[x1] * tran_prob_matrix[x2]
-                    p_x2 = tran_prob_matrix[x2]
-                    if p_x2 == 0 or joint_prob == 0:
-                        log_x1_x2 = 0
-                    else:
-                        log_x1_x2 = math.log2(joint_prob/p_x2)
-                    tmp_sum = tmp_sum + joint_prob * log_x1_x2
+                    log_x1_x2 = math.log2(p_x1/joint_prob)
+                tmp_sum = tmp_sum + joint_prob * log_x1_x2
 
         ent_sum = ent_sum + tmp_sum
 
     ent_sum = 1/(len(h_m_row)-1) * ent_sum
 
     return ent_sum
+
+
+# def calculate_chain_entropy_2(h_m_row, p_g_steady, p_r_steady):
+#     tran_prob_matrix = [p_r_steady, p_g_steady]
+#     ent_sum = 0
+#     for i in range(len(h_m_row)):
+#         if i == 0:
+#             tmp_sum = 0
+#
+#             if tran_prob_matrix[h_m_row[i]] == 0:
+#                 log_x = 0
+#             else:
+#                 log_x = math.log2(tran_prob_matrix[h_m_row[i]])
+#             tmp_sum = tmp_sum + tran_prob_matrix[h_m_row[i]] * log_x
+#         else:
+#             tmp_sum = 0
+#
+#             joint_prob = tran_prob_matrix[h_m_row[i]] * tran_prob_matrix[h_m_row[i-1]]
+#             p_x1 = tran_prob_matrix[h_m_row[i-1]]
+#             if p_x1 == 0 or joint_prob == 0:
+#                 log_x1_x2 = 0
+#             else:
+#                 log_x1_x2 = math.log2(p_x1/joint_prob)
+#             tmp_sum = tmp_sum + joint_prob * log_x1_x2
+#
+#         ent_sum = ent_sum + tmp_sum
+#
+#     ent_sum = 1/(len(h_m_row)-1) * ent_sum
+#
+#     return ent_sum
 
 
 heat_map_rows = [
@@ -121,10 +152,14 @@ heat_map_rows = [
     [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+    [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1],
+    [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
 ]
 
 ents = []
 frms = [f'{k}' for k in range(len(heat_map_rows[0]))]
+
+out_hm = []
 
 for c, heat_map_row in enumerate(heat_map_rows):
     prob_g, prob_r = get_transition_probabilities(heat_map_row)
@@ -132,11 +167,15 @@ for c, heat_map_row in enumerate(heat_map_rows):
     ent1, g_steady, r_steady = calculate_entropy(prob_g, prob_r)
 
     ent2 = calculate_chain_entropy(heat_map_row, g_steady, r_steady)
-    # print(ent1)
+
+    # print(ent1, ent2)
     ents.append(f'row-{c}-entropy = {ent1:.3f}')
+    out_hm.append(heat_map_row)
+    ents.append(f'row-{c}-chain_entropy = {ent2:.3f}')
+    out_hm.append(heat_map_row)
 
 
-fig = px.imshow(heat_map_rows, x=frms, y=ents, text_auto=True)
+fig = px.imshow(out_hm, x=frms, y=ents, text_auto=True)
 fig.update_xaxes(side="bottom")
 fig.update_coloraxes(showscale=False)
 fig.show()
