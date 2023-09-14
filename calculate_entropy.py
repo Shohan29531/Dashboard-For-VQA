@@ -1,4 +1,5 @@
 import math
+import plotly.express as px
 
 
 def calculate_entropy(p_g_transition, p_r_transition):
@@ -37,7 +38,7 @@ def calculate_entropy(p_g_transition, p_r_transition):
     #
     # entropy2 = -1 * sum_en
 
-    return entropy  # , entropy2
+    return entropy, p_g_steady_state, p_r_steady_state  # , entropy2
 
 
 def get_transition_probabilities(h_m_row):
@@ -72,15 +73,71 @@ def get_transition_probabilities(h_m_row):
     return p_g, p_r
 
 
-# heat_map_row = [1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1]
-# heat_map_row = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-# heat_map_row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0]
-heat_map_row = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+def calculate_chain_entropy(h_m_row, p_g_steady, p_r_steady):
+    tran_prob_matrix = [p_g_steady, p_r_steady]
+    ent_sum = 0
+    for i in range(len(h_m_row)):
+        if i == 0:
+            tmp_sum = 0
+            for x in range(2):
+                if tran_prob_matrix[x] == 0:
+                    log_x = 0
+                else:
+                    log_x = math.log2(tran_prob_matrix[x])
+                tmp_sum = tmp_sum + tran_prob_matrix[x] * log_x
+        else:
+            tmp_sum = 1
+            for x1 in range(2):
+                for x2 in range(2):
+                    joint_prob = tran_prob_matrix[x1] * tran_prob_matrix[x2]
+                    p_x2 = tran_prob_matrix[x2]
+                    if p_x2 == 0 or joint_prob == 0:
+                        log_x1_x2 = 0
+                    else:
+                        log_x1_x2 = math.log2(joint_prob/p_x2)
+                    tmp_sum = tmp_sum + joint_prob * log_x1_x2
 
-prob_g, prob_r = get_transition_probabilities(heat_map_row)
+        ent_sum = ent_sum + tmp_sum
 
-ent1 = calculate_entropy(prob_g, prob_r)
+    ent_sum = 1/(len(h_m_row)-1) * ent_sum
 
-print(prob_g, prob_r)
+    return ent_sum
 
-print(ent1)
+
+heat_map_rows = [
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+]
+
+ents = []
+frms = [f'{k}' for k in range(len(heat_map_rows[0]))]
+
+for c, heat_map_row in enumerate(heat_map_rows):
+    prob_g, prob_r = get_transition_probabilities(heat_map_row)
+
+    ent1, g_steady, r_steady = calculate_entropy(prob_g, prob_r)
+
+    ent2 = calculate_chain_entropy(heat_map_row, g_steady, r_steady)
+    # print(ent1)
+    ents.append(f'row-{c}-entropy = {ent1:.3f}')
+
+
+fig = px.imshow(heat_map_rows, x=frms, y=ents, text_auto=True)
+fig.update_xaxes(side="bottom")
+fig.update_coloraxes(showscale=False)
+fig.show()
+
