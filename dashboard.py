@@ -20,20 +20,25 @@ import numpy as np
 import plotly.express as px
 import csv
 from copy import deepcopy
-
+import platform
 
 PARTICIPANT_NAME = "Test"
 
 
 class ImageViewerThread(threading.Thread):
+    
     def __init__(self, image):
         super().__init__()
         self.image = image
         threading.Thread.__init__(self)
 
     def run(self):
-        # self.image.show(title="image")
-        os.system(f'open "{self.image}"')
+        os_name = platform.system()
+        print(os_name)
+        if os_name == "Windows":
+            os.system(f'start "" "{self.image}"')
+        else:
+            os.system(f'open "{self.image}"')    
 
 
 #  arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
@@ -838,7 +843,7 @@ def show_warn(model_left_pseudonym, video_name):
         return False
     model_vid_setup = f'{models_to_show[model_left_pseudonym]} in {video_name}'
 
-    prev_log = os.listdir(LOG_DATA_DIR)
+    #prev_log = os.listdir(LOG_DATA_DIR)
 
     print()
 
