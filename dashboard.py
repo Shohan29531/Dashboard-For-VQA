@@ -1444,6 +1444,7 @@ def update_heatmap_1(
             z=z_values,
             colorscale=colorscale_heatmap1,
             showscale = False,
+            hoverinfo='none'
         )
 
         heat_map = go.Figure(data=heatmap, layout=layout)
