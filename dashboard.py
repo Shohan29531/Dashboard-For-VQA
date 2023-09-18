@@ -49,6 +49,9 @@ GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
 
+if not os.path.exists(LOG_DATA_DIR):
+    os.makedirs(LOG_DATA_DIR)
+
 base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
 files = os.listdir(GROUND_TRUTH_DATA)
