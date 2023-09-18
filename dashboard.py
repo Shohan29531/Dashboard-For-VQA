@@ -2098,7 +2098,7 @@ def update_file(selected_file):
 def update_rating(rating):
     global current_rating        
     current_rating  = rating
-    return f"Rating: {current_rating}" if current_rating else "Rating: None"
+    return f"Rating: {current_rating}" if current_rating is not None else "Rating: None"
 
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True), 
