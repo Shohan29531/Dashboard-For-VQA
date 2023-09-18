@@ -2129,7 +2129,8 @@ def update_donot_see(text_donot_see):
 def update_comment(text_comments):        
     global current_text_comments
     current_text_comments  = text_comments
-    return f"Comments: {current_text_comments}" if current_text_comments else "Comments: None"
+    return dash.no_update
+    # return f"Comments: {current_text_comments}" if current_text_comments else "Comments: None"
 
 
 @app.callback(
