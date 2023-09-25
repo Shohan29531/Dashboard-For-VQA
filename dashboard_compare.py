@@ -60,7 +60,8 @@ all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(
 all_video_files = natsorted(all_video_files)
 
 
-available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random']
+# available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random']
+available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random']
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
@@ -126,14 +127,14 @@ click_log_style = {
 # }
 
 model_to_compare = {
-    'GPV-1': ['mask_rcnn', 'yolo_v7', 'HRNet_V2'],
-    'BLIP': ['mask_rcnn', 'yolo_v7', 'GT', 'Random'],
-    'faster_rcnn': ['HRNet_V2', 'GT', 'Random'],
-    'mask_rcnn': ['GPV-1', 'BLIP', 'Random'],
-    'yolo_v7': ['GPV-1', 'BLIP', 'HRNet_V2'],
-    'HRNet_V2': ['GPV-1', 'faster_rcnn', 'yolo_v7', 'GT'],
-    'GT': ['BLIP', 'faster_rcnn', 'HRNet_V2'],
-    'Random': ['BLIP', 'faster_rcnn', 'mask_rcnn']
+    'GPV-1': ['BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
+    'BLIP': ['faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
+    'faster_rcnn': ['mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
+    'mask_rcnn': ['yolo_v7', 'HRNet_V2', 'Random'],
+    'yolo_v7': ['HRNet_V2', 'Random'],
+    'HRNet_V2': ['Random'],
+    'GT': [],
+    'Random': []
 }
 
 # 'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
@@ -889,7 +890,7 @@ def get_comparing_result(radio_button_value):
 )
 def auto_select_objects(n_clicks):
     gt_file = os.path.join(GROUND_TRUTH_DATA, f'{current_file}.csv')
-    obj_list = get_obj_list(gt_file, e_obj=6, non_e_obj=6)
+    obj_list = get_obj_list(gt_file, e_obj=5, non_e_obj=5)
     print(obj_list)
     return dash.no_update, obj_list
 
@@ -1466,6 +1467,13 @@ def update_heatmap_1(
 
         layout['shapes'] = tuple(layout_shapes_list)
 
+        x_labels = x_labels[:max_frames]
+        y_labels = y_labels[:max_frames]
+        z_values = z_values[:max_frames]
+
+        y_labels = ['Ignore'] + y_labels
+        z_values = [[1]+[0 for iii in range(len(z_values[0])-1)]] + z_values
+
         heatmap = go.Heatmap(
             x=x_labels,
             y=y_labels,
@@ -1475,34 +1483,94 @@ def update_heatmap_1(
             hoverinfo='none'
         )
 
+        heatmap_cell_width = (fixed_heatmap_width - 50) / (len(x_labels) + (length_of_longest_x_label / 6))
+        heatmap_cell_height = (fixed_heatmap_height - 125) / len(y_labels)
+
+        layout = go.Layout(
+            title=get_see_text(first_model_name),
+            title_x=0.10,
+            title_y=0.95,
+            title_font=dict(family='Arial Black', size=12),
+            height=fixed_heatmap_height,
+            width=fixed_heatmap_width,
+            margin=dict(l=30, r=30, t=50, b=70),
+            xaxis=dict(
+                showgrid=False,
+                dtick=1,
+                gridwidth=1,
+                tickfont=dict(size=10.5, color='blue', family='Arial Black'),
+            ),
+            yaxis=dict(
+                showgrid=False,
+                dtick=1,
+                gridwidth=1,
+                tickfont=dict(size=11, family='Arial')
+            ),
+            annotations=[
+                dict(
+                    x=0.5,
+                    y=-0.15,
+                    xref='paper',
+                    yref='paper',
+                    text=heatmap_x_axis_title,
+                    showarrow=False,
+                    font=dict(size=12, family='Arial Black'),
+                )
+            ]
+        )
+
+        heatmap_line_column = None
+        if last_clicked_image_id is not None:
+            clicked_frame_number = last_clicked_image_id
+            heatmap_line_column = x_labels.index(f'{clicked_frame_number}')
+            heatmap_hoverData = None
+
+        layout_shapes_list = []
+
+        if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
+            last_clicked_image_id = None
+
+            clicked_point = heatmap_hoverData['points'][0]
+            x_coord = clicked_point['x']
+            y_coord = clicked_point['y']
+
+            layout_shapes_list.extend(
+                get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord))
+
+        if heatmap_line_column is not None:
+            layout_shapes_list.extend(get_heatmap_highlight_lines_from_image_container_click(heatmap_line_column))
+
+        layout_shapes_list.extend(get_vetical_axis_lines(x_labels))
+        layout_shapes_list.extend(get_horizontal_axis_lines(y_labels))
+
+        layout['shapes'] = tuple(layout_shapes_list)
+
         heat_map = go.Figure(data=heatmap, layout=layout)
 
-
-        filtered_heatmap_1_clicks = []
-
-        for i, entry1 in enumerate(heatmap_1_clicks):
-            x1, y1, z1 = entry1
-            opposite_z1 = 1 if z1 == 0 else 0  
-            is_duplicate = False
-
-            for j, entry2 in enumerate(heatmap_1_clicks):
-                x2, y2, z2 = entry2
-
-                if i != j and x1 == x2 and y1 == y2 and z1 == 1 - z2:
-                    is_duplicate = True
-                    break
-
-            if not is_duplicate:
-                filtered_heatmap_1_clicks.append(entry1)
-
-        size_text = f"Number of Modifications: {len(filtered_heatmap_1_clicks)}"
-
-        log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {entry[0]} to {'Visible' if entry[2] == 1 else 'Invisible'}" for entry in heatmap_1_clicks])
-
-        final_log_text = f"{size_text}\n------------------------------------\n{log_text}"
+        # filtered_heatmap_1_clicks = []
+        #
+        # for i, entry1 in enumerate(heatmap_1_clicks):
+        #     x1, y1, z1 = entry1
+        #     opposite_z1 = 1 if z1 == 0 else 0
+        #     is_duplicate = False
+        #
+        #     for j, entry2 in enumerate(heatmap_1_clicks):
+        #         x2, y2, z2 = entry2
+        #
+        #         if i != j and x1 == x2 and y1 == y2 and z1 == 1 - z2:
+        #             is_duplicate = True
+        #             break
+        #
+        #     if not is_duplicate:
+        #         filtered_heatmap_1_clicks.append(entry1)
+        #
+        # size_text = f"Number of Modifications: {len(filtered_heatmap_1_clicks)}"
+        #
+        # log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {entry[0]} to {'Visible' if entry[2] == 1 else 'Invisible'}" for entry in heatmap_1_clicks])
+        #
+        # final_log_text = f"{size_text}\n------------------------------------\n{log_text}"
 
         return heat_map  # , final_log_text
-    
        
     if n_clicks > 0 and model and selected_file and selected_heatmap_type and second_model:
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
@@ -1547,6 +1615,9 @@ def update_heatmap_1(
             x_labels = x_labels[:max_frames]
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
+
+            y_labels = ['Ignore'] + y_labels
+            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
             heatmap = go.Heatmap(
                 x=x_labels,
@@ -1646,6 +1717,9 @@ def update_heatmap_1(
             x_labels = x_labels[:max_frames]
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
+
+            y_labels = ['Ignore'] + y_labels
+            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
             heatmap = go.Heatmap(
                 x=x_labels,
@@ -1802,6 +1876,9 @@ def update_heatmap_2(
         y_labels = y_labels[:max_frames]
         z_values = z_values[:max_frames]
 
+        y_labels = ['Ignore'] + y_labels
+        z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
+
         heatmap = go.Heatmap(
             x=x_labels,
             y=y_labels,
@@ -1923,6 +2000,9 @@ def update_heatmap_2(
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
 
+            y_labels = ['Ignore'] + y_labels
+            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
+
             heatmap = go.Heatmap(
                 x=x_labels,
                 y=y_labels,
@@ -2022,6 +2102,9 @@ def update_heatmap_2(
             x_labels = x_labels[:max_frames]
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
+
+            y_labels = ['Ignore'] + y_labels
+            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
             heatmap = go.Heatmap(
                 x=x_labels,
@@ -2183,11 +2266,11 @@ def save_data(n_clicks):
             'timestamp': str(current_time),
             'video': current_file,
             'model left': models_to_show[current_model],
-            'model right': models_to_show[current_model_right] if current_model_right else 'N/A',
-            'winner model': best_model_side if observe_typ=='double' else 'N/A',
+            'model right': models_to_show[current_model_right] if current_model_right else 'NA',
+            'winner model': best_model_side if observe_typ=='double' else 'NA',
             'see': ','.join(current_text_see),
             'not_see': ','.join(current_text_not_see),
-            'score': current_rating if observe_typ=='single' else 'N/A',
+            'score': current_rating if observe_typ=='single' else 'NA',
             'comments': current_text_comments.lower() if current_text_comments else '',
             'mode': observe_typ
         }
