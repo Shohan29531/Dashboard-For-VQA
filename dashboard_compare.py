@@ -142,7 +142,7 @@ models_to_show, reverse_model_map = [], []
 
 
 def randomize_data():
-    random_model = random.sample(range(0, len(available_models)), len(available_models))        
+    random_model = [xi for xi in range(len(available_models))]  # random.sample(range(0, len(available_models)), len(available_models))
     # a dictionary that maps model-{} to available models randomly
     global models_to_show, reverse_model_map
     models_to_show = {}
@@ -745,7 +745,7 @@ rating_row = html.Div(
         html.Div(
             [
                 html.Button(
-                    'Record Response and Resest', 
+                    'Record Response and Reset',
                     id='save-button', 
                     n_clicks=0, 
                     style={'background-color': 'lightgray'}
@@ -890,7 +890,7 @@ def get_comparing_result(radio_button_value):
 )
 def auto_select_objects(n_clicks):
     gt_file = os.path.join(GROUND_TRUTH_DATA, f'{current_file}.csv')
-    obj_list = get_obj_list(gt_file, e_obj=5, non_e_obj=5)
+    obj_list = get_obj_list(gt_file, e_obj=5, non_e_obj=5, total_obj=10, all_random=False)
     print(obj_list)
     return dash.no_update, obj_list
 
@@ -1471,8 +1471,8 @@ def update_heatmap_1(
         y_labels = y_labels[:max_frames]
         z_values = z_values[:max_frames]
 
-        y_labels = ['Ignore'] + y_labels
-        z_values = [[1]+[0 for iii in range(len(z_values[0])-1)]] + z_values
+        # y_labels = ['Ignore'] + y_labels
+        # z_values = [[1]+[0 for iii in range(len(z_values[0])-1)]] + z_values
 
         heatmap = go.Heatmap(
             x=x_labels,
@@ -1480,7 +1480,9 @@ def update_heatmap_1(
             z=z_values,
             colorscale=colorscale_heatmap1,
             showscale = False,
-            hoverinfo='none'
+            hoverinfo='none',
+            zmin=0,
+            zmax=1
         )
 
         heatmap_cell_width = (fixed_heatmap_width - 50) / (len(x_labels) + (length_of_longest_x_label / 6))
@@ -1616,8 +1618,8 @@ def update_heatmap_1(
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
 
-            y_labels = ['Ignore'] + y_labels
-            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
+            # y_labels = ['Ignore'] + y_labels
+            # z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
             heatmap = go.Heatmap(
                 x=x_labels,
@@ -1625,7 +1627,9 @@ def update_heatmap_1(
                 z=z_values,
                 colorscale=heatmap1_colorscale,
                 showscale = False,
-                hoverinfo='none'
+                hoverinfo='none',
+                zmin=0,
+                zmax=1
             )
 
             heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
@@ -1718,8 +1722,8 @@ def update_heatmap_1(
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
 
-            y_labels = ['Ignore'] + y_labels
-            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
+            # y_labels = ['Ignore'] + y_labels
+            # z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
             heatmap = go.Heatmap(
                 x=x_labels,
@@ -1727,7 +1731,9 @@ def update_heatmap_1(
                 z=z_values,
                 colorscale=heatmap1_colorscale,
                 showscale = False,
-                hoverinfo='none'
+                hoverinfo='none',
+                zmin=0,
+                zmax=1
             )
 
             heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
@@ -1876,8 +1882,8 @@ def update_heatmap_2(
         y_labels = y_labels[:max_frames]
         z_values = z_values[:max_frames]
 
-        y_labels = ['Ignore'] + y_labels
-        z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
+        # y_labels = ['Ignore'] + y_labels
+        # z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
         heatmap = go.Heatmap(
             x=x_labels,
@@ -1885,7 +1891,9 @@ def update_heatmap_2(
             z=z_values,
             colorscale=colorscale_heatmap2,
             showscale = False,
-            hoverinfo='none'
+            hoverinfo='none',
+            zmin=0,
+            zmax=1
         ) 
 
         heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
@@ -2000,8 +2008,8 @@ def update_heatmap_2(
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
 
-            y_labels = ['Ignore'] + y_labels
-            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
+            # y_labels = ['Ignore'] + y_labels
+            # z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
             heatmap = go.Heatmap(
                 x=x_labels,
@@ -2009,7 +2017,9 @@ def update_heatmap_2(
                 z=z_values,
                 colorscale=heatmap2_colorscale,
                 showscale = False,
-                hoverinfo='none'
+                hoverinfo='none',
+                zmin=0,
+                zmax=1
             )
 
             heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )
@@ -2103,8 +2113,8 @@ def update_heatmap_2(
             y_labels = y_labels[:max_frames]
             z_values = z_values[:max_frames]
 
-            y_labels = ['Ignore'] + y_labels
-            z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
+            # y_labels = ['Ignore'] + y_labels
+            # z_values = [[1] + [0 for iii in range(len(z_values[0]) - 1)]] + z_values
 
             heatmap = go.Heatmap(
                 x=x_labels,
@@ -2112,7 +2122,9 @@ def update_heatmap_2(
                 z=z_values,
                 colorscale=heatmap2_colorscale,
                 showscale = False,
-                hoverinfo='none'
+                hoverinfo='none',
+                zmin=0,
+                zmax=1
             )
 
             heatmap_cell_width = ( fixed_heatmap_width - 50 )  / ( len(x_labels) + ( length_of_longest_x_label / 6) )

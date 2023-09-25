@@ -2,11 +2,12 @@ import pandas as pd
 import random
 
 
-def get_obj_list(src, e_obj=5, non_e_obj=5):
+def get_obj_list(src, e_obj=5, non_e_obj=5, total_obj=10, all_random=False):
     df_obj = pd.read_csv(src)
     # print(df_obj)
     obj_exist = []
     obj_not_exists = []
+
     for index, row in df_obj.iterrows():
         obj = list(row)[0]
         if 1 in list(row)[1:]:
@@ -15,6 +16,11 @@ def get_obj_list(src, e_obj=5, non_e_obj=5):
             obj_not_exists.append(obj)
 
     out_obj = []
+
+    all_obj = obj_exist + obj_not_exists
+    if all_random:
+        out_obj = random.sample(all_obj, total_obj)
+        return out_obj
 
     if len(obj_exist) <= e_obj:
         out_obj = out_obj + obj_exist
