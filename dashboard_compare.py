@@ -934,6 +934,7 @@ def auto_select_objects(n_clicks):
     print(obj_list)
     return dash.no_update, obj_list
 
+
 @app.callback(
     Output('heatmap-type-dropdown', 'options'),
     Output('current-second-model', 'data'),
