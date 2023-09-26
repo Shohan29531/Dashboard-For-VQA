@@ -922,8 +922,6 @@ def auto_select_objects(n_clicks):
         obj_list_ref = []
         frm_gvn_lst = False
 
-    print(len(obj_list_ref))
-
     if 0<len(obj_list_ref)<ex_obj+non_ex_obj:
         e_obj = len(obj_list_ref)//2
         non_e_obj = len(obj_list_ref) - e_obj
