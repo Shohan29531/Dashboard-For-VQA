@@ -25,6 +25,11 @@ from utils.obj_select import get_obj_list
 
 PARTICIPANT_NAME = "Test"
 
+non_ex_obj = 5
+ex_obj = 5
+tot_obj = 10
+all_rand_obj = False
+
 
 class ImageViewerThread(threading.Thread):
     
@@ -62,6 +67,8 @@ all_video_files = natsorted(all_video_files)
 
 # available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random']
 available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random']
+reduce_object_model_coco = ['faster_rcnn', 'mask_rcnn', 'yolo_v7']
+reduce_object_model_pfb = ['HRNet_V2']
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
@@ -80,6 +87,12 @@ current_text_not_see = []
 current_rating = 5
 current_text_comments = ''
 current_heatmap_type = 'Objects I See'
+
+coco_common_obj = ['Person', 'Bicycle', 'Car', 'Motorcycle', 'Bus', 'Traffic Signals', 'Fire hydrant', 'Stop sign'
+                   'Bench', 'Dog', 'Chair', 'Vegetation']
+
+pfb_common_obj = ['Road', 'Sidewalk', 'Tree', 'Vegetation', 'Building', 'Fence', 'Traffic Signals',
+                  'Fire hydrant', 'Chair', 'Trash on roads', 'Trash bins', 'Person', 'Car']
 
 observe_typ = 'single'
 
@@ -889,8 +902,37 @@ def get_comparing_result(radio_button_value):
     prevent_initial_call=True
 )
 def auto_select_objects(n_clicks):
+    global current_model, current_model_right
     gt_file = os.path.join(GROUND_TRUTH_DATA, f'{current_file}.csv')
-    obj_list = get_obj_list(gt_file, e_obj=5, non_e_obj=5, total_obj=10, all_random=False)
+
+    l_model = models_to_show[current_model]
+    r_model = models_to_show[current_model_right]
+
+    if (l_model in reduce_object_model_coco and r_model in reduce_object_model_pfb) or \
+            (l_model in reduce_object_model_pfb and r_model in reduce_object_model_coco):
+        obj_list_ref = list(set(coco_common_obj) & set(pfb_common_obj))
+        frm_gvn_lst = True
+    elif l_model in reduce_object_model_coco or r_model in reduce_object_model_coco:
+        obj_list_ref = coco_common_obj
+        frm_gvn_lst = True
+    elif l_model in reduce_object_model_pfb or r_model in reduce_object_model_pfb:
+        obj_list_ref = pfb_common_obj
+        frm_gvn_lst = True
+    else:
+        obj_list_ref = []
+        frm_gvn_lst = False
+
+    print(len(obj_list_ref))
+
+    if 0<len(obj_list_ref)<ex_obj+non_ex_obj:
+        e_obj = len(obj_list_ref)//2
+        non_e_obj = len(obj_list_ref) - e_obj
+    else:
+        e_obj = ex_obj
+        non_e_obj = non_ex_obj
+
+    obj_list = get_obj_list(gt_file, e_obj=e_obj, non_e_obj=non_e_obj, total_obj=all_rand_obj, all_random=False,
+                            from_given_list=frm_gvn_lst, given_list=obj_list_ref)
     print(obj_list)
     return dash.no_update, obj_list
 

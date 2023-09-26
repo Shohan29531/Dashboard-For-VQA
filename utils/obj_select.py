@@ -2,7 +2,7 @@ import pandas as pd
 import random
 
 
-def get_obj_list(src, e_obj=5, non_e_obj=5, total_obj=10, all_random=False):
+def get_obj_list(src, e_obj=5, non_e_obj=5, total_obj=10, all_random=False, from_given_list=False, given_list=[]):
     df_obj = pd.read_csv(src)
     # print(df_obj)
     obj_exist = []
@@ -21,6 +21,10 @@ def get_obj_list(src, e_obj=5, non_e_obj=5, total_obj=10, all_random=False):
     if all_random:
         out_obj = random.sample(all_obj, total_obj)
         return out_obj
+
+    if from_given_list:
+        obj_exist = list(set(obj_exist) & set(given_list))
+        obj_not_exists = list(set(obj_not_exists) & set(given_list))
 
     if len(obj_exist) <= e_obj:
         out_obj = out_obj + obj_exist
