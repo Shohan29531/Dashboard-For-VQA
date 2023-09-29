@@ -2,8 +2,8 @@ import os
 import pandas as pd
 import random
 
-input_dir = '/Users/imrankabir/Downloads/nbn/gt'
-output_dir = '/Users/imrankabir/Downloads/nbn/random'
+input_dir = '/Users/imrankabir/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/GT'
+output_dir = '/Users/imrankabir/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/Random'
 predefined_list_file = 'all_a11y_objects.txt'
 
 random.seed(42)
