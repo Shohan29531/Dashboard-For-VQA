@@ -23,11 +23,11 @@ from copy import deepcopy
 import platform
 from utils.obj_select import get_obj_list
 
-PARTICIPANT_NAME = "Test"
+PARTICIPANT_NAME = "Imran"
 
-non_ex_obj = 5
+non_ex_obj = 3
 ex_obj = 5
-tot_obj = 10
+tot_obj = 8
 all_rand_obj = False
 
 
@@ -92,7 +92,8 @@ coco_common_obj = ['Person', 'Bicycle', 'Car', 'Motorcycle', 'Bus', 'Traffic Sig
                    'Bench', 'Dog', 'Chair', 'Vegetation']
 
 pfb_common_obj = ['Road', 'Sidewalk', 'Tree', 'Vegetation', 'Building', 'Fence', 'Traffic Signals',
-                  'Fire hydrant', 'Chair', 'Trash on roads', 'Trash bins', 'Person', 'Car']
+                  'Fire hydrant', 'Chair', 'Trash on roads', 'Trash bins', 'Person', 'Car', 'Motorcycle',
+                  'Bus']
 
 observe_typ = 'single'
 
@@ -922,6 +923,9 @@ def auto_select_objects(n_clicks):
         obj_list_ref = []
         frm_gvn_lst = False
 
+    obj_list_ref = list(set(coco_common_obj) & set(pfb_common_obj))
+    frm_gvn_lst = True
+
     if 0<len(obj_list_ref)<ex_obj+non_ex_obj:
         e_obj = len(obj_list_ref)//2
         non_e_obj = len(obj_list_ref) - e_obj
@@ -1364,7 +1368,7 @@ def update_heatmap_1(
         longest_x_label = max(x_labels, key=len)
         length_of_longest_x_label = len(longest_x_label)
 
-        y_labels = list(heat_map_file.iloc[:80, 0])  
+        y_labels = list(heat_map_file.iloc[:80, 0])
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()
 
         for i in range(len(z_values)):
@@ -1623,7 +1627,7 @@ def update_heatmap_1(
         longest_x_label = max(x_labels, key=len)
         length_of_longest_x_label = len(longest_x_label)
 
-        y_labels = list(heat_map_file.iloc[:80, 0])  
+        y_labels = list(heat_map_file.iloc[:80, 0])
         z_values = heat_map_file.iloc[:80, 1:].values.tolist()  
 
         for i in range(len(z_values)):
