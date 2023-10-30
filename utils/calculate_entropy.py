@@ -135,46 +135,88 @@ def calculate_chain_entropy(h_m_row, p_g_steady, p_r_steady):
 #     return ent_sum
 
 
-heat_map_rows = [
-    [1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-    [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-    [1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1],
-    [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
-    [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1],
-    [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+heat_map_rows_1 = [
+    [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
 ]
 
+heat_map_rows_1 = [
+    [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+]
+
+heat_map_rows_1 = [
+    [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
+]
+
+heat_map_rows_2 = [
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]
+
+
 ents = []
-frms = [f'{k}' for k in range(len(heat_map_rows[0]))]
+frms = [f'{k}' for k in range(len(heat_map_rows_1[0]))]
 
 out_hm = []
 
-for c, heat_map_row in enumerate(heat_map_rows):
+ent_arr_1 = []
+ent_arr_2 = []
+
+for c, heat_map_row in enumerate(heat_map_rows_1):
+    heat_map_row_2 = heat_map_rows_2[c]
+
+    e_arr = []
+    for i, x in enumerate(heat_map_row):
+        y = heat_map_row_2[i]
+        tmp_lst = [x, y]
+        p_gg, p_rr = get_transition_probabilities(tmp_lst)
+        en, g_ss, r_ss = calculate_entropy(p_gg, p_rr)
+        e_arr.append(en)
+
+    a_e_arr = sum(e_arr) / len(e_arr)
+
+    # print(a_e_arr)
+
     prob_g, prob_r = get_transition_probabilities(heat_map_row)
 
     ent1, g_steady, r_steady = calculate_entropy(prob_g, prob_r)
 
+    print(g_steady, r_steady)
+
     ent2 = calculate_chain_entropy(heat_map_row, g_steady, r_steady)
 
+    prob_g2, prob_r2 = get_transition_probabilities(heat_map_row_2)
+
+    ent1_2, _, _ = calculate_entropy(prob_g2, prob_r2)
+
     # print(ent1, ent2)
-    ents.append(f'row-{c}-entropy = {ent1:.3f}')
+    # ents.append(f'row-{c}-entropy = {ent1:.3f}')
     out_hm.append(heat_map_row)
     ents.append(f'row-{c}-chain_entropy = {ent2:.3f}')
     out_hm.append(heat_map_row)
 
+    if ent1_2 != 0 and ent1_2 != 0:
+        ent_arr_1.append(ent2 * a_e_arr)
+    # if ent1_2 != 0:
+        ent_arr_2.append(ent1_2 * a_e_arr)
 
+
+print(sum(ent_arr_1)/len(ent_arr_1))
+print(sum(ent_arr_2)/len(ent_arr_2))
 fig = px.imshow(out_hm, x=frms, y=ents, text_auto=True)
 fig.update_xaxes(side="bottom")
 fig.update_coloraxes(showscale=False)
