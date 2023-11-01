@@ -143,7 +143,7 @@ heat_map_rows_1 = [
     [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
 ]
 
-heat_map_rows_1 = [
+heat_map_rows_2 = [
     [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -151,7 +151,7 @@ heat_map_rows_1 = [
     [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
-heat_map_rows_1 = [
+heat_map_rows_3 = [
     [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -159,7 +159,7 @@ heat_map_rows_1 = [
     [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
 ]
 
-heat_map_rows_2 = [
+heat_map_rows_4 = [
     [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -169,15 +169,15 @@ heat_map_rows_2 = [
 
 
 ents = []
-frms = [f'{k}' for k in range(len(heat_map_rows_1[0]))]
+frms = [f'{k}' for k in range(len(heat_map_rows_2[0]))]
 
 out_hm = []
 
 ent_arr_1 = []
 ent_arr_2 = []
 
-for c, heat_map_row in enumerate(heat_map_rows_1):
-    heat_map_row_2 = heat_map_rows_2[c]
+for c, heat_map_row in enumerate(heat_map_rows_2):
+    heat_map_row_2 = heat_map_rows_3[c]
 
     e_arr = []
     for i, x in enumerate(heat_map_row):
@@ -204,15 +204,15 @@ for c, heat_map_row in enumerate(heat_map_rows_1):
     ent1_2, _, _ = calculate_entropy(prob_g2, prob_r2)
 
     # print(ent1, ent2)
-    # ents.append(f'row-{c}-entropy = {ent1:.3f}')
-    out_hm.append(heat_map_row)
-    ents.append(f'row-{c}-chain_entropy = {ent2:.3f}')
-    out_hm.append(heat_map_row)
+    ents.append(f'row-{c}-entropy = {ent1_2:.3f}')
+    out_hm.append(heat_map_row_2)
+    # ents.append(f'row-{c}-chain_entropy = {ent2:.3f}')
+    # out_hm.append(heat_map_row)
 
-    if ent1_2 != 0 and ent1_2 != 0:
-        ent_arr_1.append(ent2 * a_e_arr)
+    # if ent1_2 != 0 and ent1_2 != 0:
+    ent_arr_1.append(ent2)
     # if ent1_2 != 0:
-        ent_arr_2.append(ent1_2 * a_e_arr)
+    ent_arr_2.append(ent1_2)
 
 
 print(sum(ent_arr_1)/len(ent_arr_1))
