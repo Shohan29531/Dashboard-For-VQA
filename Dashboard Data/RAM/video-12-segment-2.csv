@@ -31,6 +31,7 @@ Lamp Post,0,0,0,0
 Mail box,0,0,0,0
 Maintenance Vehicle,0,0,0,0
 Motorcycle,0,0,0,0
+Overhanging Tree Branches,0,0,0,0
 Parallel Parking Spot,0,0,0,0
 Paratransit vehicle,0,0,0,0
 Pedestrian Crossing,0,0,0,0
@@ -76,5 +77,5 @@ Water leakage,0,0,0,0
 Water Pipes,0,0,0,0
 Wet surface,0,0,0,0
 Wheelchair,0,0,0,0
-White Cane,0,0,1,0
+White Cane,0,1,0,0
 Yard Waste,0,0,0,0

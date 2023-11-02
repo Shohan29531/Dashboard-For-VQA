@@ -20,7 +20,7 @@ Elevator,0,0,0,0,0
 Escalator,0,0,0,0,0
 Fence,1,1,1,1,1
 Fire hydrant,0,0,0,0,0
-Flush Door,1,0,1,1,1
+Flush Door,0,1,1,1,1
 Foldout Sign,0,0,0,0,0
 Fountain,0,0,0,0,0
 Gate,0,0,0,0,0
@@ -31,10 +31,11 @@ Lamp Post,0,0,0,0,0
 Mail box,0,0,0,0,0
 Maintenance Vehicle,0,0,0,0,0
 Motorcycle,0,0,0,0,0
+Overhanging Tree Branches,0,0,0,0,0
 Parallel Parking Spot,0,0,0,0,0
 Paratransit vehicle,0,0,0,0,0
 Pedestrian Crossing,0,0,0,0,0
-Person,1,1,1,0,1
+Person,1,1,0,1,1
 Person with a disability,0,0,0,0,0
 Pillar,0,0,0,0,0
 Pole,0,0,0,0,0
@@ -51,7 +52,7 @@ Sidewalk,0,0,0,0,0
 Sidewalk pits,0,0,0,0,0
 Sign,0,0,0,0,0
 Sign Post,0,0,0,0,0
-Sloped Driveway,1,0,0,0,0
+Sloped Driveway,0,1,0,0,0
 Slopped Curb,0,0,0,0,0
 Snow,0,0,0,0,0
 Stairs,0,0,0,0,0

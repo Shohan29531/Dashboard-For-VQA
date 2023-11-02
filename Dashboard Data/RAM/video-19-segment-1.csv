@@ -5,7 +5,7 @@ Barrier Stump,0,0,0
 Bench,0,0,0
 Bicycle,0,0,0
 Bridge,0,0,0
-Building,1,1,0
+Building,0,1,1
 Bus,0,0,0
 Bus Stop,0,0,0
 Car,0,0,0
@@ -31,6 +31,7 @@ Lamp Post,0,0,0
 Mail box,0,0,0
 Maintenance Vehicle,0,0,0
 Motorcycle,0,0,0
+Overhanging Tree Branches,0,0,0
 Parallel Parking Spot,0,0,0
 Paratransit vehicle,0,0,0
 Pedestrian Crossing,0,0,0

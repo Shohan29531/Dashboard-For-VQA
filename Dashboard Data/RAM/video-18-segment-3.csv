@@ -31,6 +31,7 @@ Lamp Post,0,0,0,0,0,0,0
 Mail box,0,0,0,0,0,0,0
 Maintenance Vehicle,0,0,0,0,0,0,0
 Motorcycle,0,0,0,0,0,0,0
+Overhanging Tree Branches,0,0,0,0,0,0,0
 Parallel Parking Spot,0,0,0,0,0,0,0
 Paratransit vehicle,0,0,0,0,0,0,0
 Pedestrian Crossing,0,0,0,0,0,0,0
@@ -47,7 +48,7 @@ Road,0,0,0,0,0,0,0
 Road Divider,0,0,0,0,0,0,0
 Road Shoulder,0,0,0,0,0,0,0
 Roadside Parking,0,0,0,0,0,0,0
-Sidewalk,0,1,0,0,0,0,0
+Sidewalk,0,0,1,0,0,0,0
 Sidewalk pits,0,0,0,0,0,0,0
 Sign,0,0,0,0,0,0,0
 Sign Post,0,0,0,0,0,0,0
@@ -61,7 +62,7 @@ Table,0,0,0,0,0,0,0
 Tactile Paving,0,0,0,0,0,0,0
 Traffic Signals,0,0,0,0,0,0,0
 Train Platform,0,0,0,0,0,0,0
-Train Tracks,0,0,0,0,0,1,1
+Train Tracks,1,0,0,0,1,0,0
 Trash bins,0,0,0,0,0,0,0
 Trash on roads,0,0,0,0,0,0,0
 Tree,0,0,0,0,0,0,0

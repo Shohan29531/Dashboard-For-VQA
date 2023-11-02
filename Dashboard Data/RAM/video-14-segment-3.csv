@@ -13,12 +13,12 @@ Chair,0,0,0,0,0,0,0
 Closed Sidewalk,0,0,0,0,0,0,0
 Counter,0,0,0,0,0,0,0
 Crosswalk,0,0,0,0,0,0,0
-Curb,1,1,0,0,1,1,1
+Curb,0,0,1,1,1,1,1
 Dog,0,0,0,0,0,0,0
 Driveway(flat),0,0,0,0,0,0,0
 Elevator,0,0,0,0,0,0,0
 Escalator,0,0,0,0,0,0,0
-Fence,0,0,0,1,0,0,0
+Fence,0,1,0,0,0,0,0
 Fire hydrant,0,0,0,0,0,0,0
 Flush Door,0,0,0,0,0,0,0
 Foldout Sign,0,0,0,0,0,0,0
@@ -31,6 +31,7 @@ Lamp Post,0,0,0,0,0,0,0
 Mail box,0,0,0,0,0,0,0
 Maintenance Vehicle,0,0,0,0,0,0,0
 Motorcycle,0,0,0,0,0,0,0
+Overhanging Tree Branches,0,0,0,0,0,0,0
 Parallel Parking Spot,0,0,0,0,0,0,0
 Paratransit vehicle,0,0,0,0,0,0,0
 Pedestrian Crossing,0,0,0,0,0,0,0
@@ -43,14 +44,14 @@ Push button,0,0,0,0,0,0,0
 Railing,0,0,0,0,0,0,0
 Raised Entryway,0,0,0,0,0,0,0
 Retaining Wall,0,0,0,0,0,0,0
-Road,0,1,0,0,1,1,1
+Road,0,0,0,1,1,1,1
 Road Divider,0,0,0,0,0,0,0
 Road Shoulder,0,0,0,0,0,0,0
 Roadside Parking,0,0,0,0,0,0,0
 Sidewalk,1,1,1,1,1,1,1
 Sidewalk pits,0,0,0,0,0,0,0
 Sign,0,0,0,0,0,0,0
-Sign Post,0,0,0,0,1,1,1
+Sign Post,0,0,0,1,1,1,0
 Sloped Driveway,0,0,0,0,0,0,0
 Slopped Curb,0,0,0,0,0,0,0
 Snow,0,0,0,0,0,0,0
@@ -76,5 +77,5 @@ Water leakage,0,0,0,0,0,0,0
 Water Pipes,0,0,0,0,0,0,0
 Wet surface,0,0,0,0,0,0,0
 Wheelchair,0,0,0,0,0,0,0
-White Cane,0,1,1,0,0,0,0
+White Cane,1,0,0,0,0,0,1
 Yard Waste,0,0,0,0,0,0,0

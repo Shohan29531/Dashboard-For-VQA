@@ -5,7 +5,7 @@ Barrier Stump,0,0,0,0,0,0,0,0,0,0
 Bench,0,0,0,0,0,0,0,0,0,0
 Bicycle,0,0,0,0,0,0,0,0,0,0
 Bridge,0,0,0,0,0,0,0,0,0,0
-Building,0,0,1,0,0,0,0,1,0,0
+Building,0,1,0,0,0,0,1,0,0,0
 Bus,0,0,0,0,0,0,0,0,0,0
 Bus Stop,0,0,0,0,0,0,0,0,0,0
 Car,0,0,0,0,0,0,0,0,0,0
@@ -31,10 +31,11 @@ Lamp Post,0,0,0,0,0,0,0,0,0,0
 Mail box,0,0,0,0,0,0,0,0,0,0
 Maintenance Vehicle,0,0,0,0,0,0,0,0,0,0
 Motorcycle,0,0,0,0,0,0,0,0,0,0
+Overhanging Tree Branches,0,0,0,0,0,0,0,0,0,0
 Parallel Parking Spot,0,0,0,0,0,0,0,0,0,0
 Paratransit vehicle,0,0,0,0,0,0,0,0,0,0
 Pedestrian Crossing,0,0,0,0,0,0,0,0,0,0
-Person,1,1,1,1,1,1,1,0,1,1
+Person,1,0,1,1,1,1,1,1,1,1
 Person with a disability,0,0,0,0,0,0,0,0,0,0
 Pillar,0,0,0,0,0,0,0,0,0,0
 Pole,0,0,0,0,0,0,0,0,0,0
@@ -43,7 +44,7 @@ Push button,0,0,0,0,0,0,0,0,0,0
 Railing,0,0,0,0,0,0,0,0,0,0
 Raised Entryway,0,0,0,0,0,0,0,0,0,0
 Retaining Wall,0,0,0,0,0,0,0,0,0,0
-Road,0,1,1,1,0,1,1,1,1,1
+Road,1,1,1,0,1,1,1,1,0,1
 Road Divider,0,0,0,0,0,0,0,0,0,0
 Road Shoulder,0,0,0,0,0,0,0,0,0,0
 Roadside Parking,0,0,0,0,0,0,0,0,0,0
@@ -62,9 +63,9 @@ Tactile Paving,0,0,0,0,0,0,0,0,0,0
 Traffic Signals,0,0,0,0,0,0,0,0,0,0
 Train Platform,0,0,0,0,0,0,0,0,0,0
 Train Tracks,0,0,0,0,0,0,0,0,0,0
-Trash bins,0,0,0,0,0,0,0,1,0,0
+Trash bins,0,1,0,0,0,0,0,0,0,0
 Trash on roads,0,0,0,0,0,0,0,0,0,0
-Tree,0,0,0,0,0,0,0,0,0,1
+Tree,0,0,1,0,0,0,0,0,0,0
 Turnstile,0,0,0,0,0,0,0,0,0,0
 Uncontrolled Crossing,0,0,0,0,0,0,0,0,0,0
 Uneven Stairs,0,0,0,0,0,0,0,0,0,0

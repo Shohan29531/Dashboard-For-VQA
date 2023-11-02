@@ -31,6 +31,7 @@ Lamp Post,0,0,0
 Mail box,0,0,0
 Maintenance Vehicle,0,0,0
 Motorcycle,0,0,0
+Overhanging Tree Branches,0,0,0
 Parallel Parking Spot,0,0,0
 Paratransit vehicle,0,0,0
 Pedestrian Crossing,0,0,0
@@ -51,7 +52,7 @@ Sidewalk,1,1,1
 Sidewalk pits,0,0,0
 Sign,0,0,0
 Sign Post,0,0,0
-Sloped Driveway,1,0,1
+Sloped Driveway,0,1,1
 Slopped Curb,0,0,0
 Snow,0,0,0
 Stairs,0,0,0
