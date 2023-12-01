@@ -51,7 +51,7 @@ class ImageViewerThread(threading.Thread):
 
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
-GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
+GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT_N')
 IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
 LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
 
