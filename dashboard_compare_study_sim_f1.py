@@ -25,8 +25,8 @@ from utils.obj_select import get_obj_list
 
 PARTICIPANT_NAME = "Imran"
 
-non_ex_obj = 3
-ex_obj = 5
+non_ex_obj = 0
+ex_obj = 8
 tot_obj = 8
 all_rand_obj = False
 
@@ -66,9 +66,9 @@ all_video_files = natsorted(all_video_files)
 
 
 # available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random']
-available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random']
-reduce_object_model_coco = ['faster_rcnn', 'mask_rcnn', 'yolo_v7']
-reduce_object_model_pfb = ['HRNet_V2']
+available_models = ['BLIP', 'Model-1', 'Model-2', 'Model-3']
+reduce_object_model_coco = ['BLIP', 'Model-1', 'Model-2', 'Model-3']
+reduce_object_model_pfb = ['BLIP', 'Model-1', 'Model-2', 'Model-3']
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
@@ -79,7 +79,7 @@ COLUMNS = ['timestamp', 'video', 'model left', 'model right', 'winner model', 's
 # default values
 current_model = 'Model-0' #'GPV-1'
 current_model_right = ""
-current_file = 'video-1-segment-5' # 'video-1-segment-5'
+current_file = 'video-1-segment-5'  # 'video-1-segment-5'
 # current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
 # current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
 current_text_see = []
@@ -88,12 +88,9 @@ current_rating = 5
 current_text_comments = ''
 current_heatmap_type = 'Objects I See'
 
-coco_common_obj = ['Person', 'Bicycle', 'Car', 'Motorcycle', 'Bus', 'Traffic Signals', 'Fire hydrant', 'Stop sign'
-                   'Bench', 'Dog', 'Chair', 'Vegetation']
+coco_common_obj = ['Vegetation', 'Traffic Signals', 'Fire hydrant', 'Chair', 'Person', 'Car', 'Motorcycle', 'Bus']
 
-pfb_common_obj = ['Road', 'Sidewalk', 'Tree', 'Vegetation', 'Building', 'Fence', 'Traffic Signals',
-                  'Fire hydrant', 'Chair', 'Trash on roads', 'Trash bins', 'Person', 'Car', 'Motorcycle',
-                  'Bus']
+pfb_common_obj = ['Vegetation', 'Traffic Signals', 'Fire hydrant', 'Chair', 'Person', 'Car', 'Motorcycle', 'Bus']
 
 observe_typ = 'single'
 
@@ -141,14 +138,10 @@ click_log_style = {
 # }
 
 model_to_compare = {
-    'GPV-1': ['BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
-    'BLIP': ['faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
-    'faster_rcnn': ['mask_rcnn', 'yolo_v7', 'HRNet_V2', 'Random'],
-    'mask_rcnn': ['yolo_v7', 'HRNet_V2', 'Random'],
-    'yolo_v7': ['HRNet_V2', 'Random'],
-    'HRNet_V2': ['Random'],
-    'GT': [],
-    'Random': []
+    'BLIP': ['Model-1', 'Model-2', 'Model-3'],
+    'Model-1': ['Model-2', 'Model-3'],
+    'Model-2': ['Model-3'],
+    'Model-3': []
 }
 
 # 'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
@@ -1391,12 +1384,14 @@ def update_heatmap_1(
 
         y_labels = y_labels_filtered
         z_values = z_values_filtered
+
+        print(">>>>", y_labels)
         
         ## for the "i see" heatmap (left one), 1 is agreement
         ## because, 1 means the model sees, which is exactly what my view is
         colorscale_heatmap1 = [[0, color_disagreement], [1, color_agreement],]
 
-        x_labels = [label.replace('Frame-', '') for label in x_labels]
+        x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
         x_labels = x_labels[:max_frames]
         y_labels = y_labels[:max_frames]
@@ -1656,7 +1651,7 @@ def update_heatmap_1(
 
             heatmap1_colorscale = [[0, color_disagreement], [1, color_agreement],]
             
-            x_labels = [label.replace('Frame-', '') for label in x_labels]
+            x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
             x_labels = x_labels[:max_frames]
             y_labels = y_labels[:max_frames]
@@ -1760,7 +1755,7 @@ def update_heatmap_1(
 
             heatmap1_colorscale = [[0, color_agreement], [1, color_disagreement],]
             
-            x_labels = [label.replace('Frame-', '') for label in x_labels]
+            x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
             x_labels = x_labels[:max_frames]
             y_labels = y_labels[:max_frames]
@@ -1920,7 +1915,7 @@ def update_heatmap_2(
         ## because, 0 means the model does not see, which is exactly what my view is
         colorscale_heatmap2 = [[0, color_agreement],[1, color_disagreement],]
         
-        x_labels = [label.replace('Frame-', '') for label in x_labels]
+        x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
         x_labels = x_labels[:max_frames]
         y_labels = y_labels[:max_frames]
@@ -2046,7 +2041,7 @@ def update_heatmap_2(
 
             heatmap2_colorscale = [[0, color_disagreement], [1, color_agreement],]
             
-            x_labels = [label.replace('Frame-', '') for label in x_labels]
+            x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
             x_labels = x_labels[:max_frames]
             y_labels = y_labels[:max_frames]
@@ -2151,7 +2146,7 @@ def update_heatmap_2(
 
             heatmap2_colorscale = [[0, color_agreement], [1, color_disagreement],]
             
-            x_labels = [label.replace('Frame-', '') for label in x_labels]
+            x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
             x_labels = x_labels[:max_frames]
             y_labels = y_labels[:max_frames]
