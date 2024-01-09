@@ -1,0 +1,9 @@
+,Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11,frame_12,frame_13,frame_14
+0,bus,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,car,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+2,chair,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+3,fire hydrant,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+4,motorcycle,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+5,person,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+6,traffic signals,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+7,vegetation,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1
