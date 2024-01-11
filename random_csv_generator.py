@@ -2,8 +2,8 @@ import os
 import pandas as pd
 import random
 
-input_dir = '/Users/imrankabir/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/GT'
-output_dir = '/Users/imrankabir/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/Random'
+input_dir = '/Users/ibk5106/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/GT_N'
+output_dir = '/Users/ibk5106/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/Random'
 predefined_list_file = 'all_a11y_objects.txt'
 
 random.seed(42)
@@ -27,6 +27,7 @@ for xlsx_file in xlsx_files:
 
     for col in new_column_names[1:]:
         df[col] = [random.choice([0, 1]) for _ in range(len(df))]
+        # df[col] = [1 for _ in range(len(df))]
 
     df.to_csv(csv_path, index=False)
 
