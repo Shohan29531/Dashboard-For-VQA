@@ -426,7 +426,7 @@ top_row = html.Div(
                 value= current_model,
                 clearable=False,
                 style={'border-color': 'gray'}            
-            )], className='row'
+            )], className='five columns'
         ),
 
 
@@ -443,7 +443,7 @@ top_row = html.Div(
                 options=[{'label': model, 'value': model} for model in model_right_models],
                 placeholder='Select Another Model to Comapre',
                 value= None,
-                style={'border-color': 'gray', 'display': 'none'}
+                style={'border-color': 'gray'}
             )
             ], className='five columns'
         ),
