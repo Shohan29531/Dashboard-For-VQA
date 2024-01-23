@@ -92,12 +92,28 @@ completed_videos = []
 
 heatmap_1_clicks = []
 
+temp = {'Frame': [str(i) for i in range(max_frames)],
+                'Number of Modifications': [i for i in range(max_frames)]}
+
+bargraph_data = pd.DataFrame(temp)
+
+
+unchecked_image_ids = []
+
 present_model = ''
 present_selected_file = ''
 first_test = True
 last_entry = []
 
 click_log_style = {
+                        'width': '100%',
+                        'height': '230px',
+                        'margin-top': '33pt',
+                        'fontSize': '12px',
+                        'color': 'gray',
+                }
+
+bargraph_style = {
                         'width': '100%',
                         'height': '230px',
                         'margin-top': '33pt',
@@ -530,7 +546,17 @@ heatmaps = html.Div(
                     style = click_log_style,
                     readOnly=True,
                 )
-            ], className='four columns'
+            ], className='four columns',
+            style={'display': 'none'}
+        ),
+
+        html.Div(
+            [
+                dcc.Graph(
+                    id='bar-graph',
+                    style = bargraph_style
+                ),
+            ], className = 'four columns'
         ),
 
 
@@ -623,7 +649,7 @@ image_map = html.Div(
     [
         html.Div(
             id='image-container', 
-            style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap'},
+            style={'display': 'flex', 'justify-content': 'center', 'flexWrap': 'wrap', 'margin': '0'},
             children=[],
             className='row',  
         ),
@@ -947,7 +973,15 @@ def show_hide_click_log(clickData):
     return {'display': 'none'}
     
 
-
+@app.callback(
+    Output('bar-graph', 'style'), 
+    Input('heatmap-1', 'clickData')
+)
+def show_hide_click_log(clickData):
+    ## needs update
+    if clickData:
+        return bargraph_style
+    return {'display': 'none'}
 
 
 @app.callback(
@@ -1055,50 +1089,68 @@ def open_custom_modal_from_button(selected_option,
 
 
 
-def get_image_card(image_name, frame_number, is_selected):
+def get_image_card(image_name, frame_number, is_selected, is_unchecked):
     image_path = os.path.join(images_source_folder, image_name)
     encoded_image = get_encoded_image(image_name)
 
     border_style = '5px solid yellow' if is_selected else 'none'
 
+    action_button_style = {'position': 'absolute', 'top': '0', 'right': '0', 'width': '100%', 'height': '100%', 'margin': '0', 'padding': '0', 'border': 'none', 'background': 'transparent'} 
+
+    if is_unchecked:
+        action_button_style['display'] = 'none'
+
     action_button = dbc.Button(
         "",
-        color="danger",  
+        color="",  
         size="sm",  
         id={"type": "action-button", "index": frame_number},
         n_clicks=0,
-        style={'position': 'absolute', 'top': '0', 'right': '0', 'width': '100%', 'height': '100%', 'margin': '0', 'padding': '0', 'border': 'none', 'background': 'transparent'} 
+        style=action_button_style
     )
 
-    frame_number_label = html.Label(
-        frame_number,
-        style={
-            'position': 'absolute',
-            'top': '0px',
-            'left': '0px',
-            'color': 'blue',
-            'background-color': 'rgb(232, 237, 235)',
-            'padding': '2px',
-            'font-weight': 'bold',
-            'font-size': '16px' 
-        }
+    # frame_number_label = html.Label(
+    #     frame_number,
+    #     style={
+    #         'position': 'absolute',
+    #         'top': '0px',
+    #         'left': '0px',
+    #         'color': 'blue',
+    #         'background-color': 'rgb(232, 237, 235)',
+    #         'padding': '2px',
+    #         'font-weight': 'bold',
+    #         'font-size': '16px' 
+    #     }
+    # )
+    
+    overlay_div = html.Div(
+        style={'position': 'absolute', 'width': '100%', 'height': '100%', 'background-color': 'rgba(0, 0, 0, 0.75)' if is_unchecked else 'transparent', 'z-index': 1, 'top': '-0%'}
     )
 
 
     image_div = html.Div(
         [
             dbc.CardImg(src=encoded_image, style={'width': '100%'}),
+            overlay_div,
             action_button,
-            frame_number_label,
+            # frame_number_label,
         ],
         style={'position': 'relative', 'width': '100%', 'height': '100%'}
     )
 
+    checkbox = dcc.Checklist(
+        id={'type': 'image-checkbox', 'index': frame_number},
+        options=[{'label': '', 'value': frame_number}],
+        value=[None if is_unchecked else frame_number],
+        style={'position': 'relative','left': '50%', 'margin-top': '5px'}
+        )
+
     card = dbc.Card(
         [
-            image_div
+            image_div,
+            checkbox,
         ],
-        style={"width": "20rem", 'border': border_style, 'margin': '5px'},
+        style={"width": "17rem", 'border': border_style, 'margin': '0px'},
         id={"type": "image-card", "index": frame_number}
     )
     return card
@@ -1113,13 +1165,15 @@ def get_image_card(image_name, frame_number, is_selected):
     Input('heatmap-1', 'hoverData'),
     Input('heatmap-2', 'hoverData'),
     [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
+    [Input({'type': 'image-checkbox', 'index': ALL}, 'value')],
     State({"type": "image-card", "index": ALL}, "id")
 )
 def update_image_container(
     selected_option,
     hoverData_heatmap1,
     hoverData_heatmap2,
-    click_timestamps, 
+    click_timestamps,
+    checkbox_id, 
     image_card_id
 ):
 
@@ -1128,9 +1182,21 @@ def update_image_container(
         print("Trigger:" , trigger)
 
     x_coord, y_coord = None, None
+    global unchecked_image_ids
     if trigger != 'heatmap-1' and trigger != 'heatmap-2':
         if selected_option != None and image_card_id != []:
-            print("For image container click.")
+
+            if trigger['type'] == 'image-checkbox':
+                print(trigger["index"])
+                print("For image checkbox click.")
+                if int(trigger["index"]) in unchecked_image_ids:
+                    unchecked_image_ids.remove(int(trigger["index"]))
+                else:
+                    unchecked_image_ids.append(int(trigger["index"]))    
+
+            elif trigger['type'] == 'action-button':
+                print("For image container click.")
+            
             latest_click_index = None
             latest_click_time = 0
             for i, timestamp in enumerate(click_timestamps):
@@ -1157,21 +1223,41 @@ def update_image_container(
             for image_name in filtered_images:
                 frame_number = extract_frame_number(image_name)
                 if frame_number == chosen_frame_number:
-                    image_element = get_image_card(image_name, frame_number, True)
-                    print(image_name)
-                    pop_img = Image.open(
-                        os.path.join(
-                            images_source_folder,
-                            image_name
+                    if frame_number in unchecked_image_ids:  
+                        image_element = get_image_card(image_name, frame_number, True, True)
+                        print(image_name)
+                        pop_img = Image.open(
+                            os.path.join(
+                                images_source_folder,
+                                image_name
+                            )
                         )
-                    )
-                    ImageViewerThread(image=os.path.join(
-                            images_source_folder,
-                            image_name
-                        )).start()
-                    # pop_img.show(title=f"Image {frame_number}")
+                        ImageViewerThread(image=os.path.join(
+                                images_source_folder,
+                                image_name
+                            )).start()
+                        # pop_img.show(title=f"Image {frame_number}")
+                    else:
+                        image_element = get_image_card(image_name, frame_number, True, False)
+                        print(image_name)
+                        pop_img = Image.open(
+                            os.path.join(
+                                images_source_folder,
+                                image_name
+                            )
+                        )
+                        ImageViewerThread(image=os.path.join(
+                                images_source_folder,
+                                image_name
+                            )).start()
+                        # pop_img.show(title=f"Image {frame_number}")
+
                 else:
-                    image_element = get_image_card(image_name, frame_number, False)
+                    if frame_number in unchecked_image_ids:
+                        image_element = get_image_card(image_name, frame_number, False, True)
+                    else:
+                        image_element = get_image_card(image_name, frame_number, False, False)     
+
 
                 image_elements.append(image_element)
 
@@ -1207,10 +1293,16 @@ def update_image_container(
             
             frame_number = extract_frame_number(image_name)
 
-            if x_coord is not None and int(frame_number) == int(x_coord):
-                image_element = get_image_card(image_name, frame_number, True)
+            if frame_number in unchecked_image_ids: 
+                if x_coord is not None and int(frame_number) == int(x_coord):
+                    image_element = get_image_card(image_name, frame_number, True, True)
+                else:
+                    image_element = get_image_card(image_name, frame_number, False, True)
             else:
-                image_element = get_image_card(image_name, frame_number, False)
+                if x_coord is not None and int(frame_number) == int(x_coord):
+                    image_element = get_image_card(image_name, frame_number, True, False)
+                else:
+                    image_element = get_image_card(image_name, frame_number, False, False)        
 
             image_elements.append(image_element)
 
@@ -1245,6 +1337,7 @@ def flip (val):
 @app.callback(
     Output('heatmap-1', 'figure'),
     Output('heatmap-1-clicks-textarea', 'value'),
+    Output('bar-graph', 'figure'),
     Input('model-dropdown', 'value'), 
     Input('video-dropdown', 'value'),  
     Input('heatmap-type-dropdown', 'value'),
@@ -1280,7 +1373,7 @@ def update_heatmap_1(
 
     print(n_clicks, model, selected_file, selected_heatmap_type, second_model)
     
-    if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ) and (second_model == None or second_model == ''):
+    if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ) and (second_model == None or second_model == ''):        
 
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
         heat_map_file = pd.read_csv(file_path)
@@ -1382,11 +1475,17 @@ def update_heatmap_1(
         global present_selected_file
         global heatmap_1_clicks
         global last_entry
-
+        global unchecked_image_ids
 
         if model != present_model or selected_file != present_selected_file:
             heatmap_1_clicks = []
+            temp = {'Frame': [str(i) for i in range(max_frames)],
+                'Number of Modifications': [0 for i in range(max_frames)]}
+
+            global bargraph_data
+            bargraph_data = pd.DataFrame(temp)
             present_model = model 
+            unchecked_image_ids = []
             present_selected_file = selected_file
 
         if heatmap_clickData and 'points' in heatmap_clickData and heatmap_clickData['points']:
@@ -1395,6 +1494,8 @@ def update_heatmap_1(
             x_coord = clicked_point['x']
             y_coord = clicked_point['y']
             z_coord = clicked_point['z']
+
+            print(x_coord)
             
             candidate_entry = [y_coord, x_coord, flip(z_coord)]
 
@@ -1412,9 +1513,11 @@ def update_heatmap_1(
                     present_model = model 
                     present_selected_file = selected_file
                     first_test = False
+                    bargraph_data.loc[bargraph_data['Frame'] == x_coord, 'Number of Modifications'] += 1
                 else:
                     if latest_entry[2] != candidate_entry[2]:
                         heatmap_1_clicks.append(candidate_entry)
+                        bargraph_data.loc[bargraph_data['Frame'] == x_coord, 'Number of Modifications'] += 1
                         last_entry = candidate_entry
             
 
@@ -1442,7 +1545,7 @@ def update_heatmap_1(
         )
 
         heat_map = go.Figure(data=heatmap, layout=layout)
-
+        heat_map.update_layout(xaxis=dict(ticks='', showticklabels=False))
 
         filtered_heatmap_1_clicks = []
 
@@ -1461,13 +1564,19 @@ def update_heatmap_1(
             if not is_duplicate:
                 filtered_heatmap_1_clicks.append(entry1)
 
+
         size_text = f"Number of Modifications: {len(filtered_heatmap_1_clicks)}"
 
         log_text = '\n'.join([f"-- In Frame {entry[1]}, you set {entry[0]} to {'Visible' if entry[2] == 1 else 'Invisible'}" for entry in heatmap_1_clicks])
 
         final_log_text = f"{size_text}\n------------------------------------\n{log_text}"
 
-        return heat_map, final_log_text
+        bargraph = px.bar(bargraph_data, x='Frame', y='Number of Modifications', title='Modification Summary', height=300, width=550)
+        bargraph.update_layout(title_x=0.5)
+        bargraph.update_traces(marker_color='#A9A9A9')
+
+
+        return heat_map, final_log_text, bargraph
     
        
     if n_clicks > 0 and model and selected_file and selected_heatmap_type and second_model:
@@ -1685,7 +1794,7 @@ def update_heatmap_1(
 
             return heat_map            
 
-    return {}, ''
+    return {}, '', {}
 
 
 @app.callback(
