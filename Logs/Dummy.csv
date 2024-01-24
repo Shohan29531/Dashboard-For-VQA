@@ -1,0 +1,4 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode
+2024-01-23::17:33:48,video-1-segment-5,Random,,,"Person,White Cane,Car,Road",,5,,single
+2024-01-23::17:50:58,video-2-segment-1,GPV-1,,,"Person,White Cane,Car,Road",,5,,single
+2024-01-24::12:22:38,video-3-segment-2,BLIP,N/A,N/A,"Person,White Cane,Car,Road",,5,,single
