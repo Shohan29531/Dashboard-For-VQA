@@ -20,20 +20,25 @@ import numpy as np
 import plotly.express as px
 import csv
 from copy import deepcopy
-
+import platform
 
 PARTICIPANT_NAME = "Dummy"
 
 
 class ImageViewerThread(threading.Thread):
+    
     def __init__(self, image):
         super().__init__()
         self.image = image
         threading.Thread.__init__(self)
 
     def run(self):
-        # self.image.show(title="image")
-        os.system(f'open "{self.image}"')
+        os_name = platform.system()
+        print(os_name)
+        if os_name == "Windows":
+            os.system(f'start "" "{self.image}"')
+        else:
+            os.system(f'open "{self.image}"')  
 
 
 #  arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
@@ -1224,32 +1229,37 @@ def update_image_container(
                 if frame_number == chosen_frame_number:
                     if frame_number in unchecked_image_ids:  
                         image_element = get_image_card(image_name, frame_number, True, True)
-                        # print(image_name)
-                        # pop_img = Image.open(
-                        #     os.path.join(
-                        #         images_source_folder,
-                        #         image_name
-                        #     )
-                        # )
-                        # ImageViewerThread(image=os.path.join(
-                        #         images_source_folder,
-                        #         image_name
-                        #     )).start()
-                        # pop_img.show(title=f"Image {frame_number}")
+
+                        print(image_name)
+
+                        pop_img = Image.open(
+                            os.path.join(
+                                images_source_folder,
+                                image_name
+                            )
+                        )
+                        ImageViewerThread(image=os.path.join(
+                                images_source_folder,
+                                image_name
+                            )).start()
+                        pop_img.show(title=f"Image {frame_number}")
+
                     else:
                         image_element = get_image_card(image_name, frame_number, True, False)
-                        # print(image_name)
-                        # pop_img = Image.open(
-                        #     os.path.join(
-                        #         images_source_folder,
-                        #         image_name
-                        #     )
-                        # )
-                        # ImageViewerThread(image=os.path.join(
-                        #         images_source_folder,
-                        #         image_name
-                        #     )).start()
-                        # pop_img.show(title=f"Image {frame_number}")
+
+                        print(image_name)
+                        
+                        pop_img = Image.open(
+                            os.path.join(
+                                images_source_folder,
+                                image_name
+                            )
+                        )
+                        ImageViewerThread(image=os.path.join(
+                                images_source_folder,
+                                image_name
+                            )).start()
+                        pop_img.show(title=f"Image {frame_number}")
 
                 else:
                     if frame_number in unchecked_image_ids:
