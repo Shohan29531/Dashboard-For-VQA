@@ -21,6 +21,8 @@ import plotly.express as px
 import csv
 from copy import deepcopy
 import platform
+from utils.obj_select import get_obj_list
+
 
 PARTICIPANT_NAME = "Dummy"
 
@@ -81,7 +83,7 @@ observe_typ = 'single'
 best_model_side = ''
 
 num_frames = 100
-max_frames = 12
+max_frames = 16
 heatmap_highlight_line_width = 5
 
 fixed_heatmap_height = 350
@@ -149,6 +151,25 @@ model_to_compare = {
 
 # 'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
 models_to_show, reverse_model_map = [], []
+
+
+
+coco_common_obj = ['Person', 'Bicycle', 'Car', 'Motorcycle', 'Bus', 'Traffic Signals', 'Fire hydrant', 'Stop sign'
+                   'Bench', 'Dog', 'Chair', 'Vegetation']
+
+pfb_common_obj = ['Road', 'Sidewalk', 'Tree', 'Vegetation', 'Building', 'Fence', 'Traffic Signals',
+                  'Fire hydrant', 'Chair', 'Trash on roads', 'Trash bins', 'Person', 'Car', 'Motorcycle',
+                  'Bus']
+
+
+reduce_object_model_coco = ['faster_rcnn', 'mask_rcnn', 'yolo_v7']
+reduce_object_model_pfb = ['HRNet_V2']
+
+non_ex_obj = 3
+ex_obj = 5
+tot_obj = 8
+all_rand_obj = False
+
 
 
 def randomize_data():
@@ -438,14 +459,14 @@ top_row = html.Div(
                 value= current_model,
                 clearable=False,
                 style={'border-color': 'gray'}            
-            )], className='row'
+            )], className='five columns'
         ),
 
 
-        html.Div([
-				# empty								
-			], className = 'one column'
-        ),
+        # html.Div([
+		# 		# empty								
+		# 	], className = 'one column'
+        # ),
 
 
         html.Div([
@@ -457,7 +478,7 @@ top_row = html.Div(
                 value= None,
                 style={'border-color': 'gray', 'display': 'none'}
             )
-            ], className='five columns'
+            ], className='one column'
         ),
         
         html.Div([
@@ -468,7 +489,7 @@ top_row = html.Div(
 
                 style={'border-color': 'gray'}            
             )],
-            className='row'
+            className='five columns'
         ),
 
         ## select the types of objects for which you wish to see the heatmaps 
@@ -485,18 +506,18 @@ top_row = html.Div(
 
 
         
-        # I see text area
-        html.Div([
-            dcc.Markdown(children='*Objects I **see** in the video:*', 
-                         id='I-see-markdown'),
-            dcc.Dropdown(
-                id='I-see',
-                options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
-                multi=True,
-                value=current_text_see,
-                placeholder='Things I see',
-            )
-        ], id= 'I-see-container', className='eleven columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
+        # # I see text area
+        # html.Div([
+        #     dcc.Markdown(children='*Objects I **see** in the video:*', 
+        #                  id='I-see-markdown'),
+        #     dcc.Dropdown(
+        #         id='I-see',
+        #         options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
+        #         multi=True,
+        #         value=current_text_see,
+        #         placeholder='Things I see',
+        #     )
+        # ], id= 'I-see-container', className='four columns', style={'background-color': 'rgba(6, 200, 115, 0.5)'}),
 
 
         # I don't see text area
@@ -530,29 +551,36 @@ top_row = html.Div(
 
 heatmaps = html.Div(
     [
+
+        # I see text area
+        html.Div(
+            [
+                dcc.Markdown(children='**Probable Objects** in the video:', id='I-see-markdown'),
+                dcc.Dropdown(
+                    id='I-see',
+                    options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
+                    multi=True,
+                    value=current_text_see,
+                    placeholder='Things I see',
+                    style={'height': '150px'}
+                )
+            ],
+            id='I-see-container',
+            className='three columns',
+            style={'background-color': 'rgba(255, 255, 255, 1)'}
+        ),
+
         html.Div(
             [        
                 dcc.Graph(
                     id='heatmap-1',
                     config={'displayModeBar': False}
                 ),                 
-            ], className='five columns', style={'margin-right': 'auto'}
+            ], className='four columns', style={'margin-right': 'auto'}
         ),
 
-        html.Div([], className='one column'),
+        # html.Div([], className='one column'),
 
-        html.Div(
-            [
-                html.Div(id='heatmap-1-clicks-output'),
-                dcc.Textarea(
-                    id='heatmap-1-clicks-textarea',
-                    value='',
-                    style = click_log_style,
-                    readOnly=True,
-                )
-            ], className='four columns',
-            style={'display': 'none'}
-        ),
 
         html.Div(
             [
@@ -560,7 +588,7 @@ heatmaps = html.Div(
                     id='bar-graph',
                     style = bargraph_style
                 ),
-            ], className = 'four columns'
+            ], className = 'three columns'
         ),
 
 
@@ -571,6 +599,17 @@ heatmaps = html.Div(
                     config={'displayModeBar': False}
                 ),                
             ], className='one column'  # Change to one column
+        ),
+
+        html.Div(
+            [
+                html.Button(
+                    'Auto Select Object',
+                    id='auto-select-obj',
+                    n_clicks=0,
+                    style={'background-color': 'lightgray'}
+                )
+            ], className='three columns'
         ),
         
 
@@ -872,7 +911,7 @@ def show_warn(model_left_pseudonym, video_name):
 
     print()
 
-    print(model_vid_setup, completed_comparison)
+    # print(model_vid_setup, completed_comparison)
     if model_vid_setup in completed_comparison:
         return True
     else:
@@ -1139,7 +1178,7 @@ def get_image_card(image_name, frame_number, is_selected, is_unchecked):
             action_button,
             frame_number_label,
         ],
-        style={'position': 'relative', 'width': '100%', 'height': '100%'}
+        style={'position': 'relative', 'width': '100%', 'height': '100%', 'border': border_style}
     )
 
     checkbox = dcc.Checklist(
@@ -1154,7 +1193,7 @@ def get_image_card(image_name, frame_number, is_selected, is_unchecked):
             image_div,
             checkbox,
         ],
-        style={"width": "17rem", 'border': border_style, 'margin': '0px'},
+        style={"width": "20rem", 'margin-top': '5px'},
         id={"type": "image-card", "index": frame_number}
     )
     return card
@@ -1181,16 +1220,18 @@ def update_image_container(
     image_card_id
 ):
 
+
     trigger = ctx.triggered_id
-    if trigger:
-        print("Trigger:" , trigger)
+    # if trigger:
+    #     print("Trigger:" , trigger)
 
     x_coord, y_coord = None, None
     global unchecked_image_ids
+
     if trigger != 'heatmap-1' and trigger != 'heatmap-2':
         if selected_option != None and image_card_id != []:
 
-            if trigger['type'] == 'image-checkbox':
+            if 'type' in trigger and trigger['type'] == 'image-checkbox':
                 print(trigger["index"])
                 print("For image checkbox click.")
                 if int(trigger["index"]) in unchecked_image_ids:
@@ -1198,7 +1239,7 @@ def update_image_container(
                 else:
                     unchecked_image_ids.append(int(trigger["index"]))    
 
-            elif trigger['type'] == 'action-button':
+            elif 'type' in trigger and trigger['type'] == 'action-button':
                 print("For image container click.")
             
             latest_click_index = None
@@ -1232,34 +1273,36 @@ def update_image_container(
 
                         print(image_name)
 
-                        pop_img = Image.open(
-                            os.path.join(
-                                images_source_folder,
-                                image_name
+                        if trigger['type'] != 'image-checkbox':
+                            pop_img = Image.open(
+                                os.path.join(
+                                    images_source_folder,
+                                    image_name
+                                )
                             )
-                        )
-                        ImageViewerThread(image=os.path.join(
-                                images_source_folder,
-                                image_name
-                            )).start()
-                        pop_img.show(title=f"Image {frame_number}")
+                            ImageViewerThread(image=os.path.join(
+                                    images_source_folder,
+                                    image_name
+                                )).start()
+                            pop_img.show(title=f"{frame_number}")
 
                     else:
                         image_element = get_image_card(image_name, frame_number, True, False)
 
                         print(image_name)
                         
-                        pop_img = Image.open(
-                            os.path.join(
-                                images_source_folder,
-                                image_name
+                        if trigger['type'] != 'image-checkbox':
+                            pop_img = Image.open(
+                                os.path.join(
+                                    images_source_folder,
+                                    image_name
+                                )
                             )
-                        )
-                        ImageViewerThread(image=os.path.join(
-                                images_source_folder,
-                                image_name
-                            )).start()
-                        pop_img.show(title=f"Image {frame_number}")
+                            ImageViewerThread(image=os.path.join(
+                                    images_source_folder,
+                                    image_name
+                                )).start()
+                            pop_img.show(title=f"{frame_number}")
 
                 else:
                     if frame_number in unchecked_image_ids:
@@ -1272,20 +1315,21 @@ def update_image_container(
 
             return image_elements, chosen_frame_number
 
-    else:
+    elif trigger == 'heatmap-1' or trigger == 'heatmap-2':
         if trigger == 'heatmap-1':
             clicked_point = hoverData_heatmap1['points'][0]
             x_coord = str(clicked_point['x']).lower()
             y_coord = clicked_point['y']
-        elif trigger == 'heatmap-2':
+        else:
             clicked_point = hoverData_heatmap2['points'][0]
             x_coord = str(clicked_point['x']).lower()
-            y_coord = clicked_point['y']
-        else:
-            x_coord, y_coord = None, None      
+            y_coord = clicked_point['y']     
 
+
+    print(selected_option)
 
     if selected_option:
+
         image_names = os.listdir(images_source_folder)
         selected_option = selected_option.lower()
         image_names = [img.lower() for img in image_names]
@@ -2124,6 +2168,48 @@ def randomize_event(n_clicks):
         return "**Randomized at: " + current_time + str(models_to_show) + "**"
     else:
         return "*Not Randomized*"
+
+
+
+
+@app.callback(
+    Output('status-textarea', 'children', allow_duplicate=True),
+    Output('I-see', 'value'),
+    Input('auto-select-obj', 'n_clicks'),
+    prevent_initial_call=True
+)
+def auto_select_objects(n_clicks):
+    global current_model, current_model_right
+    gt_file = os.path.join(GROUND_TRUTH_DATA, f'{current_file}.csv')
+
+    l_model = models_to_show[current_model]
+    # r_model = models_to_show[current_model_right]
+
+    if l_model in reduce_object_model_coco:
+        obj_list_ref = coco_common_obj
+        frm_gvn_lst = True
+    elif l_model in reduce_object_model_pfb:
+        obj_list_ref = pfb_common_obj
+        frm_gvn_lst = True
+    else:
+        obj_list_ref = []
+        frm_gvn_lst = False
+
+    # obj_list_ref = list(set(coco_common_obj) & set(pfb_common_obj))
+    # frm_gvn_lst = True
+
+    if 0<len(obj_list_ref)<ex_obj+non_ex_obj:
+        e_obj = len(obj_list_ref)//2
+        non_e_obj = len(obj_list_ref) - e_obj
+    else:
+        e_obj = ex_obj
+        non_e_obj = non_ex_obj
+
+    obj_list = get_obj_list(gt_file, e_obj=e_obj, non_e_obj=non_e_obj, total_obj=all_rand_obj, all_random=False,
+                            from_given_list=frm_gvn_lst, given_list=obj_list_ref)
+    print(obj_list)
+    return dash.no_update, obj_list
+
 
 
 if __name__ == '__main__':
