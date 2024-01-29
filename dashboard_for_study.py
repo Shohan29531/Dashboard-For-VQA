@@ -120,9 +120,9 @@ click_log_style = {
                 }
 
 bargraph_style = {
-                        'width': '100%',
+                        'width': '80%',
                         'height': '230px',
-                        'margin-top': '33pt',
+                        'margin': 'auto',
                         'fontSize': '12px',
                         'color': 'gray',
                 }
@@ -170,7 +170,7 @@ ex_obj = 5
 tot_obj = 8
 all_rand_obj = False
 
-
+auto_select_button_style = {'background-color': 'lightgray', 'margin': 'auto'}
 
 def randomize_data():
     random_model = random.sample(range(0, len(available_models)), len(available_models))        
@@ -562,8 +562,15 @@ heatmaps = html.Div(
                     multi=True,
                     value=current_text_see,
                     placeholder='Things I see',
-                    style={'height': '150px'}
+                ),
+
+                html.Button(
+                    'Auto Select Object',
+                    id='auto-select-obj',
+                    n_clicks=0,
+                    style = auto_select_button_style
                 )
+
             ],
             id='I-see-container',
             className='three columns',
@@ -576,7 +583,7 @@ heatmaps = html.Div(
                     id='heatmap-1',
                     config={'displayModeBar': False}
                 ),                 
-            ], className='four columns', style={'margin-right': 'auto'}
+            ], className='four columns', style={}
         ),
 
         # html.Div([], className='one column'),
@@ -601,16 +608,6 @@ heatmaps = html.Div(
             ], className='one column'  # Change to one column
         ),
 
-        html.Div(
-            [
-                html.Button(
-                    'Auto Select Object',
-                    id='auto-select-obj',
-                    n_clicks=0,
-                    style={'background-color': 'lightgray'}
-                )
-            ], className='three columns'
-        ),
         
 
     ], className='row', style={'margin-right': '0', 'margin-left': '0'}
@@ -976,13 +973,15 @@ def update_image_container(
     selected_heatmap_type
 ):
     selected_heatmap_type = 'Objects I See'
-    see_style_original = style={'background-color': 'rgba(6, 200, 115, 0.5)'}
-    see_style_white = style={'background-color': 'white'}
-    dont_see_style_original = style={'background-color': 'rgba(211, 6, 50, 0.5)'}
-    dont_see_style_white = style={'background-color': 'white'}
+    see_style_original = {'background-color': 'rgba(6, 200, 115, 0.5)'}
+    see_style_white = {'background-color': 'white','height': '190px', 'margin-top': '60px', 'margin-bottom': '60px', 'textAlign': 'center'}
+    dont_see_style_original = {'background-color': 'rgba(211, 6, 50, 0.5)'}
+    dont_see_style_white = {'background-color': 'white'}
+
+    see_container_style = {'background-color': 'white','height': '150px'}
 
     if selected_heatmap_type == 'Objects I See':
-        return see_style_original, {'display': 'block'}, {'display': 'block'}, dont_see_style_white, {'display': 'none'}, {'display': 'none'}
+        return see_style_white, {'display': 'block'}, see_container_style, dont_see_style_white, {'display': 'none'}, {'display': 'none'}
     
     elif selected_heatmap_type == 'Objects I do not See':
         return see_style_white, {'display': 'none'}, {'display': 'none'}, dont_see_style_original, {'display': 'block'}, {'display': 'block'}
@@ -2111,7 +2110,9 @@ def update_comment(text_comments):
     Output('video-dropdown', 'value', allow_duplicate=True),
     Output('image-container', 'children', allow_duplicate = True),
     Output('heatmap-1', 'figure', allow_duplicate = True),
-    Output('heatmap-1-clicks-textarea', 'style', allow_duplicate = True), 
+    # Output('heatmap-1-clicks-textarea', 'style', allow_duplicate = True),
+    Output('auto-select-obj', 'style', allow_duplicate = True),
+    Output('bar-graph', 'style', allow_duplicate = True),  
     Input('save-button', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -2144,9 +2145,9 @@ def save_data(n_clicks):
                 updated_list.append({"label": v_, "value": v_})
 
         if len(updated_list) == 0:
-            return "**Saved at: " + current_time + "**", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+            return "**Saved at: " + current_time + "**", dash.no_update, dash.no_update, dash.no_update, dash.no_update, auto_select_button_style, {'display' : 'none'}
 
-        return "**Saved at: " + current_time + "**", updated_list, None, [], {}, {'display' : 'none'}
+        return "**Saved at: " + current_time + "**", updated_list, None, [], {}, auto_select_button_style, {'display' : 'none'}
     else:
         return "*Not Saved*"
 
@@ -2175,6 +2176,7 @@ def randomize_event(n_clicks):
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True),
     Output('I-see', 'value'),
+    Output('auto-select-obj', 'style'),
     Input('auto-select-obj', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -2208,7 +2210,7 @@ def auto_select_objects(n_clicks):
     obj_list = get_obj_list(gt_file, e_obj=e_obj, non_e_obj=non_e_obj, total_obj=all_rand_obj, all_random=False,
                             from_given_list=frm_gvn_lst, given_list=obj_list_ref)
     print(obj_list)
-    return dash.no_update, obj_list
+    return dash.no_update, obj_list, {'display': 'none'}
 
 
 

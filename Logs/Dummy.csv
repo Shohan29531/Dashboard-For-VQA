@@ -1,4 +1,8 @@
 timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode
 2024-01-23::17:33:48,video-1-segment-5,Random,,,"Person,White Cane,Car,Road",,5,,single
 2024-01-23::17:50:58,video-2-segment-1,GPV-1,,,"Person,White Cane,Car,Road",,5,,single
-2024-01-24::12:22:38,video-3-segment-2,BLIP,N/A,N/A,"Person,White Cane,Car,Road",,5,,single
+2024-01-24::12:22:38,video-3-segment-2,BLIP,,,"Person,White Cane,Car,Road",,5,,single
+2024-01-26::15:54:45,video-3-segment-3,GPV-1,,,"Building,Trash on roads,Person with a disability,Puddle,Railing,Water leakage,Crosswalk,Pole",,5,,single
+2024-01-26::15:56:46,video-1-segment-4,faster_rcnn,,,"Person,Car,Vegetation,Bicycle,Motorcycle,Fire hydrant,Traffic Signals,Dog",,5,,single
+2024-01-26::15:59:05,video-4-segment-3,BLIP,,,"Vegetation,Push button,Lamp Post,Curb,Slopped Curb,Snow,Car,Raised Entryway",,7,,single
+2024-01-26::15:59:29,video-7-segment-2,BLIP,N/A,N/A,"Slopped Curb,Accent Paving,Tactile Paving,Vegetation,Person with a disability,Barrier Stump,Train Tracks,Unpaved Sidewalk",,7,,single
