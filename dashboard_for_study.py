@@ -55,10 +55,10 @@ base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
 files = os.listdir(GROUND_TRUTH_DATA)
 all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
-all_video_files = natsorted(all_video_files)
+all_video_files = natsorted(all_video_files)[:21]
 
 
-available_models = ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT', 'Random']
+available_models = ['GPV-1', 'BLIP', 'GPT4V', 'LLaVa', 'yolo_v7', 'HRNet_V2', 'GT_N', 'Random']
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
@@ -138,16 +138,16 @@ bargraph_style = {
 #     'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
 # }
 
-model_to_compare = {
-    'GPV-1': ['mask_rcnn', 'yolo_v7', 'HRNet_V2'],
-    'BLIP': ['mask_rcnn', 'yolo_v7', 'GT', 'Random'],
-    'faster_rcnn': ['HRNet_V2', 'GT', 'Random'],
-    'mask_rcnn': ['GPV-1', 'BLIP', 'Random'],
-    'yolo_v7': ['GPV-1', 'BLIP', 'HRNet_V2'],
-    'HRNet_V2': ['GPV-1', 'faster_rcnn', 'yolo_v7', 'GT'],
-    'GT': ['BLIP', 'faster_rcnn', 'HRNet_V2'],
-    'Random': ['BLIP', 'faster_rcnn', 'mask_rcnn']
-}
+# model_to_compare = {
+#     'GPV-1': ['mask_rcnn', 'yolo_v7', 'HRNet_V2'],
+#     'BLIP': ['mask_rcnn', 'yolo_v7', 'GT', 'Random'],
+#     'faster_rcnn': ['HRNet_V2', 'GT', 'Random'],
+#     'mask_rcnn': ['GPV-1', 'BLIP', 'Random'],
+#     'yolo_v7': ['GPV-1', 'BLIP', 'HRNet_V2'],
+#     'HRNet_V2': ['GPV-1', 'faster_rcnn', 'yolo_v7', 'GT'],
+#     'GT': ['BLIP', 'faster_rcnn', 'HRNet_V2'],
+#     'Random': ['BLIP', 'faster_rcnn', 'mask_rcnn']
+# }
 
 # 'Random': ['GPV-1', 'BLIP', 'faster_rcnn', 'mask_rcnn', 'yolo_v7', 'HRNet_V2', 'GT']
 models_to_show, reverse_model_map = [], []
@@ -187,7 +187,7 @@ def randomize_data():
 
 randomize_data()
 
-model_right_models = sorted([reverse_model_map[model] for model in model_to_compare[models_to_show['Model-0']]])
+# model_right_models = sorted([reverse_model_map[model] for model in model_to_compare[models_to_show['Model-0']]])
 
 
 def get_done_pairs(csv_path):
@@ -473,7 +473,7 @@ top_row = html.Div(
             dcc.Store(id='current-second-model'),
             dcc.Dropdown(
                 id='model-dropdown-2',
-                options=[{'label': model, 'value': model} for model in model_right_models],
+                options=[{'label': model, 'value': model} for model in []],
                 placeholder='Select Another Model to Comapre',
                 value= None,
                 style={'border-color': 'gray', 'display': 'none'}
@@ -813,29 +813,29 @@ app.layout = html.Div(
 )
 
 
-@app.callback(
-    Output('model-dropdown-2', 'options'),
-    Output(component_id='slider-div', component_property='style'),
-    Output(component_id='radio-button-div', component_property='style'),
-    Input('model-dropdown', 'value'),
-    Input(component_id='model-dropdown-2', component_property='value'),
-    prevent_initial_call=True
-)
-def update_second_model_filed(model_left_pseudonym, model_right_pseudonym):
-    global observe_typ
-    model_left_orig = models_to_show[model_left_pseudonym]
-    comparable_models = model_to_compare[model_left_orig]
-    models_right_pseudonyms = [reverse_model_map[mk] for mk in comparable_models]
+# @app.callback(
+#     Output('model-dropdown-2', 'options'),
+#     Output(component_id='slider-div', component_property='style'),
+#     Output(component_id='radio-button-div', component_property='style'),
+#     Input('model-dropdown', 'value'),
+#     Input(component_id='model-dropdown-2', component_property='value'),
+#     prevent_initial_call=True
+# )
+# def update_second_model_filed(model_left_pseudonym, model_right_pseudonym):
+#     global observe_typ
+#     model_left_orig = models_to_show[model_left_pseudonym]
+#     comparable_models = model_to_compare[model_left_orig]
+#     models_right_pseudonyms = [reverse_model_map[mk] for mk in comparable_models]
 
-    print('updated')
-    if model_right_pseudonym in models_right_pseudonyms:
-        return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'none'}, {
-            'display': 'block'}
-        observe_typ = 'double'
-    else:
-        return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'block'}, {
-            'display': 'none'}
-        observe_typ = 'single'
+#     print('updated')
+#     if model_right_pseudonym in models_right_pseudonyms:
+#         return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'none'}, {
+#             'display': 'block'}
+#         observe_typ = 'double'
+#     else:
+#         return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'block'}, {
+#             'display': 'none'}
+#         observe_typ = 'single'
 
 
 @app.callback(
@@ -1444,6 +1444,8 @@ def update_heatmap_1(
     first_model_name = model
     model = models_to_show[model]
 
+    print(model)
+
     if n_clicks > 0 and model and selected_file and ( selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both' ) and (second_model == None or second_model == ''):        
 
         file_path = os.path.join(base_folder, model, selected_file + '.csv')
@@ -1482,7 +1484,7 @@ def update_heatmap_1(
         ## because, 1 means the model sees, which is exactly what my view is
         colorscale_heatmap1 = [[0, color_disagreement], [1, color_agreement],]
 
-        x_labels = [label.replace('Frame-', '') for label in x_labels]
+        x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
         x_labels = x_labels[:max_frames]
         y_labels = y_labels[:max_frames]
