@@ -532,19 +532,7 @@ top_row = html.Div(
                 placeholder='Things I do not see',
             )
         ], id= 'I-dont-see-container', className='five columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'}),
-
-
-        # analyze button
-        html.Div(
-            [
-                html.Button(
-                    'Analyze', 
-                    id='update-heatmap-button', 
-                    n_clicks=0, 
-                    style={'background-color': 'lightgray'}
-                )
-            ], className='row'
-        ),       
+     
     ], className='row',
 )
 
@@ -565,7 +553,7 @@ heatmaps = html.Div(
                 ),
 
                 html.Button(
-                    'Auto Select Object',
+                    'Auto Select Objects',
                     id='auto-select-obj',
                     n_clicks=0,
                     style = auto_select_button_style
@@ -607,6 +595,18 @@ heatmaps = html.Div(
                 ),                
             ], className='one column'  # Change to one column
         ),
+
+        # analyze button
+        html.Div(
+            [
+                html.Button(
+                    'Analyze', 
+                    id='update-heatmap-button', 
+                    n_clicks=0, 
+                    style={'background-color': 'lightgray'}
+                )
+            ], className='row'
+        ),  
 
         
 
