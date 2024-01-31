@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 
 
-def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None):
+def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None, avg_typ='micro'):
     gt_dict = {}
     pred_dict = {}
 
