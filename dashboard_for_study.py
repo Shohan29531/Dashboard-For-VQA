@@ -786,31 +786,6 @@ app.layout = html.Div(
 )
 
 
-# @app.callback(
-#     Output('model-dropdown-2', 'options'),
-#     Output(component_id='slider-div', component_property='style'),
-#     Output(component_id='radio-button-div', component_property='style'),
-#     Input('model-dropdown', 'value'),
-#     Input(component_id='model-dropdown-2', component_property='value'),
-#     prevent_initial_call=True
-# )
-# def update_second_model_filed(model_left_pseudonym, model_right_pseudonym):
-#     global observe_typ
-#     model_left_orig = models_to_show[model_left_pseudonym]
-#     comparable_models = model_to_compare[model_left_orig]
-#     models_right_pseudonyms = [reverse_model_map[mk] for mk in comparable_models]
-
-#     print('updated')
-#     if model_right_pseudonym in models_right_pseudonyms:
-#         return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'none'}, {
-#             'display': 'block'}
-#         observe_typ = 'double'
-#     else:
-#         return [{"label": mkp, "value": mkp} for mkp in sorted(models_right_pseudonyms)], {'display': 'block'}, {
-#             'display': 'none'}
-#         observe_typ = 'single'
-
-
 @app.callback(
     Output(component_id='slider-div', component_property='style', allow_duplicate=True),
     Output(component_id='radio-button-div', component_property='style', allow_duplicate=True),
