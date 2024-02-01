@@ -93,6 +93,8 @@ current_text_not_see = []
 current_rating = 5
 current_text_comments = ''
 current_heatmap_type = 'Objects I See'
+f1_model = 0.0
+f1_shadow_model = 0.0
 
 observe_typ = 'single'
 
@@ -1333,6 +1335,7 @@ def update_heatmap_1(
         second_model,
         unchecked_image_id
 ):
+    global f1_model, f1_shadow_model
     selected_heatmap_type = heatmap_types[0]
     first_model_name = model
     model = models_to_show[model]
@@ -1367,6 +1370,9 @@ def update_heatmap_1(
                 os.path.join(base_folder, model.split('@')[0]),
                 obj_list=see_textarea_value_lower
             )
+
+            f1_model = f1___
+            f1_shadow_model = 'N/A'
 
             print(f"{model} F1 : {f1___:.4f}")
 
@@ -1409,6 +1415,9 @@ def update_heatmap_1(
                 obj_list=see_textarea_value_lower
             )
             print(f"{model} F1 : {f1___shadow:.4f}")
+
+            f1_model = f1___
+            f1_shadow_model = f1___shadow
 
             x_labels = [col for col in shadow_model_df.columns if col != "Object"]
 
@@ -1688,6 +1697,7 @@ def update_comment(text_comments):
     prevent_initial_call=True
 )
 def save_data(n_clicks):
+    global current_model, current_model_right, f1_model, f1_shadow_model
     if n_clicks > 0:
 
         current_time = datetime.datetime.now().strftime('%Y-%m-%d::%H:%M:%S')
@@ -1701,7 +1711,9 @@ def save_data(n_clicks):
             'not_see': ','.join(current_text_not_see),
             'score': current_rating if observe_typ == 'single' else 'N/A',
             'comments': current_text_comments.lower() if current_text_comments else '',
-            'mode': observe_typ
+            'mode': observe_typ,
+            'F1 (Base model)': f1_model,
+            'F1 (Shadow model)': f1_shadow_model
         }
 
         # write data to file
