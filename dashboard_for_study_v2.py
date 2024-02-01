@@ -1367,7 +1367,7 @@ def update_heatmap_1(
 
             _, _, f1___, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
-                os.path.join(base_folder, model.split('@')[0]),
+                os.path.join(base_folder, model),
                 obj_list=see_textarea_value_lower
             )
 
