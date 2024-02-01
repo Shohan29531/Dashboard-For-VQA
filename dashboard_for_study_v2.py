@@ -59,19 +59,19 @@ all_video_files = natsorted(all_video_files)[:21]
 
 available_models = [
     'GPV-1',
-    'GPV-1-Shadow',
+    'GPV-1@Shadow',
     'BLIP',
-    'BLIP-Shadow',
+    'BLIP@Shadow',
     'GPT4V',
-    'GPT4V-Shadow',
+    'GPT4V@Shadow',
     'GT_N',
     'Random'
 ]
 
 shadow_models = [
-    'GPV-1-Shadow',
-    'BLIP-Shadow',
-    'GPT4V-Shadow'
+    'GPV-1@Shadow',
+    'BLIP@Shadow',
+    'GPT4V@Shadow'
 ]
 
 comparison_types = ['One Model', 'Two Models']
@@ -162,6 +162,7 @@ auto_select_button_style = {'background-color': 'lightgray', 'margin': 'auto'}
 
 
 def randomize_data():
+    random.seed(100)
     random_model = random.sample(range(0, len(available_models)), len(available_models))
     # a dictionary that maps model-{} to available models randomly
     global models_to_show, reverse_model_map
@@ -1361,6 +1362,14 @@ def update_heatmap_1(
 
             see_textarea_value_lower = [item.lower() for item in see_textarea_value]
 
+            _, _, f1___, _ = get_f1(
+                os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
+                os.path.join(base_folder, model.split('@')[0]),
+                obj_list=see_textarea_value_lower
+            )
+
+            print(f"{model} F1 : {f1___:.4f}")
+
             filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
 
             filtered_indices = filtered_indices_see
@@ -1375,20 +1384,31 @@ def update_heatmap_1(
             y_labels = y_labels_filtered
             z_values = z_values_filtered
         else:
+            random.seed(200)
             see_textarea_value_lower = [item.lower() for item in see_textarea_value]
             _, _, f1___, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
-                os.path.join(base_folder, model.split('-')[0]),
+                os.path.join(base_folder, model.split('@')[0]),
                 obj_list=see_textarea_value_lower
             )
             if f1___ == 0:
                 f1___ = 0.01
 
-            print(f1___)
+            print(f"{model.split('@')[0]} F1 : {f1___:.4f}")
             shadow_model_df = get_shadow(
                 os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
                 f1___, 1, see_textarea_value_lower
             )[0]
+            if not os.path.exists(os.path.join(base_folder, model)):
+                os.makedirs(os.path.join(base_folder, model))
+
+            shadow_model_df.to_csv(os.path.join(base_folder, model, f'{selected_file}.csv'), index=False)
+            _, _, f1___shadow, _ = get_f1(
+                os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
+                os.path.join(base_folder, model),
+                obj_list=see_textarea_value_lower
+            )
+            print(f"{model} F1 : {f1___shadow:.4f}")
 
             x_labels = [col for col in shadow_model_df.columns if col != "Object"]
 
