@@ -88,7 +88,8 @@ current_model_right = ""
 current_file = 'video-1-segment-5'  # 'video-1-segment-5'
 # current_text_see = ['Wall', 'Bicycle', 'Bridge', 'Building', 'Bus', 'Bus Stop']
 # current_text_not_see = ['Guide dog', 'Gutter', 'Hose', 'Lamp Post', 'Mail box']
-current_text_see = ['Person', 'White Cane', 'Car', 'Road']
+# current_text_see = ['Person', 'White Cane', 'Car', 'Road']
+current_text_see = []
 current_text_not_see = []
 current_rating = 5
 current_text_comments = ''
@@ -106,7 +107,7 @@ heatmap_highlight_line_width = 5
 
 fixed_heatmap_height = 350
 fixed_heatmap_width = 500
-heatmap_x_axis_title = 'Frames ➜'
+heatmap_x_axis_title = 'Frame'
 
 color_white = 'rgb(255,255,255)'  # white
 color_agreement = 'rgb(6, 200, 115)'  # green
@@ -155,12 +156,12 @@ pfb_common_obj = ['Road', 'Sidewalk', 'Tree', 'Vegetation', 'Building', 'Fence',
 reduce_object_model_coco = ['faster_rcnn', 'mask_rcnn', 'yolo_v7']
 reduce_object_model_pfb = ['HRNet_V2']
 
-non_ex_obj = 3
-ex_obj = 5
-tot_obj = 8
+non_ex_obj = 2
+ex_obj = 4
+tot_obj = 6
 all_rand_obj = False
 
-auto_select_button_style = {'background-color': 'lightgray', 'margin': 'auto'}
+auto_select_button_style = {'background-color': 'lightgray', 'margin': 'auto', 'display': 'none'}
 
 
 def randomize_data():
@@ -418,6 +419,10 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes
 # create the dash app
 app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
 
+
+all_tasks = ['Multi-Object Classification in Video']
+
+
 # top row layout
 top_row = html.Div(
     [
@@ -442,7 +447,7 @@ top_row = html.Div(
                 value=current_model,
                 clearable=False,
                 style={'border-color': 'gray'}
-            )], className='five columns'
+            )], className='three columns'
         ),
 
         # html.Div([
@@ -451,15 +456,14 @@ top_row = html.Div(
         # ),
 
         html.Div([
-            dcc.Store(id='current-second-model'),
             dcc.Dropdown(
-                id='model-dropdown-2',
-                options=[{'label': model, 'value': model} for model in []],
-                placeholder='Select Another Model to Comapre',
-                value=None,
-                style={'border-color': 'gray', 'display': 'none'}
-            )
-        ], className='one column'
+                id='task-dropdown',
+                options=[{'label': option, 'value': option} for option in all_tasks],
+                placeholder='Select a Task...',
+                value='Multi-Object Classification in Video',
+                style={'border-color': 'gray'}
+            )],
+            className='four columns'
         ),
 
         html.Div([
@@ -470,7 +474,19 @@ top_row = html.Div(
 
                 style={'border-color': 'gray'}
             )],
-            className='five columns'
+            className='three columns'
+        ),
+
+        html.Div([
+            dcc.Store(id='current-second-model'),
+            dcc.Dropdown(
+                id='model-dropdown-2',
+                options=[{'label': model, 'value': model} for model in []],
+                placeholder='Select Another Model to Comapre',
+                value=None,
+                style={'border-color': 'gray', 'display': 'none'}
+            )
+        ], className=''
         ),
 
         ## select the types of objects for which you wish to see the heatmaps
@@ -507,7 +523,7 @@ heatmaps = html.Div(
         # I see text area
         html.Div(
             [
-                dcc.Markdown(children='**Probable Objects** in the video:', id='I-see-markdown'),
+                dcc.Markdown(children='**Interesting Objects** in the video:', id='I-see-markdown'),
                 dcc.Dropdown(
                     id='I-see',
                     options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
@@ -565,7 +581,7 @@ heatmaps = html.Div(
                     'Analyze',
                     id='update-heatmap-button',
                     n_clicks=0,
-                    style={'background-color': 'lightgray'}
+                    style={'background-color': 'lightgray', 'display': 'none'}
                 )
             ], className='row'
         ),
@@ -681,8 +697,8 @@ rating_row = html.Div(
             [
                 dcc.Markdown(
                     '''
-                        #### Please rate the reliability of this model on a scale from 0 to 10
-                        *(0: not reliable at all; 5: neutral; 10: very reliable):*                    
+                        #### Please rate your **Perceived Performance** of this model on a scale from 0 to 10
+                        *(0: not good at all; 5: about average; 10: very good):*                    
                     '''),
                 dcc.Slider(
                     id="rating-slider",
@@ -1177,17 +1193,17 @@ def update_image_container(
                         print(image_name)
 
                         if trigger['type'] != 'image-checkbox':
-                            pop_img = Image.open(
-                                os.path.join(
-                                    images_source_folder,
-                                    image_name
-                                )
-                            )
+                            # pop_img = Image.open(
+                            #     os.path.join(
+                            #         images_source_folder,
+                            #         image_name
+                            #     )
+                            # )
                             ImageViewerThread(image=os.path.join(
                                 images_source_folder,
                                 image_name
                             )).start()
-                            pop_img.show(title=f"{frame_number}")
+                            # pop_img.show(title=f"{frame_number}")
 
                     else:
                         image_element = get_image_card(image_name, frame_number, True, False)
@@ -1195,17 +1211,17 @@ def update_image_container(
                         print(image_name)
 
                         if trigger['type'] != 'image-checkbox':
-                            pop_img = Image.open(
-                                os.path.join(
-                                    images_source_folder,
-                                    image_name
-                                )
-                            )
+                            # pop_img = Image.open(
+                            #     os.path.join(
+                            #         images_source_folder,
+                            #         image_name
+                            #     )
+                            # )
                             ImageViewerThread(image=os.path.join(
                                 images_source_folder,
                                 image_name
                             )).start()
-                            pop_img.show(title=f"{frame_number}")
+                            # pop_img.show(title=f"{frame_number}")
 
                 else:
                     if frame_number in unchecked_image_ids:
@@ -1310,7 +1326,7 @@ def transform_x_coord(val):
     Input('heatmap-1', 'hoverData'),
     Input('heatmap-1', 'clickData'),
     Input('update-heatmap-button', 'n_clicks'),
-    State('I-see', 'value'),
+    Input('I-see', 'value'),
     State('I-dont-see', 'value'),
     State('last-clicked-image-id', 'data'),
     [Input({"type": "action-button", "index": ALL}, "n_clicks_timestamp")],
@@ -1341,8 +1357,9 @@ def update_heatmap_1(
     model = models_to_show[model]
 
     print(model)
+    print(see_textarea_value)
 
-    if n_clicks > 0 and model and selected_file and (
+    if model and selected_file and len(see_textarea_value) >=1 and (
             selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both') and (
             second_model == None or second_model == ''):
 
@@ -1484,7 +1501,7 @@ def update_heatmap_1(
                 showgrid=False,
                 dtick=1,
                 gridwidth=1,
-                tickfont=dict(size=10.5, color='blue', family='Arial Black'),
+                tickfont=dict(size=10.5, color='blue', family='Arial'),
             ),
             yaxis=dict(
                 showgrid=False,
@@ -1500,7 +1517,7 @@ def update_heatmap_1(
                     yref='paper',
                     text=heatmap_x_axis_title,
                     showarrow=False,
-                    font=dict(size=12, family='Arial Black'),
+                    font=dict(size=12, family='Arial'),
                 )
             ]
         )
@@ -1618,11 +1635,17 @@ def update_heatmap_1(
 
         bargraph_data_filtered['Frame'] = bargraph_data_filtered['Frame'].astype(str)
 
-        bargraph = px.bar(bargraph_data_filtered, x='Frame', y='Number of Modifications', title='Modification Summary',
-                          height=300, width=550)
+        bargraph = px.bar(bargraph_data_filtered, x='Frame', y='Number of Modifications',
+                  title=f'Total Modifications: <b>{bargraph_data_filtered["Number of Modifications"].sum()}</b>',
+                  height=300, width=550)
 
         bargraph.update_layout(title_x=0.5)
         bargraph.update_traces(marker_color='#A9A9A9')
+        bargraph.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)',  # Set transparent background
+            showlegend=False,
+            yaxis_gridcolor='rgba(128,128,128,0.2)'
+        )
 
         return heat_map, bargraph
 
@@ -1693,6 +1716,7 @@ def update_comment(text_comments):
     # Output('heatmap-1-clicks-textarea', 'style', allow_duplicate = True),
     Output('auto-select-obj', 'style', allow_duplicate=True),
     Output('bar-graph', 'style', allow_duplicate=True),
+    Output('I-see', 'value', allow_duplicate=True ),
     Input('save-button', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -1729,10 +1753,10 @@ def save_data(n_clicks):
 
         if len(updated_list) == 0:
             return "**Saved at: " + current_time + "**", dash.no_update, dash.no_update, dash.no_update, dash.no_update, auto_select_button_style, {
-                'display': 'none'}
+                'display': 'none'}, []
 
         return "**Saved at: " + current_time + "**", updated_list, None, [], {}, auto_select_button_style, {
-            'display': 'none'}
+            'display': 'none'}, []
     else:
         return "*Not Saved*"
 
@@ -1756,13 +1780,11 @@ def randomize_event(n_clicks):
 
 
 @app.callback(
-    Output('status-textarea', 'children', allow_duplicate=True),
-    Output('I-see', 'value'),
-    Output('auto-select-obj', 'style'),
-    Input('auto-select-obj', 'n_clicks'),
+    Output('I-see', 'value', allow_duplicate=True),
+    Input('video-dropdown', 'value'),
     prevent_initial_call=True
 )
-def auto_select_objects(n_clicks):
+def auto_select_objects(video):
     global current_model, current_model_right
     gt_file = os.path.join(GROUND_TRUTH_DATA, f'{current_file}.csv')
 
@@ -1792,7 +1814,7 @@ def auto_select_objects(n_clicks):
     obj_list = get_obj_list(gt_file, e_obj=e_obj, non_e_obj=non_e_obj, total_obj=all_rand_obj, all_random=False,
                             from_given_list=frm_gvn_lst, given_list=obj_list_ref)
     print(obj_list)
-    return dash.no_update, obj_list, {'display': 'none'}
+    return obj_list
 
 
 if __name__ == '__main__':
