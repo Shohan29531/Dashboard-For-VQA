@@ -45,6 +45,3 @@ for e_no in range(20):
 
     with open(os.path.join(EXPERIMENT_DIR, f'experiment_{e_no+1}.csv'), 'w') as f:
         f.write("\n".join(csv_lines))
-
-
-
