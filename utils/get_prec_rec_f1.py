@@ -21,13 +21,13 @@ def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None, avg_t
             gt_data = pd.read_csv(gt_fl)
 
             gt_data = gt_data.transpose()
-            gt_data.columns = [x__.lower() for x__ in gt_data.iloc[0]]
+            gt_data.columns = [x__.lower().strip() for x__ in gt_data.iloc[0]]
             gt_data = gt_data.reindex(columns=obj_list).iloc[1:].transpose().reset_index()
 
             pred_data = pd.read_csv(pred_fl)
 
             pred_data = pred_data.transpose()
-            pred_data.columns = [x__.lower() for x__ in pred_data.iloc[0]]
+            pred_data.columns = [x__.lower().strip() for x__ in pred_data.iloc[0]]
             pred_data = pred_data.reindex(columns=obj_list).iloc[1:].transpose().reset_index()
             # print(gt_data)
             # print(pred_data)
