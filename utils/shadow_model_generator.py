@@ -2,9 +2,11 @@ import random
 import numpy as np
 from fractions import Fraction
 import pandas as pd
+from natsort import natsorted
 
 
 def get_dum_pred_from_f1(gt_f__, org_f1, pred_ct, obj_list_a):
+    obj_list_a = natsorted(obj_list_a)
     dd_df = pd.read_csv(gt_f__)
     dd_df = dd_df.transpose()
     dd_df.columns = [x__.lower() for x__ in dd_df.iloc[0]]
