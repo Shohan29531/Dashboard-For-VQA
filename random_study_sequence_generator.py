@@ -12,7 +12,7 @@ files = os.listdir(GROUND_TRUTH_DATA)
 all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
 all_video_files = natsorted(all_video_files)
 
-ignore_video = ['video-5', 'video-8', 'video-9']
+ignore_video = ['video-5', 'video-8', 'video-9', 'video-10']
 ignore_video += ['video-'+str(i) for i in range(17, 25)]
 
 ignore_vid_seg = []

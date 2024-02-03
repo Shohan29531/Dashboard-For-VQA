@@ -8,4 +8,5 @@ timestamp,video,model left,model right,winner model,see,not_see,score,comments,m
 2024-02-01::16:40:54,video-5-segment-1,BLIP,,,"Stairs,Person,White Cane,Wall,Building,Uneven Stairs,Pedestrian Crossing,Bus",,5,,single
 2024-02-01::16:42:44,video-7-segment-2,BLIP,,,"Person with a disability,Sidewalk,Curb,Parallel Parking Spot,Slopped Curb,Elevator,Dog,Counter",,5,,single
 2024-02-01::16:44:16,video-4-segment-4,BLIP,,,"Person,Sidewalk,Vegetation,Sign Post,White Cane,Maintenance Vehicle,Pillar,Road Shoulder",,5,,single
-2024-02-01::17:15:20,video-6-segment-2,BLIP,N/A,N/A,"Wall,Curb,White Cane,Building,Road,Pedestrian Crossing,Fire hydrant,Person with a disability",,5,,single
+2024-02-01::17:15:20,video-6-segment-2,BLIP,,,"Wall,Curb,White Cane,Building,Road,Pedestrian Crossing,Fire hydrant,Person with a disability",,5,,single
+2024-02-02::15:39:10,video-1-segment-5,BLIP,N/A,N/A,"Road,Car,Gutter,Stairs,Gate,Uneven Stairs",,9,,single

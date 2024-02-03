@@ -220,9 +220,8 @@ def get_done_models_vid(csv_path):
 
 user_log_path = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
 
-if os.path.exists(user_log_path):
-    completed_comparison, completed_videos = get_done_models_vid(user_log_path)
-
+# if os.path.exists(user_log_path):
+#     completed_comparison, completed_videos = get_done_models_vid(user_log_path)
 
 
 def save_log_file(new_row):
@@ -239,7 +238,7 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row, columns=COLUMNS, index=[0])
         df_log.to_csv(log_file, index=False)
 
-    completed_comparison, completed_videos = get_done_models_vid(log_file)
+    completed_comparison, completed_videos = [], []  # get_done_models_vid(log_file)
 
 
 def read_text_file_content(file_path):
