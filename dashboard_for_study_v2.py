@@ -69,7 +69,7 @@ for vid in all_video_files:
             break
 
 for vid in ignore_vid_seg:
-    del all_video_files[all_video_files.index(vid)]    
+    del all_video_files[all_video_files.index(vid)]
 
 available_models = [
     'GPV-1',
@@ -235,10 +235,7 @@ user_log_path = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
 
 # if os.path.exists(user_log_path):
 #     completed_comparison, completed_videos = get_done_models_vid(user_log_path)
-<<<<<<< HEAD
 
-=======
->>>>>>> 27e2465d9c333d94f8a7e5299f6dffe7196bda4b
 
 
 def save_log_file(new_row):
@@ -255,12 +252,8 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row, columns=COLUMNS, index=[0])
         df_log.to_csv(log_file, index=False)
 
-<<<<<<< HEAD
     completed_comparison, completed_videos = [], []
     #get_done_models_vid(log_file)
-=======
-    completed_comparison, completed_videos = [], []  # get_done_models_vid(log_file)
->>>>>>> 27e2465d9c333d94f8a7e5299f6dffe7196bda4b
 
 
 def read_text_file_content(file_path):
@@ -1394,17 +1387,18 @@ def update_heatmap_1(
             _, _, f1___, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model.split('@')[0]),
-                obj_list=see_textarea_value_lower
+                obj_list=see_textarea_value_lower,
+                limit_frame_count=max_frames+1
             )
             if f1___ == 0:
                 f1___ = 0.01
 
-            print(f"{model.split('@')[0]} F1 : {f1___:.4f}")
-            # try:
             shadow_model_df = get_shadow(
                 gt_f__=os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
-                org_f1=f1___, obj_list_all=see_textarea_value_lower,
-                limit_frame_count=-1
+                mod_f__=os.path.join(base_folder, model.split('@')[0], f'{selected_file}.csv'),
+                gt_fol=os.path.join(base_folder, 'GT_N'), gt_file=[f'{selected_file}.csv'],
+                model_fol=os.path.join(base_folder, model.split('@')[0]),
+                obj_list_all=see_textarea_value_lower, limit_frame_count=max_frames+1
             )[0]
 
             if not os.path.exists(os.path.join(base_folder, model)):
@@ -1414,8 +1408,11 @@ def update_heatmap_1(
             _, _, f1___shadow, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model),
-                obj_list=see_textarea_value_lower
+                obj_list=see_textarea_value_lower,
+                limit_frame_count=max_frames+1
             )
+
+            print(f"{model.split('@')[0]} F1 : {f1___:.4f}")
             print(f"{model} F1 : {f1___shadow:.4f}")
 
             f1_model = f1___
@@ -1447,10 +1444,9 @@ def update_heatmap_1(
 
             y_labels = y_labels_filtered
             z_values = z_values_filtered
-            # except:
-            #     shadow_error = True
 
-        if model not in shadow_models or shadow_error:
+        # if model not in shadow_models or shadow_error:
+        else:
             if model in shadow_models:
                 model = model.split('@')[0]
             file_path = os.path.join(base_folder, model, selected_file + '.csv')
@@ -1474,7 +1470,8 @@ def update_heatmap_1(
             _, _, f1___, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model),
-                obj_list=see_textarea_value_lower
+                obj_list=see_textarea_value_lower,
+                limit_frame_count=max_frames+1
             )
 
             f1_model = f1___
@@ -1836,7 +1833,7 @@ def auto_select_objects(video):
         obj_list_ref = coco_common_obj
         frm_gvn_lst = True
     elif l_model in reduce_object_model_pfb:
-        obj_list_ref = pfb_common_obja
+        obj_list_ref = pfb_common_obj
         frm_gvn_lst = True
     else:
         obj_list_ref = []

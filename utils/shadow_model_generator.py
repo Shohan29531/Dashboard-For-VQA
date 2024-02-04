@@ -5,9 +5,12 @@ import pandas as pd
 from natsort import natsorted
 
 
-def get_dum_pred_from_f1(gt_f__, org_f1, pred_ct, obj_list_a):
+def get_dum_pred_from_f1(gt_f__, org_f1, pred_ct, obj_list_a, limit_frame_count=-1):
     obj_list_a = natsorted(obj_list_a)
     dd_df = pd.read_csv(gt_f__)
+    if limit_frame_count > 0:
+        if len(list(dd_df.columns)) > limit_frame_count:
+            dd_df = dd_df.iloc[:, :limit_frame_count]
     dd_df = dd_df.transpose()
     dd_df.columns = [x__.lower() for x__ in dd_df.iloc[0]]
     dd_df = dd_df.reindex(columns=obj_list_a).iloc[1:].transpose()

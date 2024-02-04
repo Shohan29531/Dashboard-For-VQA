@@ -1,5 +1,6 @@
-Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11,frame_12,frame_13,frame_14,frame_15,frame_16,frame_17,frame_18,frame_19,frame_20,frame_21,frame_22,frame_23,frame_24,frame_25
-building,0,1,1,1,0,1,1,1,1,0,1,0,1,0,1,0,1,1,1,0,1,1,1,1,1,1
-fence,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-person with a disability,0,1,1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,1,1,1,1,1
-vegetation,0,0,1,0,1,0,0,0,1,1,1,1,1,1,0,1,1,0,1,1,0,0,1,0,0,0
+Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11,frame_12,frame_13,frame_14,frame_15
+crosswalk,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1
+raised entryway,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+roadside parking,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1
+sidewalk,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+unpaved sidewalk,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1

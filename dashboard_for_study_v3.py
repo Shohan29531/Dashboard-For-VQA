@@ -1387,7 +1387,8 @@ def update_heatmap_1(
             _, _, f1___, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model.split('@')[0]),
-                obj_list=see_textarea_value_lower
+                obj_list=see_textarea_value_lower,
+                limit_frame_count=max_frames+1
             )
             if f1___ == 0:
                 f1___ = 0.01
@@ -1396,7 +1397,7 @@ def update_heatmap_1(
             try:
                 shadow_model_df = get_shadow(
                     os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
-                    f1___, 1, see_textarea_value_lower
+                    f1___, 1, see_textarea_value_lower, limit_frame_count=max_frames+1
                 )[0]
 
                 if not os.path.exists(os.path.join(base_folder, model)):
@@ -1406,7 +1407,8 @@ def update_heatmap_1(
                 _, _, f1___shadow, _ = get_f1(
                     os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                     os.path.join(base_folder, model),
-                    obj_list=see_textarea_value_lower
+                    obj_list=see_textarea_value_lower,
+                    limit_frame_count=max_frames+1
                 )
                 print(f"{model} F1 : {f1___shadow:.4f}")
 
@@ -1466,7 +1468,8 @@ def update_heatmap_1(
             _, _, f1___, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model),
-                obj_list=see_textarea_value_lower
+                obj_list=see_textarea_value_lower,
+                limit_frame_count=max_frames+1
             )
 
             f1_model = f1___
@@ -1828,7 +1831,7 @@ def auto_select_objects(video):
         obj_list_ref = coco_common_obj
         frm_gvn_lst = True
     elif l_model in reduce_object_model_pfb:
-        obj_list_ref = pfb_common_obja
+        obj_list_ref = pfb_common_obj
         frm_gvn_lst = True
     else:
         obj_list_ref = []

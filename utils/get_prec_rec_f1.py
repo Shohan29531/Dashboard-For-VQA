@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 
 
-def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None, avg_typ='micro'):
+def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None, limit_frame_count=-1, avg_typ='micro'):
     gt_dict = {}
     pred_dict = {}
 
@@ -19,22 +19,41 @@ def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None, avg_t
 
         if obj_list:
             gt_data = pd.read_csv(gt_fl)
+            if limit_frame_count > 0:
+                if len(list(gt_data.columns)) > limit_frame_count:
+                    gt_data = gt_data.iloc[:, :limit_frame_count]
 
             gt_data = gt_data.transpose()
             gt_data.columns = [x__.lower().strip() for x__ in gt_data.iloc[0]]
-            gt_data = gt_data.reindex(columns=obj_list).iloc[1:].transpose().reset_index()
+            gt_data = gt_data.reindex(columns=obj_list).iloc[1:]  # .transpose().reset_index()
+
+            # if gt_data.isnull().values.any():
+            #     results = gt_data.columns[gt_data.isna().any()].tolist()
+            #     print(results)
+
+            gt_data = gt_data.transpose().reset_index()
 
             pred_data = pd.read_csv(pred_fl)
+            if limit_frame_count > 0:
+                if len(list(pred_data.columns)) > limit_frame_count:
+                    pred_data = pred_data.iloc[:, :limit_frame_count]
 
             pred_data = pred_data.transpose()
             pred_data.columns = [x__.lower().strip() for x__ in pred_data.iloc[0]]
             pred_data = pred_data.reindex(columns=obj_list).iloc[1:].transpose().reset_index()
+            # print(pred_data.isnull().values.any())
             # print(gt_data)
             # print(pred_data)
         else:
             gt_data = pd.read_csv(gt_fl)
+            if limit_frame_count > 0:
+                if len(list(gt_data.columns)) > limit_frame_count:
+                    gt_data = gt_data.iloc[:, :limit_frame_count]
             gt_data.replace(-1, 1, inplace=True)
             pred_data = pd.read_csv(pred_fl)
+            if limit_frame_count > 0:
+                if len(list(pred_data.columns)) > limit_frame_count:
+                    pred_data = pred_data.iloc[:, :limit_frame_count]
             pred_data.replace(-1, 1, inplace=True)
 
         x = []
