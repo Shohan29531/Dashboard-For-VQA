@@ -36,7 +36,8 @@ def get_dum_pred_from_f1(gt_f__, mod_f__, gt_fol, gt_file, model_fol, obj_list_a
             gt_fol, gt_file,
             model_fol,
             obj_list=obj_list_a,
-            limit_frame_count=limit_frame_count
+            limit_frame_count=limit_frame_count,
+            avg_typ='micro'
         )
 
         dd_df = pd.read_csv(gt_f__)

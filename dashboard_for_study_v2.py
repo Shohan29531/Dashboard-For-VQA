@@ -1388,7 +1388,8 @@ def update_heatmap_1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model.split('@')[0]),
                 obj_list=see_textarea_value_lower,
-                limit_frame_count=max_frames+1
+                limit_frame_count=max_frames+1,
+                avg_typ='micro'
             )
             if f1___ == 0:
                 f1___ = 0.01
@@ -1409,7 +1410,7 @@ def update_heatmap_1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model),
                 obj_list=see_textarea_value_lower,
-                limit_frame_count=max_frames+1
+                limit_frame_count=max_frames+1, avg_typ='micro'
             )
 
             print(f"{model.split('@')[0]} F1 : {f1___:.4f}")
@@ -1471,7 +1472,7 @@ def update_heatmap_1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model),
                 obj_list=see_textarea_value_lower,
-                limit_frame_count=max_frames+1
+                limit_frame_count=max_frames+1, avg_typ='micro'
             )
 
             f1_model = f1___

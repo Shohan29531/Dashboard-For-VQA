@@ -100,17 +100,21 @@ def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None, limit
     target_array = np.array(target_array).T
     pred_array = np.array(pred_array).T
 
-    # print(target_array.shape)
+    if target_array.shape[1] == 1:
+        target_array = np.array([[ell[0], ell[0]] for ell in target_array])
+        pred_array = np.array([[ell[0], ell[0]] for ell in pred_array])
+
+    # print(target_array.shape, pred_array.shape)
 
     # try:
     if pred_path.endswith('GT_N'):
-        precs = precision_score(target_array, pred_array, average=avg_typ)
-        recs = recall_score(target_array, pred_array, average=avg_typ)
-        f1ss = f1_score(target_array, pred_array, average=avg_typ)
+        precs = precision_score(target_array, pred_array, average=avg_typ, zero_division=0.0)
+        recs = recall_score(target_array, pred_array, average=avg_typ, zero_division=0.0)
+        f1ss = f1_score(target_array, pred_array, average=avg_typ, zero_division=0.0)
     else:
-        precs = precision_score(target_array, pred_array, average=avg_typ)
-        recs = recall_score(target_array, pred_array, average=avg_typ)
-        f1ss = f1_score(target_array, pred_array, average=avg_typ)
+        precs = precision_score(target_array, pred_array, average=avg_typ, zero_division=0.0)
+        recs = recall_score(target_array, pred_array, average=avg_typ, zero_division=0.0)
+        f1ss = f1_score(target_array, pred_array, average=avg_typ, zero_division=0.0)
     # except Exception as e:
     #     # ap = 0
     #     print(e)
@@ -119,5 +123,8 @@ def calculate_model_ap_ar_af1(gt_path, gt_files, pred_path, obj_list=None, limit
     #     f1ss = 0.0
 
     frm_wise_pn_s = (2 * target_array) - pred_array
+    # print(f1_score(target_array, pred_array, average=None, zero_division=0.0), f1ss)
+
+    # print(frm_wise_pn_s)
 
     return precs, recs, f1ss, frm_wise_pn_s
