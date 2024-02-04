@@ -1,2 +1,4 @@
 Object,Frame,Presence
-Sidewalk,6,0
+Escalator,8,1
+Person,11,0
+Sidewalk,11,0

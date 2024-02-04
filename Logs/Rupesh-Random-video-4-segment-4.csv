@@ -1,0 +1,31 @@
+Object,Frame,Presence
+White Cane,0,0
+White Cane,3,0
+White Cane,4,0
+White Cane,5,0
+White Cane,7,1
+White Cane,8,1
+White Cane,9,1
+White Cane,11,1
+White Cane,12,1
+White Cane,13,1
+Sidewalk,0,1
+Sidewalk,1,1
+Sidewalk,4,1
+Sidewalk,6,1
+Sidewalk,7,1
+Sidewalk,9,1
+Sidewalk,10,1
+Sidewalk,11,1
+Sidewalk,12,1
+Sidewalk,14,1
+Road,1,1
+Road,2,1
+Road,7,1
+Road,9,1
+Road,10,1
+Person,1,1
+Person,3,1
+Person,12,1
+Person,14,1
+Road,11,1

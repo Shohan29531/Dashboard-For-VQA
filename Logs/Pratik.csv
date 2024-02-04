@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-03::10:22:06,video-1-segment-5,BLIP,,,"Person with a disability,Sidewalk,Bicycle,White Cane",,9,"in images 0 and 1, bicycles are merely visible.",single,0.9791666666666666,0.98
+2024-02-03::10:30:18,video-4-segment-4,BLIP,,,"Slopped Curb,White Cane,Sidewalk,Person with a disability",,4,,single,0.7975460122699386,
+2024-02-03::10:37:00,video-3-segment-3,BLIP,,,"Gate,White Cane,Car,Sidewalk",,4,,single,0.6666666666666667,0.6666666666666666
+2024-02-03::10:43:50,video-7-segment-2,BLIP,,,"White Cane,Person with a disability,Sidewalk,Person",,4,,single,0.8793103448275861,0.8760330578512396
+2024-02-03::10:46:36,video-3-segment-3,BLIP,,,"Fence,Sidewalk,Person with a disability,White Cane",,5,,single,0.6351931330472103,
+2024-02-03::10:48:51,video-4-segment-3,BLIP,,,"Person with a disability,Fence,White Cane,Pillar",,7,,single,1.0,
+2024-02-03::10:53:08,video-4-segment-1,BLIP,,,"Bus,Fence,Person with a disability,White Cane",,5,,single,0.7142857142857144,
+2024-02-03::10:54:52,video-15-segment-3,BLIP,,,"White Cane,Car,Closed Sidewalk,Person",,10,,single,0.9523809523809524,
+2024-02-03::10:56:46,video-14-segment-1,BLIP,,,"Vegetation,Roadside Parking,White Cane,Stairs",,8,,single,0.8,
+2024-02-03::10:58:32,video-14-segment-4,BLIP,,,"Person,White Cane,Person with a disability,Building",,7,,single,0.8205128205128205,0.825
+2024-02-03::11:00:16,video-14-segment-1,BLIP,,,"Roadside Parking,White Cane,Person with a disability,Stairs",,10,,single,1.0,
+2024-02-03::11:01:38,video-12-segment-4,BLIP,,,"White Cane,Pedestrian Crossing,Person with a disability,Building",,8,,single,0.9367088607594936,
+2024-02-03::11:03:16,video-1-segment-4,BLIP,,,"Gate,Person with a disability,White Cane,Bicycle",,7,,single,0.7943262411347518,
+2024-02-03::11:05:14,video-2-segment-1,BLIP,,,"Vegetation,White Cane,Tree,Person with a disability",,7,,single,0.780952380952381,
+2024-02-03::11:07:01,video-4-segment-4,BLIP,,,"Person with a disability,White Cane,Slopped Curb,Tree",,3,,single,0.6346153846153846,0.6354166666666666
+2024-02-03::11:08:12,video-4-segment-3,BLIP,,,"Fence,Person with a disability,Pole,White Cane",,5,,single,0.8275862068965518,0.8266666666666667
+2024-02-03::11:09:24,video-15-segment-3,BLIP,,,"Person with a disability,Car,White Cane,Road",,1,,single,0.417910447761194,
+2024-02-03::11:11:27,video-1-segment-4,BLIP,,,"Bicycle,Person with a disability,Fence,White Cane",,1,,single,0.3469387755102041,
+2024-02-03::11:12:45,video-6-segment-2,BLIP,,,"Person with a disability,Stairs,Pillar,White Cane",,6,,single,0.8524590163934426,
+2024-02-03::11:14:15,video-7-segment-2,BLIP,,,"Building,Person with a disability,White Cane,Person",,4,,single,0.7021276595744681,
+2024-02-03::11:16:19,video-11-segment-1,BLIP,,,"Trash bins,White Cane,Person with a disability,Tree",,3,,single,0.5217391304347826,0.5233644859813084
+2024-02-03::11:17:20,video-3-segment-2,BLIP,,,"Car,Fence,Person with a disability,White Cane",,7,,single,1.0,
+2024-02-03::11:19:28,video-6-segment-2,BLIP,,,"White Cane,Pillar,Stairs,Person with a disability",,5,,single,0.6095238095238095,0.6111111111111109
+2024-02-03::11:20:40,video-1-segment-5,BLIP,N/A,N/A,"Person with a disability,Bicycle,White Cane,Sidewalk",,6,,single,0.8936170212765957,0.8910891089108911
