@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-03::12:30:38,video-4-segment-4,BLIP,,,"Person,Road,White Cane,Sidewalk",,1,,single,0.6666666666666666,
+2024-02-03::12:34:00,video-1-segment-5,BLIP,,,"Stairs,Sidewalk,Car,Building,Crosswalk,Motorcycle",,6,,single,0.75,
+2024-02-03::12:38:46,video-4-segment-1,BLIP,,,"Trash on roads,Vegetation,Bus,Trash bins,Car",,8,,single,0.7058823529411763,
+2024-02-03::12:42:23,video-4-segment-3,BLIP,,,"Person with a disability,Vegetation,Mail box,White Cane,Pole",,10,,single,1.0,
+2024-02-03::12:45:06,video-6-segment-2,BLIP,,,"Pillar,Person with a disability,Stairs,Accent Paving,Railing",,0,,single,0.8734177215189873,0.8727272727272727
+2024-02-03::12:50:41,video-15-segment-3,BLIP,,,"Bicycle,Wall,Vegetation,Car,Tree",,6,,single,0.967741935483871,0.9696969696969696
+2024-02-03::12:54:45,video-7-segment-2,BLIP,,,"White Cane,Accent Paving,Car,Road,Person,Vegetation",,1,,single,0.6101694915254237,
+2024-02-03::12:58:53,video-14-segment-4,BLIP,,,"Bench,Fence,Building,Person with a disability,Vegetation",,7,,single,0.7837837837837838,
+2024-02-03::13:00:40,video-3-segment-2,BLIP,,,"Person with a disability,Car,Sidewalk,Fence",,1,,single,0.8705882352941177,
+2024-02-03::13:02:55,video-11-segment-1,BLIP,,,"Road,Trash bins,Person,Car,Push button",,8,,single,0.9801324503311258,0.9803921568627452
+2024-02-03::13:06:06,video-15-segment-3,BLIP,,,"Car,Bicycle,Person with a disability,Vegetation,Tree,Road",,3,,single,0.9448818897637796,
+2024-02-03::13:09:11,video-2-segment-1,BLIP,,,"Person,Crosswalk,Building,Vegetation,Car,Tree",,6,,single,0.8435013262599469,0.8441247002398081
+2024-02-03::13:11:41,video-3-segment-2,BLIP,,,"Car,Person with a disability,Fence,Sidewalk,Road",,1,,single,0.8316831683168316,0.8349514563106796
+2024-02-03::13:14:08,video-11-segment-1,BLIP,,,"Building,Bus,Car,Trash bins,Road,Person",,8,,single,0.983957219251337,
+2024-02-03::13:16:33,video-1-segment-4,BLIP,,,"Gate,Person with a disability,Car,Bicycle,Building,Vegetation",,9,,single,1.0,
+2024-02-03::13:17:55,video-1-segment-5,BLIP,,,"Car,Stairs,Barrier Post,Motorcycle,Person with a disability",,0,,single,0.5853658536585366,
+2024-02-03::13:19:13,video-4-segment-3,BLIP,,,"Person with a disability,Sidewalk,Pole,Fence,Vegetation,White Cane",,9,,single,1.0,
+2024-02-03::13:20:33,video-12-segment-4,BLIP,,,"Building,Fence,Crosswalk,Person,Car,Tree",,0,,single,0.8266666666666667,0.8278688524590164
+2024-02-03::13:21:38,video-6-segment-2,BLIP,,,"Person with a disability,Stairs,Railing,White Cane,Pillar",,0,,single,0.8441558441558442,0.8466257668711655
+2024-02-03::13:23:39,video-16-segment-3,BLIP,,,"Pole,Car,Building,Sign,Bicycle",,9,,single,0.9387755102040816,
+2024-02-03::13:25:49,video-13-segment-2,BLIP,,,"White Cane,Person with a disability,Traffic Signals,Car,Pole",,7,,single,0.8609865470852017,
+2024-02-03::13:28:38,video-12-segment-4,BLIP,,,"Car,Crosswalk,Tree,Fence,Person,Mail box",,2,,single,0.8638497652582159,0.8650793650793651
+2024-02-03::13:30:12,video-3-segment-3,BLIP,,,"Person,Tree,Car,Vegetation,Fence",,6,,single,0.9198606271777002,
+2024-02-03::13:31:15,video-4-segment-1,BLIP,N/A,N/A,"Trash on roads,Fence,Car,Bus,Person with a disability,White Cane",,0,,single,0.8316831683168318,0.8345323741007193

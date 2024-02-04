@@ -55,7 +55,21 @@ base_folder = DATA_DIR
 images_source_folder = IMAGE_DATA_DIR
 files = os.listdir(GROUND_TRUTH_DATA)
 all_video_files = [os.path.splitext(file)[0] for file in files if file.endswith(".csv")]
-all_video_files = natsorted(all_video_files)[:21]
+all_video_files = natsorted(all_video_files)
+
+ignore_video = ['video-5', 'video-8', 'video-9', 'video-10']
+ignore_video += ['video-'+str(i) for i in range(17, 25)]
+
+ignore_vid_seg = []
+
+for vid in all_video_files:
+    for v in ignore_video:
+        if v in vid:
+            ignore_vid_seg.append(vid)
+            break
+
+for vid in ignore_vid_seg:
+    del all_video_files[all_video_files.index(vid)]    
 
 available_models = [
     'GPV-1',
@@ -79,8 +93,7 @@ heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
 
 # a global log file contains the following columns: timestamp, video, model, score, comments
 
-COLUMNS = ['timestamp', 'video', 'model left', 'model right', 'winner model', 'see', 'not_see', 'score', 'comments',
-           'mode']
+COLUMNS = ['timestamp', 'video', 'model left', 'model right', 'winner model', 'see', 'not_see', 'score', 'comments','mode', 'F1-Base', 'F1-Shadow']
 
 # default values
 current_model = 'Model-0'  # 'GPV-1'
@@ -222,6 +235,10 @@ user_log_path = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
 
 # if os.path.exists(user_log_path):
 #     completed_comparison, completed_videos = get_done_models_vid(user_log_path)
+<<<<<<< HEAD
+
+=======
+>>>>>>> 27e2465d9c333d94f8a7e5299f6dffe7196bda4b
 
 
 def save_log_file(new_row):
@@ -238,7 +255,12 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row, columns=COLUMNS, index=[0])
         df_log.to_csv(log_file, index=False)
 
+<<<<<<< HEAD
+    completed_comparison, completed_videos = [], []
+    #get_done_models_vid(log_file)
+=======
     completed_comparison, completed_videos = [], []  # get_done_models_vid(log_file)
+>>>>>>> 27e2465d9c333d94f8a7e5299f6dffe7196bda4b
 
 
 def read_text_file_content(file_path):
@@ -1352,7 +1374,7 @@ def update_heatmap_1(
         second_model,
         unchecked_image_id
 ):
-    global f1_model, f1_shadow_model
+    global f1_model, f1_shadow_model, current_model
     selected_heatmap_type = heatmap_types[0]
     first_model_name = model
     model = models_to_show[model]
@@ -1620,6 +1642,8 @@ def update_heatmap_1(
             z=z_values,
             colorscale=colorscale_heatmap1,
             showscale=False,
+            zmin=0,
+            zmax=1
         )
 
         heat_map = go.Figure(data=heatmap, layout=layout)
@@ -1718,6 +1742,8 @@ def update_comment(text_comments):
     return f"Comments: {current_text_comments}" if current_text_comments else "Comments: None"
 
 
+
+
 @app.callback(
     Output('status-textarea', 'children', allow_duplicate=True),
     Output('video-dropdown', 'options', allow_duplicate=True),
@@ -1728,6 +1754,8 @@ def update_comment(text_comments):
     Output('auto-select-obj', 'style', allow_duplicate=True),
     Output('bar-graph', 'style', allow_duplicate=True),
     Output('I-see', 'value', allow_duplicate=True ),
+    Output('rating-slider', 'value'),
+    Output('comments-textarea', 'value'),
     Input('save-button', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -1747,8 +1775,8 @@ def save_data(n_clicks):
             'score': current_rating if observe_typ == 'single' else 'N/A',
             'comments': current_text_comments.lower() if current_text_comments else '',
             'mode': observe_typ,
-            'F1 (Base model)': f1_model,
-            'F1 (Shadow model)': f1_shadow_model
+            'F1-Base': f1_model,
+            'F1-Shadow': f1_shadow_model
         }
 
         # write data to file
@@ -1764,10 +1792,10 @@ def save_data(n_clicks):
 
         if len(updated_list) == 0:
             return "**Saved at: " + current_time + "**", dash.no_update, dash.no_update, dash.no_update, dash.no_update, auto_select_button_style, {
-                'display': 'none'}, []
+                'display': 'none'}, [], 5, ''
 
         return "**Saved at: " + current_time + "**", updated_list, None, [], {}, auto_select_button_style, {
-            'display': 'none'}, []
+            'display': 'none'}, [], 5, ''
     else:
         return "*Not Saved*"
 
@@ -1796,6 +1824,8 @@ def randomize_event(n_clicks):
     prevent_initial_call=True
 )
 def auto_select_objects(video):
+    if video == [] or video == None:
+        return []
     global current_model, current_model_right
     gt_file = os.path.join(GROUND_TRUTH_DATA, f'{current_file}.csv')
 
@@ -1806,7 +1836,7 @@ def auto_select_objects(video):
         obj_list_ref = coco_common_obj
         frm_gvn_lst = True
     elif l_model in reduce_object_model_pfb:
-        obj_list_ref = pfb_common_obj
+        obj_list_ref = pfb_common_obja
         frm_gvn_lst = True
     else:
         obj_list_ref = []

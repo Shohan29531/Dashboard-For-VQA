@@ -1,0 +1,38 @@
+Object,Frame,Presence
+White Cane,2,1
+White Cane,5,1
+White Cane,6,1
+White Cane,8,1
+White Cane,9,1
+White Cane,11,0
+White Cane,10,1
+White Cane,11,1
+Vegetation,0,0
+Vegetation,5,0
+Vegetation,7,1
+Vegetation,6,1
+Vegetation,8,1
+Vegetation,9,1
+Vegetation,10,0
+Vegetation,10,1
+Vegetation,11,1
+Vegetation,12,1
+Road,7,1
+Road,8,1
+Road,10,0
+Road,11,0
+Road,13,1
+Person,0,1
+Person,10,1
+Person,11,1
+Person,14,1
+Car,2,0
+Car,5,0
+Car,4,1
+Car,5,1
+Car,8,1
+Car,9,0
+Accent Paving,2,1
+Accent Paving,3,1
+Accent Paving,7,1
+Accent Paving,8,1
