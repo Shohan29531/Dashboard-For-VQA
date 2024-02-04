@@ -23,7 +23,7 @@ from copy import deepcopy
 import platform
 from utils.obj_select import get_obj_list
 from utils.get_prec_rec_f1 import calculate_model_ap_ar_af1 as get_f1
-from utils.shadow_model_generator import get_dum_pred_from_f1 as get_shadow
+from utils.shadow_model_generator_obj_wise import get_dum_pred_from_f1 as get_shadow
 
 PARTICIPANT_NAME = "Dummy"
 
@@ -802,6 +802,8 @@ def hide_show_slider_radio(model_right_pseudonym):
     Input('model-dropdown', 'value'),
 )
 def update_video_list(model_left_pseudonym):
+    global current_model
+    current_model = model_left_pseudonym
     updated_list = []
     for v_ in all_video_files:
         if v_ not in completed_videos:
@@ -1376,54 +1378,55 @@ def update_heatmap_1(
                 f1___ = 0.01
 
             print(f"{model.split('@')[0]} F1 : {f1___:.4f}")
-            try:
-                shadow_model_df = get_shadow(
-                    os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
-                    f1___, 1, see_textarea_value_lower
-                )[0]
+            # try:
+            shadow_model_df = get_shadow(
+                gt_f__=os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
+                org_f1=f1___, obj_list_all=see_textarea_value_lower,
+                limit_frame_count=-1
+            )[0]
 
-                if not os.path.exists(os.path.join(base_folder, model)):
-                    os.makedirs(os.path.join(base_folder, model))
+            if not os.path.exists(os.path.join(base_folder, model)):
+                os.makedirs(os.path.join(base_folder, model))
 
-                shadow_model_df.to_csv(os.path.join(base_folder, model, f'{selected_file}.csv'), index=False)
-                _, _, f1___shadow, _ = get_f1(
-                    os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
-                    os.path.join(base_folder, model),
-                    obj_list=see_textarea_value_lower
-                )
-                print(f"{model} F1 : {f1___shadow:.4f}")
+            shadow_model_df.to_csv(os.path.join(base_folder, model, f'{selected_file}.csv'), index=False)
+            _, _, f1___shadow, _ = get_f1(
+                os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
+                os.path.join(base_folder, model),
+                obj_list=see_textarea_value_lower
+            )
+            print(f"{model} F1 : {f1___shadow:.4f}")
 
-                f1_model = f1___
-                f1_shadow_model = f1___shadow
+            f1_model = f1___
+            f1_shadow_model = f1___shadow
 
-                x_labels = [col for col in shadow_model_df.columns if col != "Object"]
+            x_labels = [col for col in shadow_model_df.columns if col != "Object"]
 
-                longest_x_label = max(x_labels, key=len)
-                length_of_longest_x_label = len(longest_x_label)
+            longest_x_label = max(x_labels, key=len)
+            length_of_longest_x_label = len(longest_x_label)
 
-                y_labels = list(shadow_model_df.iloc[:, 0])
-                z_values = shadow_model_df.iloc[:, 1:].values.tolist()
+            y_labels = list(shadow_model_df.iloc[:, 0])
+            z_values = shadow_model_df.iloc[:, 1:].values.tolist()
 
-                for i in range(len(z_values)):
-                    for j in range(len(z_values[i])):
-                        if z_values[i][j] == -1:
-                            z_values[i][j] = 0
+            for i in range(len(z_values)):
+                for j in range(len(z_values[i])):
+                    if z_values[i][j] == -1:
+                        z_values[i][j] = 0
 
-                filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
+            filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
 
-                filtered_indices = filtered_indices_see
-                y_labels_filtered = []
-                z_values_filtered = []
+            filtered_indices = filtered_indices_see
+            y_labels_filtered = []
+            z_values_filtered = []
 
-                for i in filtered_indices:
-                    if i != -1:
-                        y_labels_filtered.append(y_labels[i])
-                        z_values_filtered.append(z_values[i])
+            for i in filtered_indices:
+                if i != -1:
+                    y_labels_filtered.append(y_labels[i])
+                    z_values_filtered.append(z_values[i])
 
-                y_labels = y_labels_filtered
-                z_values = z_values_filtered
-            except:
-                shadow_error = True
+            y_labels = y_labels_filtered
+            z_values = z_values_filtered
+            # except:
+            #     shadow_error = True
 
         if model not in shadow_models or shadow_error:
             if model in shadow_models:
