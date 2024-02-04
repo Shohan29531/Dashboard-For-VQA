@@ -235,7 +235,10 @@ user_log_path = os.path.join(LOG_DATA_DIR, PARTICIPANT_NAME + '.csv')
 
 # if os.path.exists(user_log_path):
 #     completed_comparison, completed_videos = get_done_models_vid(user_log_path)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 27e2465d9c333d94f8a7e5299f6dffe7196bda4b
 
 
 def save_log_file(new_row):
@@ -252,8 +255,12 @@ def save_log_file(new_row):
         df_log = pd.DataFrame(new_row, columns=COLUMNS, index=[0])
         df_log.to_csv(log_file, index=False)
 
+<<<<<<< HEAD
     completed_comparison, completed_videos = [], []
     #get_done_models_vid(log_file)
+=======
+    completed_comparison, completed_videos = [], []  # get_done_models_vid(log_file)
+>>>>>>> 27e2465d9c333d94f8a7e5299f6dffe7196bda4b
 
 
 def read_text_file_content(file_path):

@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 Object,Frame,Presence
 Closed Sidewalk,5,0
+=======
+Object,Frame,Presence
+Road,9,0
+Stairs,7,0
+>>>>>>> 27e2465d9c333d94f8a7e5299f6dffe7196bda4b
