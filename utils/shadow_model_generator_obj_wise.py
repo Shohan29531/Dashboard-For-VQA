@@ -149,7 +149,7 @@ if __name__ == '__main__':
     # print(shadows)
 
     model_list = ['BLIP', 'GPV-1', 'GPT4V', 'LLaVa']
-    dataset_dir = "/Users/ibk5106/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/"
+    dataset_dir = "../Dashboard Data/"
     gt_dir = os.path.join(dataset_dir, "GT_N")
 
     gts = natsorted(os.listdir(gt_dir))

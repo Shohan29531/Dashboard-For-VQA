@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-05::14:52:59,video-6-segment-2,Random,,,"Curb,White Cane,Building,Trash bins,Pedestrian Crossing",,2,,single,0.4057971014492754,
+2024-02-05::14:56:09,video-4-segment-3,GPV-1@Shadow,,,"Person with a disability,Curb,Vegetation,Pole,Sidewalk,Car",,4,,single,0.9044585987261146,0.9028571428571428
+2024-02-05::14:59:00,video-15-segment-3,BLIP@Shadow,,,"Fence,Sign,Car,White Cane,Road",,4,,single,0.7901234567901234,0.7931034482758621
+2024-02-05::15:01:52,video-1-segment-4,GPV-1,,,"Vegetation,Pole,Bicycle,Bus Stop,Bench,White Cane",,2,,single,0.7173913043478262,
+2024-02-05::15:03:11,video-15-segment-3,Random,,,"Person with a disability,Tree,Person,Car,Road",,1,,single,0.5631067961165048,
+2024-02-05::15:05:18,video-3-segment-2,GPT4V@Shadow,,,"Curb,White Cane,Bicycle,Car,Fence,Bus Stop",,4,,single,0.782608695652174,0.780952380952381
+2024-02-05::15:06:35,video-1-segment-5,GPT4V,,,"Sidewalk,Bicycle,Traffic Signals,Motorcycle,White Cane,Car",,9,,single,0.9565217391304348,
+2024-02-05::15:08:18,video-2-segment-1,Random,,,"Pillar,Bridge,Fountain,White Cane,Car",,1,,single,0.2592592592592592,
+2024-02-05::15:10:11,video-11-segment-1,GPT4V,,,"Trash bins,Bus,White Cane,Car,Sign Post,Bicycle",,6,,single,0.838095238095238,
+2024-02-05::15:11:45,video-3-segment-3,BLIP,,,"Fence,Person with a disability,Car,Tree,Road",,4,,single,0.796116504854369,
+2024-02-05::15:14:23,video-16-segment-3,GT_N,,,"Parallel Parking Spot,Pole,Closed Sidewalk,Person with a disability,Trash bins,White Cane",,9,,single,1.0,
+2024-02-05::15:15:49,video-4-segment-4,GPV-1,,,"Stairs,Puddle,White Cane,Car,Vegetation",,2,,single,0.3265306122448979,
+2024-02-05::15:17:28,video-14-segment-1,GPT4V,,,"Person with a disability,Railing,Bus,Car,Stairs",,3,,single,0.8842105263157894,
+2024-02-05::15:20:36,video-14-segment-4,GPV-1@Shadow,,,"Pole,Person with a disability,Railing,Sidewalk,Car",,5,,single,0.7164179104477612,0.72
+2024-02-05::15:23:04,video-3-segment-3,GPV-1@Shadow,,,"Wall,Person with a disability,Car,Road,Tree,Fence",,6,,single,0.8983050847457628,0.900763358778626
+2024-02-05::15:27:29,video-4-segment-1,BLIP@Shadow,,,"Vegetation,Bus,Tree,White Cane,Car,Sidewalk",,7,,single,0.8799999999999999,0.8828828828828829
+2024-02-05::15:31:05,video-11-segment-1,GT_N,,,"Pedestrian Crossing,Bus,Lamp Post,Person with a disability,Trash bins,Bicycle,Tree,Car",,6,,single,1.0,
+2024-02-05::15:32:24,video-16-segment-3,GPT4V@Shadow,,,"Pole,Sign,Barrier Post,Closed Sidewalk,Sloped Driveway,Fence,Lamp Post",,1,,single,0.7173913043478262,0.7175572519083969
+2024-02-05::15:33:24,video-6-segment-2,BLIP,,,"Wall,Railing,White Cane,Person with a disability,Car",,0,,single,0.6956521739130435,
+2024-02-05::15:34:59,video-2-segment-1,GPV-1,,,"Sign,Car,Person with a disability,Person,White Cane,Street Vendor",,3,,single,0.6857142857142856,
+2024-02-05::15:38:49,video-3-segment-2,GT_N,,,"Person with a disability,Car,Railing,Fence,Tree,White Cane,Person",,9,,single,1.0,
+2024-02-05::15:40:23,video-14-segment-4,BLIP,,,"Person with a disability,Person,White Cane,Car,Fence",,0,,single,0.8433734939759036,
+2024-02-05::15:42:09,video-4-segment-3,BLIP@Shadow,,,"Person,Motorcycle,White Cane,Person with a disability,Car,Snow",,0,,single,0.7692307692307692,0.7669172932330827
+2024-02-05::15:44:02,video-1-segment-4,GPT4V@Shadow,N/A,N/A,"Person,Pole,Person with a disability,White Cane,Snow,Car",,3,,single,0.8076923076923077,0.8053691275167786
