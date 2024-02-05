@@ -23,7 +23,7 @@ from copy import deepcopy
 import platform
 from utils.obj_select import get_obj_list
 from utils.get_prec_rec_f1 import calculate_model_ap_ar_af1 as get_f1
-from utils.shadow_model_generator_obj_wise import get_dum_pred_from_f1 as get_shadow
+# from utils.shadow_model_generator_obj_wise import get_dum_pred_from_f1 as get_shadow
 
 PARTICIPANT_NAME = "Dummy"
 
@@ -82,11 +82,11 @@ available_models = [
     'Random'
 ]
 
-shadow_models = [
-    'GPV-1@Shadow',
-    'BLIP@Shadow',
-    'GPT4V@Shadow'
-]
+dynamic_models = []
+
+# 'GPV-1@Shadow',
+# 'BLIP@Shadow',
+# 'GPT4V@Shadow'
 
 comparison_types = ['One Model', 'Two Models']
 heatmap_types = ['Objects I See', 'Objects I do not See', 'Both']
@@ -904,7 +904,7 @@ def update_heatmap_and_reset_inputs(selected_model, previous_second_model):
     Output('I-dont-see', 'style'),
     Input('heatmap-type-dropdown', 'value'),
 )
-def update_image_container(
+def update_image_container_2(
         selected_heatmap_type
 ):
     selected_heatmap_type = 'Objects I See'
@@ -1194,6 +1194,8 @@ def update_image_container(
 
             filtered_images = [img.strip() for img in image_names if img.startswith(selected_option)]
 
+            # print(filtered_images)
+
             filtered_images.sort(key=extract_frame_number)
 
             filtered_images = filtered_images[:max_frames]
@@ -1259,10 +1261,7 @@ def update_image_container(
             x_coord = str(clicked_point['x']).lower()
             y_coord = clicked_point['y']
 
-    print(selected_option)
-
     if selected_option:
-
         image_names = os.listdir(images_source_folder)
         selected_option = selected_option.lower()
         image_names = [img.lower() for img in image_names]
@@ -1292,6 +1291,7 @@ def update_image_container(
 
             image_elements.append(image_element)
 
+        print('>>>>>>>', len(image_elements))
         return image_elements, None
     else:
         return [], None
@@ -1379,120 +1379,129 @@ def update_heatmap_1(
             selected_heatmap_type == 'Objects I See' or selected_heatmap_type == 'Both') and (
             second_model == None or second_model == ''):
 
-        shadow_error = False
+        # shadow_error = False
+        #
+        # if model in dynamic_models:
+        #     # random.seed(200)
+        #     see_textarea_value_lower = [item.lower() for item in see_textarea_value]
+        #     _, _, f1___, _ = get_f1(
+        #         os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
+        #         os.path.join(base_folder, model.split('@')[0]),
+        #         obj_list=see_textarea_value_lower,
+        #         limit_frame_count=max_frames+1,
+        #         avg_typ='micro'
+        #     )
+        #     if f1___ == 0:
+        #         f1___ = 0.01
+        #
+        #     shadow_model_df = get_shadow(
+        #         gt_f__=os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
+        #         mod_f__=os.path.join(base_folder, model.split('@')[0], f'{selected_file}.csv'),
+        #         gt_fol=os.path.join(base_folder, 'GT_N'), gt_file=[f'{selected_file}.csv'],
+        #         model_fol=os.path.join(base_folder, model.split('@')[0]),
+        #         obj_list_all=see_textarea_value_lower, limit_frame_count=max_frames+1
+        #     )[0]
+        #
+        #     if not os.path.exists(os.path.join(base_folder, model)):
+        #         os.makedirs(os.path.join(base_folder, model))
+        #
+        #     shadow_model_df.to_csv(os.path.join(base_folder, model, f'{selected_file}.csv'), index=False)
+        #     _, _, f1___shadow, _ = get_f1(
+        #         os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
+        #         os.path.join(base_folder, model),
+        #         obj_list=see_textarea_value_lower,
+        #         limit_frame_count=max_frames+1, avg_typ='micro'
+        #     )
+        #
+        #     print(f"{model.split('@')[0]} F1 : {f1___:.4f}")
+        #     print(f"{model} F1 : {f1___shadow:.4f}")
+        #
+        #     f1_model = f1___
+        #     f1_shadow_model = f1___shadow
+        #
+        #     x_labels = [col for col in shadow_model_df.columns if col != "Object"]
+        #
+        #     longest_x_label = max(x_labels, key=len)
+        #     length_of_longest_x_label = len(longest_x_label)
+        #
+        #     y_labels = list(shadow_model_df.iloc[:, 0])
+        #     z_values = shadow_model_df.iloc[:, 1:].values.tolist()
+        #
+        #     for i in range(len(z_values)):
+        #         for j in range(len(z_values[i])):
+        #             if z_values[i][j] == -1:
+        #                 z_values[i][j] = 0
+        #
+        #     filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
+        #
+        #     filtered_indices = filtered_indices_see
+        #     y_labels_filtered = []
+        #     z_values_filtered = []
+        #
+        #     for i in filtered_indices:
+        #         if i != -1:
+        #             y_labels_filtered.append(y_labels[i])
+        #             z_values_filtered.append(z_values[i])
+        #
+        #     y_labels = y_labels_filtered
+        #     z_values = z_values_filtered
+        #
+        # # if model not in shadow_models or shadow_error:
+        # else:
+        # if model in dynamic_models:
+        #     model = model.split('@')[0]
+        file_path = os.path.join(base_folder, model, selected_file + '.csv')
+        heat_map_file = pd.read_csv(file_path)
 
-        if model in shadow_models:
-            random.seed(200)
-            see_textarea_value_lower = [item.lower() for item in see_textarea_value]
-            _, _, f1___, _ = get_f1(
+        x_labels = [col for col in heat_map_file.columns if col != "Object"]
+
+        longest_x_label = max(x_labels, key=len)
+        length_of_longest_x_label = len(longest_x_label)
+
+        y_labels = list(heat_map_file.iloc[:80, 0])
+        z_values = heat_map_file.iloc[:80, 1:].values.tolist()
+
+        for i in range(len(z_values)):
+            for j in range(len(z_values[i])):
+                if z_values[i][j] == -1:
+                    z_values[i][j] = 0
+
+        see_textarea_value_lower = [item.lower() for item in see_textarea_value]
+
+        _, _, f1___, _ = get_f1(
+            os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
+            os.path.join(base_folder, model),
+            obj_list=see_textarea_value_lower,
+            limit_frame_count=max_frames+1, avg_typ='micro'
+        )
+
+        f1_model = f1___
+        f1_shadow_model = 'N/A'
+
+        if '@Shadow' in model:
+            _, _, f1___base, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model.split('@')[0]),
                 obj_list=see_textarea_value_lower,
-                limit_frame_count=max_frames+1,
-                avg_typ='micro'
+                limit_frame_count=max_frames + 1, avg_typ='micro'
             )
-            if f1___ == 0:
-                f1___ = 0.01
+            print(f"{model.split('@')[0]} F1 : {f1___base:.4f}")
 
-            shadow_model_df = get_shadow(
-                gt_f__=os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
-                mod_f__=os.path.join(base_folder, model.split('@')[0], f'{selected_file}.csv'),
-                gt_fol=os.path.join(base_folder, 'GT_N'), gt_file=[f'{selected_file}.csv'],
-                model_fol=os.path.join(base_folder, model.split('@')[0]),
-                obj_list_all=see_textarea_value_lower, limit_frame_count=max_frames+1
-            )[0]
+        print(f"{model} F1 : {f1___:.4f}")
 
-            if not os.path.exists(os.path.join(base_folder, model)):
-                os.makedirs(os.path.join(base_folder, model))
+        filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
 
-            shadow_model_df.to_csv(os.path.join(base_folder, model, f'{selected_file}.csv'), index=False)
-            _, _, f1___shadow, _ = get_f1(
-                os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
-                os.path.join(base_folder, model),
-                obj_list=see_textarea_value_lower,
-                limit_frame_count=max_frames+1, avg_typ='micro'
-            )
+        filtered_indices = filtered_indices_see
+        y_labels_filtered = []
+        z_values_filtered = []
 
-            print(f"{model.split('@')[0]} F1 : {f1___:.4f}")
-            print(f"{model} F1 : {f1___shadow:.4f}")
+        for i in filtered_indices:
+            if i != -1:
+                y_labels_filtered.append(y_labels[i])
+                z_values_filtered.append(z_values[i])
 
-            f1_model = f1___
-            f1_shadow_model = f1___shadow
-
-            x_labels = [col for col in shadow_model_df.columns if col != "Object"]
-
-            longest_x_label = max(x_labels, key=len)
-            length_of_longest_x_label = len(longest_x_label)
-
-            y_labels = list(shadow_model_df.iloc[:, 0])
-            z_values = shadow_model_df.iloc[:, 1:].values.tolist()
-
-            for i in range(len(z_values)):
-                for j in range(len(z_values[i])):
-                    if z_values[i][j] == -1:
-                        z_values[i][j] = 0
-
-            filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
-
-            filtered_indices = filtered_indices_see
-            y_labels_filtered = []
-            z_values_filtered = []
-
-            for i in filtered_indices:
-                if i != -1:
-                    y_labels_filtered.append(y_labels[i])
-                    z_values_filtered.append(z_values[i])
-
-            y_labels = y_labels_filtered
-            z_values = z_values_filtered
-
-        # if model not in shadow_models or shadow_error:
-        else:
-            if model in shadow_models:
-                model = model.split('@')[0]
-            file_path = os.path.join(base_folder, model, selected_file + '.csv')
-            heat_map_file = pd.read_csv(file_path)
-
-            x_labels = [col for col in heat_map_file.columns if col != "Object"]
-
-            longest_x_label = max(x_labels, key=len)
-            length_of_longest_x_label = len(longest_x_label)
-
-            y_labels = list(heat_map_file.iloc[:80, 0])
-            z_values = heat_map_file.iloc[:80, 1:].values.tolist()
-
-            for i in range(len(z_values)):
-                for j in range(len(z_values[i])):
-                    if z_values[i][j] == -1:
-                        z_values[i][j] = 0
-
-            see_textarea_value_lower = [item.lower() for item in see_textarea_value]
-
-            _, _, f1___, _ = get_f1(
-                os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
-                os.path.join(base_folder, model),
-                obj_list=see_textarea_value_lower,
-                limit_frame_count=max_frames+1, avg_typ='micro'
-            )
-
-            f1_model = f1___
-            f1_shadow_model = 'N/A'
-
-            print(f"{model} F1 : {f1___:.4f}")
-
-            filtered_indices_see = [i for i, label in enumerate(y_labels) if label.lower() in see_textarea_value_lower]
-
-            filtered_indices = filtered_indices_see
-            y_labels_filtered = []
-            z_values_filtered = []
-
-            for i in filtered_indices:
-                if i != -1:
-                    y_labels_filtered.append(y_labels[i])
-                    z_values_filtered.append(z_values[i])
-
-            y_labels = y_labels_filtered
-            z_values = z_values_filtered
+        y_labels = y_labels_filtered
+        z_values = z_values_filtered
 
         ## for the "i see" heatmap (left one), 1 is agreement
         ## because, 1 means the model sees, which is exactly what my view is
@@ -1500,9 +1509,14 @@ def update_heatmap_1(
 
         x_labels = [label.replace('Frame-', '').replace('frame_', '') for label in x_labels]
 
-        x_labels = x_labels[:max_frames]
-        y_labels = y_labels[:max_frames]
-        z_values = z_values[:max_frames]
+        # print(x_labels, y_labels)
+
+        if max_frames < len(x_labels):
+            x_labels = x_labels[:max_frames]
+        if max_frames < len(y_labels):
+            y_labels = y_labels[:max_frames]
+        if max_frames < len(z_values):
+            z_values = z_values[:max_frames]
 
         ## handle the unchecked images here for heatmap display and bargraph data
         global bargraph_data

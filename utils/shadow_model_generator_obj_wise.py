@@ -3,7 +3,12 @@ import numpy as np
 from fractions import Fraction
 import pandas as pd
 from natsort import natsorted
-from .get_prec_rec_f1 import calculate_model_ap_ar_af1 as get_f1
+if __name__ == '__main__':
+    from get_prec_rec_f1 import calculate_model_ap_ar_af1 as get_f1
+    from tqdm import tqdm
+else:
+    from .get_prec_rec_f1 import calculate_model_ap_ar_af1 as get_f1
+import os
 
 
 object_list = [
@@ -129,16 +134,44 @@ def get_dum_pred_from_f1(gt_f__, mod_f__, gt_fol, gt_file, model_fol, obj_list_a
 
 
 if __name__ == '__main__':
-    object_list = [
-        "Building", "Bus", "Bus Stop", "Car", "Motorcycle", "Person",
-        "Person with a disability", "White Cane", "Yard Waste"
+    print("***************************")
+    # object_list = [
+    #     "Building", "Bus", "Bus Stop", "Car", "Motorcycle", "Person",
+    #     "Person with a disability", "White Cane", "Yard Waste"
+    # ]
+    # object_list = [ooo.lower() for ooo in object_list]
+    # shadows = get_dum_pred_from_f1(
+    #     gt_f__='/Users/ibk5106/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/GT_N/video-1-segment-4.csv',
+    #     org_f1=0.6,
+    #     obj_list_all=object_list,
+    #     limit_frame_count=-1
+    # )
+    # print(shadows)
+
+    model_list = ['BLIP', 'GPV-1', 'GPT4V', 'LLaVa']
+    dataset_dir = "/Users/ibk5106/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/"
+    gt_dir = os.path.join(dataset_dir, "GT_N")
+
+    gts = natsorted(os.listdir(gt_dir))
+    skip_list = [
+        "video-10-segment-1.csv", "video-9-segment-2.csv"
     ]
-    object_list = [ooo.lower() for ooo in object_list]
-    shadows = get_dum_pred_from_f1(
-        gt_f__='/Users/ibk5106/Desktop/research/vqa_accessibility/Dashboard-For-VQA/Dashboard Data/GT_N/video-1-segment-4.csv',
-        org_f1=0.6,
-        obj_list_all=object_list,
-        limit_frame_count=-1
-    )
-    print(shadows)
+
+    gts = [x.split('.')[0] for x in gts if
+           x.endswith('.csv') and int(x.split('-')[1]) <= 16 and x not in skip_list]  # [:1]
+
+    for model in tqdm(model_list):
+        for gt in gts:
+            shadow_df = get_dum_pred_from_f1(
+                gt_f__=os.path.join(gt_dir, f'{gt}.csv'),
+                mod_f__=os.path.join(dataset_dir, model, f'{gt}.csv'),
+                gt_fol=gt_dir,
+                gt_file=[f'{gt}.csv'],
+                model_fol=os.path.join(dataset_dir, model),
+                obj_list_all=object_list,
+                limit_frame_count=17
+            )[0]
+            shadow_df.to_csv(os.path.join(dataset_dir, f'{model}@Shadow', f'{gt}.csv'), index=False)
+
+
 
