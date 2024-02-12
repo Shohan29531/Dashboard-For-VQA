@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-06::12:27:07,video-3-segment-2,BLIP,,,"Road,Curb,White Cane,Car,Fence,Motorcycle",,9,"the model can identify some ambiguous objects, especially the ones that are necessary for assistance. however, it is still confused about some parts which might also be confusing for humans.",single,0.845360824742268,
+2024-02-06::12:32:59,video-7-segment-2,GT_N,,,"Vegetation,Road,Accent Paving,Sidewalk,Car,White Cane,Wall,Pole",,6,,single,1.0,
+2024-02-06::12:37:03,video-4-segment-4,GPT4V,,,"Person,Road,Person with a disability,Railing,Road Divider,Curb",,9,,single,0.8679245283018867,
+2024-02-06::12:38:11,video-4-segment-4,GPV-1,,,"Person,Paratransit vehicle,Lamp Post,White Cane,Yard Waste,Gutter",,2,,single,0.6376811594202899,
+2024-02-06::12:39:38,video-16-segment-3,GPT4V@Shadow,,,"Pole,Traffic Signals,Road Shoulder,Gate,Pedestrian Crossing,Railing,Closed Sidewalk",,1,,single,0.5238095238095238,0.5225225225225225
+2024-02-06::12:41:46,video-1-segment-5,GPV-1,,,"Roadside Parking,Gutter,Sidewalk,Building,Puddle,Pole,Barrier Post,White Cane",,1,,single,0.6792452830188678,
+2024-02-06::12:45:25,video-4-segment-3,GT_N,,,"Slopped Curb,Tactile Paving,Person with a disability,Vegetation,Motorcycle",,9,,single,1.0,
+2024-02-06::12:48:16,video-3-segment-2,GPT4V@Shadow,,,"Vegetation,Person with a disability,Person,Table,Puddle,Curb",,2,,single,0.6451612903225806,0.6476190476190476
+2024-02-06::12:50:33,video-6-segment-2,BLIP,,,"Car,Railing,Road,Wall,Barrier Post,Closed Sidewalk,Stairs,Accent Paving",,3,,single,0.6569343065693432,
+2024-02-06::12:53:37,video-11-segment-1,GPT4V,,,"Road,Uncontrolled Crossing,Turnstile,Bridge,Trash bins,Person,Bus",,6,,single,0.8403361344537815,
+2024-02-06::12:58:33,video-4-segment-1,GPT4V,,,"Bus Stop,Gutter,Mail box,Bus,White Cane,Curb,Fence,Bench",,6,,single,0.7272727272727273,
+2024-02-06::13:00:09,video-14-segment-1,GPV-1@Shadow,,,"Tree,Lamp Post,Railing,Stairs,Vegetation,Car",,2,,single,0.84375,0.8456375838926175
+2024-02-06::13:02:41,video-1-segment-4,GPV-1@Shadow,,,"Person with a disability,Pole,Bicycle,Trash bins,Maintenance Vehicle,Vegetation",,1,,single,0.7304347826086957,0.7328244274809159
+2024-02-06::13:04:51,video-14-segment-4,BLIP,,,"Slopped Curb,Road,Car,Guide dog,Person with a disability,Fence,Building,Vegetation",,2,,single,0.6464646464646465,
+2024-02-06::13:05:54,video-4-segment-1,Random,,,"Railing,Bench,Person,White Cane,Gate,Closed Sidewalk,Bus,Snow",,2,,single,0.4909090909090909,
+2024-02-06::13:07:44,video-3-segment-3,BLIP@Shadow,,,"Car,Curb,Road,White Cane,Vegetation,Snow",,2,,single,0.8947368421052632,0.8976377952755905
+2024-02-06::13:08:54,video-2-segment-1,GPV-1,,,"Barrier Stump,Traffic Signals,Crosswalk,Sign Post,Table,Push button",,1,,single,0.1538461538461538,
+2024-02-06::13:10:35,video-15-segment-3,Random,,,"Curb,Fence,Car,Wall,Trash on roads",,3,,single,0.5858585858585859,
+2024-02-06::13:11:49,video-11-segment-1,GPV-1@Shadow,,,"Trash bins,Bus,Accent Paving,Pole,Mail box,Counter,Motorcycle",,2,,single,0.7480916030534351,0.7462686567164178
+2024-02-06::13:13:49,video-13-segment-2,BLIP@Shadow,,,"Building,Pole,Road Divider,Slopped Curb,Hose,Flush Door,Car,Motorcycle",,3,,single,0.7578947368421053,0.7572815533980582
+2024-02-06::13:16:17,video-7-segment-2,BLIP@Shadow,,,"White Cane,Sign,Road,Accent Paving,Closed Sidewalk,Railing,Tactile Paving,Pole",,6,,single,0.7862068965517242,0.7837837837837839
+2024-02-06::13:19:24,video-12-segment-4,GT_N,,,"Pole,Building,Pedestrian Crossing,Maintenance Vehicle,Car,Mail box,Sign Post,Traffic Signals",,10,,single,1.0,
+2024-02-06::13:20:49,video-14-segment-4,Random,,,"Person with a disability,Elevator,Person,Bench,Retaining Wall,Road Divider",,1,,single,0.46875,
+2024-02-06::13:21:53,video-4-segment-3,GPT4V@Shadow,N/A,N/A,"Tactile Paving,Vegetation,Push button,Person,Water Pipes,Motorcycle",,3,,single,0.8,0.8
