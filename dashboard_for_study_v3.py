@@ -25,7 +25,7 @@ from utils.obj_select import get_obj_list
 from utils.get_prec_rec_f1 import calculate_model_ap_ar_af1 as get_f1
 from utils.shadow_model_generator import get_dum_pred_from_f1 as get_shadow
 
-PARTICIPANT_NAME = "Dummy"
+PARTICIPANT_NAME = "dummy"
 
 
 class ImageViewerThread(threading.Thread):
