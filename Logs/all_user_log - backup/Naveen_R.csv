@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-04::15:17:45,video-4-segment-1,BLIP,,,"Person,White Cane,Bus,Person with a disability,Trash bins,Bench",,7,trash bins not detected when half visible,single,0.8461538461538461,
+2024-02-04::15:22:52,video-14-segment-4,GPV-1@Shadow,,,"Person,Person with a disability,White Cane,Building,Railing",,8,,single,0.7777777777777777,0.7755102040816326
+2024-02-04::15:24:24,video-1-segment-4,BLIP@Shadow,,,"Pillar,Person,Bicycle,White Cane,Person with a disability,Gate",,9,,single,0.7862068965517242,0.7848101265822784
+2024-02-04::15:28:44,video-16-segment-3,GPV-1,,,"Person,Person with a disability,White Cane,Closed Sidewalk,Car,Building",,9,,single,0.923076923076923,
+2024-02-04::15:30:37,video-14-segment-1,Random,,,"Building,Road,Sidewalk,Person with a disability,White Cane",,6,,single,0.673469387755102,
+2024-02-04::15:34:44,video-4-segment-4,BLIP@Shadow,,,"Person with a disability,White Cane,Sidewalk",,7,,single,0.8285714285714285,0.8292682926829269
+2024-02-04::15:36:15,video-11-segment-1,GT_N,,,"Trash bins,Car,Person,Person with a disability,White Cane",,9,,single,1.0,
+2024-02-04::15:40:55,video-14-segment-4,GPV-1,,,"White Cane,Person with a disability,Person,Railing,Building",,8,,single,0.7777777777777777,
+2024-02-04::15:41:39,video-14-segment-1,GPV-1@Shadow,,,"Person with a disability,White Cane,Person,Road,Car",,10,,single,0.9545454545454544,0.9577464788732396
+2024-02-04::15:43:30,video-1-segment-5,Random,,,"Barrier Post,Person with a disability,White Cane,Motorcycle,Bicycle",,7,,single,0.6593406593406593,
+2024-02-04::15:46:49,video-13-segment-2,GT_N,,,"Person with a disability,White Cane,Person,Curb,Pole",,6,,single,1.0,
+2024-02-04::15:47:50,video-3-segment-2,GPV-1@Shadow,,,"Car,Person with a disability,White Cane,Railing",,8,,single,0.6666666666666667,0.6666666666666665
+2024-02-04::15:50:27,video-13-segment-2,BLIP@Shadow,,,"Pole,Sidewalk,White Cane,Building",,7,,single,0.7599999999999999,0.7572815533980584
+2024-02-04::15:51:31,video-16-segment-3,GPT4V,,,"Closed Sidewalk,Person with a disability,White Cane,Person,Car",,9,,single,0.8888888888888888,
+2024-02-04::15:52:39,video-6-segment-2,BLIP,,,"Railing,White Cane,Stairs,Person with a disability",,2,,single,0.7021276595744681,
+2024-02-04::15:54:02,video-12-segment-4,GPT4V@Shadow,,,"Building,White Cane,Person,Person with a disability,Crosswalk",,8,,single,0.91156462585034,0.91156462585034
+2024-02-04::15:56:07,video-4-segment-3,GPV-1,,,"Sidewalk,Person with a disability,White Cane,Pole",,8,,single,0.8363636363636364,
+2024-02-04::15:57:05,video-3-segment-2,BLIP,,,"Car,Person with a disability,White Cane",,7,,single,0.7692307692307693,
+2024-02-04::15:58:34,video-7-segment-2,GPT4V,,,"Curb,Car,Person with a disability,White Cane",,8,,single,0.7764705882352942,
+2024-02-04::16:00:46,video-1-segment-4,GPT4V@Shadow,,,"Gate,Person with a disability,White Cane,Railing",,8,,single,0.691358024691358,0.6938775510204082
+2024-02-04::16:01:39,video-4-segment-3,GPT4V,,,"White Cane,Person with a disability,Pole",,5,,single,0.676923076923077,
+2024-02-04::16:02:13,video-4-segment-1,Random,,,"Fence,White Cane,Pole,Wheelchair,Bus",,3,,single,0.4788732394366197,
+2024-02-04::16:02:53,video-6-segment-2,GT_N,,,"Person with a disability,White Cane,Railing,Stairs",,10,,single,1.0,
+2024-02-04::16:03:58,video-3-segment-3,GPT4V@Shadow,N/A,N/A,"Person with a disability,White Cane,Sidewalk,Car",,7,,single,0.7640449438202247,0.7647058823529411

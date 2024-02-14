@@ -1,0 +1,4 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-04::10:31:31,video-3-segment-3,GPV-1,,,"Curb,Trash on roads,Car,Tree,Person",,9,,single,0.8983050847457628,
+2024-02-04::10:38:20,video-16-segment-3,GPT4V,,,"Parallel Parking Spot,Traffic Signals,Mail box,Person with a disability,Closed Sidewalk",,3,,single,0.5846153846153846,
+2024-02-04::10:44:08,video-7-segment-2,Random,N/A,N/A,"Pole,Roadside Parking,Tactile Paving,Slopped Curb,Person with a disability",,3,,single,0.6407766990291263,N/A

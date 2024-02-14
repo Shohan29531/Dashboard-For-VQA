@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode
+2024-02-02::15:28:07,video-4-segment-3,Random,,,"Sidewalk,White Cane,Fence,Driveway(flat),Person with a disability",,8,driveway objects need to be trained in a better way.,single
+2024-02-02::15:33:58,video-11-segment-1,GPV-1,,,"Trash bins,Car,Pole,Person with a disability",,9,looks fine,single
+2024-02-02::15:36:47,video-14-segment-4,GPV-1@Shadow,,,"Person with a disability,Building,Vegetation,Fence",,9,looks fine,single
+2024-02-02::15:41:09,video-2-segment-1,GPT4V@Shadow,,,"Sidewalk,Person,Vegetation,Building",,9,need to improve with identifying the building object.,single
+2024-02-02::15:44:33,video-4-segment-4,GT_N,,,"Person with a disability,White Cane,Sidewalk,Road",,10,,single
+2024-02-02::15:47:35,video-11-segment-1,GT_N,,,"Car,Person with a disability,Trash bins,Road",,10,,single
+2024-02-02::15:51:47,video-4-segment-1,GPV-1,,,"Person with a disability,Bus,Fence,Bench",,8,need to improve with bench objects.,single
+2024-02-02::15:54:12,video-15-segment-3,BLIP,,,"Person,Car,Road,Vegetation,Building",,10,fine.,single
+2024-02-02::15:56:35,video-12-segment-4,BLIP,,,"Mail box,Tree,Person with a disability,Pedestrian Crossing",,10,good.,single
+2024-02-02::15:58:23,video-1-segment-5,GPT4V,,,"Motorcycle,Person with a disability,Curb,Car",,10,the object car is trained correctly.,single
+2024-02-02::16:00:06,video-4-segment-4,GPV-1@Shadow,,,"Curb,Vegetation,Person with a disability,Road",,10,,single
+2024-02-02::16:02:08,video-14-segment-4,GPT4V,,,"Person,Person with a disability,Building,Vegetation",,9,person with diability is not trained well,single
+2024-02-02::16:04:07,video-14-segment-1,GPT4V@Shadow,,,"Stairs,Person,Road,Fence",,9,,single
+2024-02-02::16:08:50,video-1-segment-4,BLIP@shadow,,,"Person with a disability,Vegetation,Fence,Building",,8,object building is incorrectly recognized.,single
+2024-02-02::16:12:42,video-6-segment-2,GPV-1,,,"Person with a disability,Stairs,Accent Paving,Pillar",,9,,single
+2024-02-02::16:16:29,video-3-segment-2,Random,,,"Car,Person with a disability,Fence,Road",,8,object car isn't trained well.,single
+2024-02-02::16:18:25,video-13-segment-2,BLIP,,,"Pole,Person,Car,Road",,9,,single
+2024-02-02::16:20:08,video-3-segment-3,GPT4V@Shadow,,,"Curb,Tree,Car,Fence",,10,,single
+2024-02-02::16:22:13,video-7-segment-2,BLIP@shadow,,,"Person with a disability,Car,Sidewalk,Pole",,9,,single
+2024-02-02::16:25:21,video-2-segment-1,BLIP@shadow,,,"Vegetation,Person,Building,Road",,9,,single
+2024-02-02::16:27:57,video-13-segment-2,Random,,,"Person with a disability,Car,Road,Pole",,8,,single
+2024-02-02::16:29:10,video-3-segment-3,GT_N,,,"Car,Person with a disability,Fence,Tree",,10,,single
+2024-02-02::16:31:03,video-16-segment-3,GPT4V,,,"Curb,Person with a disability,Car,Person",,10,,single
+2024-02-02::16:32:59,video-1-segment-5,GPV-1@Shadow,N/A,N/A,"Motorcycle,Person with a disability,Car,Bicycle",,9,the motorcycle is misidentified.,single
