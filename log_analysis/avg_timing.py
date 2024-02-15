@@ -17,7 +17,7 @@ expertise_order = ['High', 'Moderate', 'Low']
 df['expertise'] = pd.Categorical(df['expertise'], categories=expertise_order, ordered=True)
 
 # Assign shades of grey to each expertise level
-colors = {'High': '#CCCCCC', 'Moderate': '#888888', 'Low': '#111111'}
+colors = {'High': '#111111', 'Moderate': '#888888', 'Low': '#CCCCCC'}
 
 # Calculate the average 'timing' for each participant
 avg_timing_per_participant = df.groupby(['participant', 'expertise'])['timing'].mean().reset_index()
@@ -56,7 +56,7 @@ plt.axvline(x=3.5, color='black', linestyle='-', linewidth=3, zorder=10)  # Afte
 plt.axvline(x=7.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 8 bars
 
 # Save the plot as an image file (e.g., PDF)
-plt.savefig('../Paper files/average_timing_per_participant_with_Arial.pdf')
+plt.savefig('../Paper files/average_timing_per_participant.pdf')
 
 # Show the plot
 plt.show()
