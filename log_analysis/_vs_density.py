@@ -6,7 +6,7 @@ import seaborn as sns
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
 # Define model pairs
-model_pairs = [('GT_N', 'Random'), ('BLIP', 'BLIP@Shadow'), ('GPV-1', 'GPV-1@Shadow'), ('GPT4V', 'GPT4V@Shadow')]
+model_pairs = [('Ground Truth', 'Random'), ('BLIP', 'BLIP@Shadow'), ('GPV-1', 'GPV-1@Shadow'), ('GPT4V', 'GPT4V@Shadow')]
 
 # Set Arial as the font
 
@@ -19,8 +19,8 @@ for model_1, model_2 in model_pairs:
     df_model_2 = df[df['model left'] == model_2]
 
     # Create probability density function (PDF) using Seaborn with higher zorder
-    sns.kdeplot(data=df_model_1['score'], label=model_1, fill=True, alpha=0.7, zorder=5, color = '#4499bf')
-    sns.kdeplot(data=df_model_2['score'], label=model_2, fill=True, alpha=0.7, zorder=5, color='#A21143')
+    sns.kdeplot(data=df_model_1['normalized_score'], label=model_1, fill=True, alpha=0.7, zorder=5, color = '#4499bf')
+    sns.kdeplot(data=df_model_2['normalized_score'], label=model_2, fill=True, alpha=0.7, zorder=5, color='#A21143')
 
     # Customize plot labels and title
     plt.xlabel('User Rating', fontsize=14)  # Set font size for X-axis label
