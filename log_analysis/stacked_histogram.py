@@ -76,6 +76,6 @@ for model in models:
 
     fig.show()
 
-    fig.write_image('../Paper files/' + f'{model}_stacked_histogram_color.pdf', format='pdf')
+    fig.write_image('../Paper files/' + f'{model}_stacked_histogram.pdf', format='pdf')
     time.sleep(0.5)
-    fig.write_image('../Paper files/' + f'{model}_stacked_histogram_color.pdf', format='pdf')
+    fig.write_image('../Paper files/' + f'{model}_stacked_histogram.pdf', format='pdf')
