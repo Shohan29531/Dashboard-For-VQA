@@ -46,9 +46,11 @@ class ImageViewerThread(threading.Thread):
         #  arrow symbol copied from here: https://www.i2symbol.com/symbols/arrows
 
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
-GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT')
-IMAGE_DATA_DIR = os.path.join(DATA_DIR, 'Images')
+# DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
+DATA_DIR_ORG = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data')
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Dashboard Data - New')
+GROUND_TRUTH_DATA = os.path.join(DATA_DIR, 'GT_N')
+IMAGE_DATA_DIR = os.path.join(DATA_DIR_ORG, 'Images')
 LOG_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Logs')
 
 base_folder = DATA_DIR
@@ -283,7 +285,6 @@ def get_vetical_axis_lines(x_labels):
 
     return vertical_lines
 
-
 def get_horizontal_axis_lines(y_labels):
     horizontal_lines = []
 
@@ -304,6 +305,70 @@ def get_horizontal_axis_lines(y_labels):
         })
 
     return horizontal_lines
+
+
+def get_positive_negative_divider_line(last_negative_index, y_labels):
+
+   print("Last: ", last_negative_index)
+   if last_negative_index == -1:
+       return None
+   
+   divider_line ={
+            'type': 'line',
+            'x0': -0.25,
+            'x1': 1,
+            'y0': (last_negative_index + 1) / len(y_labels),
+            'y1': (last_negative_index + 1) / len(y_labels),
+            'xref': 'paper',
+            'yref': 'paper',
+            'line': {
+                'color': 'grey',
+                'width': 7,
+            },
+            'opacity': 1
+        } 
+   
+   return divider_line
+
+def get_end_lines(y_labels):
+
+   if len(y_labels) == 0:
+       return None
+   
+   end_lines = []
+   
+   end_lines.append({
+            'type': 'line',
+            'x0': -0.25,
+            'x1': 1,
+            'y0': 0 / len(y_labels),
+            'y1': 0 / len(y_labels),
+            'xref': 'paper',
+            'yref': 'paper',
+            'line': {
+                'color': 'grey',
+                'width': 7,
+            },
+            'opacity': 1
+        }) 
+   
+   end_lines.append({
+            'type': 'line',
+            'x0': -0.25,
+            'x1': 1,
+            'y0': 1,
+            'y1': 1,
+            'xref': 'paper',
+            'yref': 'paper',
+            'line': {
+                'color': 'grey',
+                'width': 7,
+            },
+            'opacity': 1
+        }) 
+   
+   return end_lines
+
 
 
 def get_heatmap_highlight_lines_from_heatmap_click(x_labels, y_labels, x_coord, y_coord):
@@ -425,13 +490,11 @@ def get_dont_see_text(model_name):
     return title
 
 
-suggestions = read_text_file_content('all_a11y_objects.txt').split(', ')
 
+suggestions = read_text_file_content('all_a11y_objects_new.txt').split(', ')
 
+suggestions = [{'label': suggestion, 'value': suggestion} for suggestion in suggestions]
 
-# suggestions = [{'label': suggestion, 'value': suggestion} for suggestion in suggestions] 
-
-suggestions = [{'label': f'+{suggestion}', 'value': f'+{suggestion}', 'style': {'color': 'green'}} for suggestion in suggestions] + [{'label': f'-{suggestion}', 'value': f'-{suggestion}', 'style': {'color': 'red'}} for suggestion in suggestions]
 
 
 
@@ -800,6 +863,8 @@ app.layout = html.Div(
         ),
     ],
 )
+
+
 
 @app.callback(
     Output(component_id='slider-div', component_property='style', allow_duplicate=True),
@@ -1463,8 +1528,8 @@ def update_heatmap_1(
             longest_x_label = max(x_labels, key=len)
             length_of_longest_x_label = len(longest_x_label)
 
-            y_labels = list(heat_map_file.iloc[:80, 0])
-            z_values = heat_map_file.iloc[:80, 1:].values.tolist()
+            y_labels = list(heat_map_file.iloc[:159, 0])
+            z_values = heat_map_file.iloc[:159, 1:].values.tolist()
 
             for i in range(len(z_values)):
                 for j in range(len(z_values[i])):
@@ -1472,8 +1537,6 @@ def update_heatmap_1(
                         z_values[i][j] = 0
 
             see_textarea_value_lower = [item.lower() for item in see_textarea_value]
-
-            print(see_textarea_value_lower)
 
 
             _, _, f1___, _ = get_f1(
@@ -1512,6 +1575,12 @@ def update_heatmap_1(
         y_labels = y_labels[:max_frames]
         z_values = z_values[:max_frames]
 
+        sorted_indices = sorted(range(len(y_labels)), key=lambda k: not y_labels[k].startswith('-'))
+
+        y_labels = [y_labels[i] for i in sorted_indices]
+        z_values = [z_values[i] for i in sorted_indices]
+
+
         ## handle the unchecked images here for heatmap display and bargraph data
         global bargraph_data
         global unchecked_image_ids
@@ -1527,6 +1596,7 @@ def update_heatmap_1(
 
         heatmap_cell_width = (fixed_heatmap_width - 50) / (len(x_labels) + (length_of_longest_x_label / 6))
         heatmap_cell_height = (fixed_heatmap_height - 125) / len(y_labels)
+
 
         layout = go.Layout(
             title=get_see_text(first_model_name),
@@ -1546,7 +1616,8 @@ def update_heatmap_1(
                 showgrid=False,
                 dtick=1,
                 gridwidth=1,
-                tickfont=dict(size=11, family='Arial')
+                tickfont=dict(size=11, family='Arial'),
+
             ),
             annotations=[
                 dict(
@@ -1569,6 +1640,17 @@ def update_heatmap_1(
             heatmap_hoverData = None
 
         layout_shapes_list = []
+
+        last_negative_index = next((i for i, label in reversed(list(enumerate(y_labels))) if label.startswith('-')), None)
+
+
+
+        print(last_negative_index)
+
+
+        layout_shapes_list.extend([get_positive_negative_divider_line(last_negative_index, y_labels)])
+
+        layout_shapes_list.extend(get_end_lines(y_labels))
 
         if heatmap_hoverData and 'points' in heatmap_hoverData and heatmap_hoverData['points']:
             print("Hover Data:")
@@ -1654,6 +1736,21 @@ def update_heatmap_1(
 
         heat_map = go.Figure(data=heatmap, layout=layout)
         # heat_map.update_layout(xaxis=dict(ticks='', showticklabels=False))
+
+        # colors = ['red', 'green', 'blue', 'purple', 'orange']*10
+        # for idx, value in enumerate(x_labels):
+        #     heat_map.add_annotation(
+        #         x=value,
+        #         y=-0.1,  # Position the annotation slightly below the x-axis
+        #         # text=heat_map.layout.xaxis.ticktext[idx],
+        #         showarrow=False,
+        #         yshift=-20,  # Adjust the vertical position
+        #         xref='x',
+        #         yref='paper',
+        #         font=dict(color=colors[idx], size=12)
+        #     )
+
+        # heat_map.update_layout(xaxis=dict(tickfont=dict(color='rgba(0,0,0,0)')))
 
         filtered_heatmap_1_clicks = []
 
@@ -1860,7 +1957,8 @@ def auto_select_objects(video):
 
     obj_list = get_obj_list(gt_file, e_obj=e_obj, non_e_obj=non_e_obj, total_obj=all_rand_obj, all_random=False,
                             from_given_list=frm_gvn_lst, given_list=obj_list_ref)
-    obj_list = ['+' + obj for obj in obj_list]
+
+    print("Damn", obj_list)
     return obj_list
 
 

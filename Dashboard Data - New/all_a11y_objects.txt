@@ -1,0 +1,158 @@
++Accent Paving
+-Accent Paving
++Barrier Post
+-Barrier Post
++Barrier Stump
+-Barrier Stump
++Bench
+-Bench
++Bicycle
+-Bicycle
++Bridge
+-Bridge
++Building
+-Building
++Bus
+-Bus
++Bus Stop
+-Bus Stop
++Car
+-Car
++Chair
+-Chair
++Closed Sidewalk
+-Closed Sidewalk
++Counter
+-Counter
++Crosswalk
+-Crosswalk
++Curb
+-Curb
++Dog
+-Dog
++Driveway(flat)
+-Driveway(flat)
++Elevator
+-Elevator
++Escalator
+-Escalator
++Fence
+-Fence
++Fire hydrant
+-Fire hydrant
++Flush Door
+-Flush Door
++Foldout Sign
+-Foldout Sign
++Fountain
+-Fountain
++Gate
+-Gate
++Guide dog
+-Guide dog
++Gutter
+-Gutter
++Hose
+-Hose
++Lamp Post
+-Lamp Post
++Mail box
+-Mail box
++Maintenance Vehicle
+-Maintenance Vehicle
++Motorcycle
+-Motorcycle
++Parallel Parking Spot
+-Parallel Parking Spot
++Paratransit vehicle
+-Paratransit vehicle
++Pedestrian Crossing
+-Pedestrian Crossing
++Person
+-Person
++Person with a disability
+-Person with a disability
++Pillar
+-Pillar
++Pole
+-Pole
++Puddle
+-Puddle
++Push button
+-Push button
++Railing
+-Railing
++Raised Entryway
+-Raised Entryway
++Retaining Wall
+-Retaining Wall
++Road
+-Road
++Road Divider
+-Road Divider
++Road Shoulder
+-Road Shoulder
++Roadside Parking
+-Roadside Parking
++Sidewalk
+-Sidewalk
++Sidewalk pits
+-Sidewalk pits
++Sign
+-Sign
++Sign Post
+-Sign Post
++Sloped Driveway
+-Sloped Driveway
++Slopped Curb
+-Slopped Curb
++Snow
+-Snow
++Stairs
+-Stairs
++Stop sign
+-Stop sign
++Street Vendor
+-Street Vendor
++Table
+-Table
++Tactile Paving
+-Tactile Paving
++Traffic Signals
+-Traffic Signals
++Train Platform
+-Train Platform
++Train Tracks
+-Train Tracks
++Trash bins
+-Trash bins
++Trash on roads
+-Trash on roads
++Tree
+-Tree
++Turnstile
+-Turnstile
++Uncontrolled Crossing
+-Uncontrolled Crossing
++Uneven Stairs
+-Uneven Stairs
++Unpaved Road
+-Unpaved Road
++Unpaved Sidewalk
+-Unpaved Sidewalk
++Vegetation
+-Vegetation
++Wall
+-Wall
++Water leakage
+-Water leakage
++Water Pipes
+-Water Pipes
++Wet surface
+-Wet surface
++Wheelchair
+-Wheelchair
++White Cane
+-White Cane
++Yard Waste
+-Yard Waste
