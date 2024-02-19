@@ -43,9 +43,15 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
             // console.log('Custom function called with argument: ');
             // return 'Result from customFunction: ';
             var spans = document.querySelectorAll('#I-see .Select-value-label');
+            // var span_divs = document.querySelectorAll('#I-see .Select-value-label');
             for (var i = 0; i < spans.length; i++) {
-                console.log(spans[i].value)
-                spans[i].style.color = 'red';
+                if(spans[i].innerText.startsWith('+')){
+                    spans[i].style.color = 'green';
+                    // span_divs[i].style.border_color = 'green'
+                }
+                else{
+                    spans[i].style.color = 'red';
+                }
             }
         }
     }

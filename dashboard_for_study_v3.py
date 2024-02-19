@@ -1,6 +1,6 @@
 import os
 import dash
-from dash import dcc, html
+from dash import dcc, html, ClientsideFunction
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State, MATCH, ALL
 import plotly.express as px
@@ -849,6 +849,11 @@ rating_row = html.Div(
                 )
             ], className='row'
         ),
+
+        html.Div(
+            id='abcd'
+        )
+
     ], className='row'
 )
 # entire layout
@@ -1968,6 +1973,13 @@ def auto_select_objects(video):
 
     print("Damn", obj_list)
     return obj_list
+
+
+app.clientside_callback(
+    ClientsideFunction(namespace='myNamespace', function_name='customFunction'),
+    Output('abcd', 'children'),
+    Input('I-see', 'value'),
+)
 
 
 if __name__ == '__main__':
