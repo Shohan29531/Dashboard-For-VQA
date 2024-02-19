@@ -427,6 +427,14 @@ def get_dont_see_text(model_name):
 
 suggestions = read_text_file_content('all_a11y_objects.txt').split(', ')
 
+
+
+# suggestions = [{'label': suggestion, 'value': suggestion} for suggestion in suggestions] 
+
+suggestions = [{'label': f'+{suggestion}', 'value': f'+{suggestion}', 'style': {'color': 'green'}} for suggestion in suggestions] + [{'label': f'-{suggestion}', 'value': f'-{suggestion}', 'style': {'color': 'red'}} for suggestion in suggestions]
+
+
+
 # css framework for layout and style
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes.BOOTSTRAP]
 
@@ -521,7 +529,7 @@ top_row = html.Div(
                          id='I-dont-see-markdown'),
             dcc.Dropdown(
                 id='I-dont-see',
-                options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
+                options=suggestions,
                 multi=True,
                 value=current_text_not_see,
                 placeholder='Things I do not see',
@@ -540,7 +548,7 @@ heatmaps = html.Div(
                 dcc.Markdown(children='**Interesting Objects** in the video:', id='I-see-markdown'),
                 dcc.Dropdown(
                     id='I-see',
-                    options=[{'label': suggestion, 'value': suggestion} for suggestion in suggestions],
+                    options=suggestions,
                     multi=True,
                     value=current_text_see,
                     placeholder='Things I see',
@@ -1465,6 +1473,9 @@ def update_heatmap_1(
 
             see_textarea_value_lower = [item.lower() for item in see_textarea_value]
 
+            print(see_textarea_value_lower)
+
+
             _, _, f1___, _ = get_f1(
                 os.path.join(base_folder, 'GT_N'), [f'{selected_file}.csv'],
                 os.path.join(base_folder, model),
@@ -1849,9 +1860,9 @@ def auto_select_objects(video):
 
     obj_list = get_obj_list(gt_file, e_obj=e_obj, non_e_obj=non_e_obj, total_obj=all_rand_obj, all_random=False,
                             from_given_list=frm_gvn_lst, given_list=obj_list_ref)
-    print(obj_list)
+    obj_list = ['+' + obj for obj in obj_list]
     return obj_list
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)

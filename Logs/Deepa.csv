@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-06::17:28:53,video-4-segment-3,GPV-1@Shadow,,,"Person with a disability,Sidewalk,Bicycle,White Cane,Closed Sidewalk,Bus Stop,Pole",,3,,single,0.7419354838709677,0.7421383647798743
+2024-02-06::17:31:57,video-13-segment-2,GPV-1,,,"Slopped Curb,Person,Person with a disability,Traffic Signals,Escalator,Water Pipes",,4,,single,0.6823529411764706,
+2024-02-06::17:33:54,video-4-segment-4,GPT4V@Shadow,,,"Bus,Person,Stairs,Sloped Driveway,Wet surface,Bridge",,4,,single,0.6818181818181819,0.6823529411764707
+2024-02-06::17:36:32,video-11-segment-1,GPV-1@Shadow,,,"Uncontrolled Crossing,Pedestrian Crossing,White Cane,Crosswalk,Sloped Driveway,Road Shoulder,Tree,Trash bins",,6,,single,0.6711409395973154,0.6707317073170732
+2024-02-06::17:38:12,video-14-segment-4,GPT4V@Shadow,,,"Bench,White Cane,Pole,Building,Flush Door,Closed Sidewalk,Snow,Bridge",,5,,single,0.5357142857142857,0.5357142857142857
+2024-02-06::17:40:09,video-16-segment-3,BLIP,,,"Tree,Trash bins,Building,Barrier Post,Push button,Hose,Closed Sidewalk,Person with a disability",,7,,single,0.7603305785123967,
+2024-02-06::17:41:00,video-1-segment-5,BLIP@Shadow,,,"Bicycle,Curb,Gutter,Barrier Post,Trash bins,Flush Door",,1,,single,0.8163265306122449,0.8163265306122449
+2024-02-06::17:42:04,video-1-segment-4,Random,,,"Sidewalk,Pole,Car,Person,Uneven Stairs,Sloped Driveway,Gate",,1,,single,0.5045045045045045,
+2024-02-06::17:43:30,video-15-segment-3,BLIP,,,"Sign,Curb,Sign Post,Fire hydrant,Person,Street Vendor,Car",,4,,single,0.7804878048780488,
+2024-02-06::17:45:20,video-4-segment-4,GT_N,,,"Railing,Bus Stop,Bench,Sloped Driveway,Gate,Chair,Person with a disability",,7,,single,1.0,
+2024-02-06::17:50:36,video-1-segment-4,GPT4V,,,"Pole,Person,Crosswalk,Pedestrian Crossing,Barrier Post,Snow,Person with a disability,Car,Sign",,4,,single,0.6868686868686867,
+2024-02-06::17:52:51,video-6-segment-2,BLIP@Shadow,,,"White Cane,Sidewalk,Person with a disability,Pillar,Pole,Escalator,Stairs,Uneven Stairs,Tree,Snow,Roadside Parking",,1,,single,0.4895104895104895,0.4892703862660944
+2024-02-06::17:56:20,video-2-segment-1,GPV-1,,,"Pedestrian Crossing,Building,Motorcycle,Sidewalk,Table,Bus,Person with a disability,Bench,Bridge,Snow,Car,Chair",,4,,single,0.6176470588235294,
+2024-02-06::18:01:12,video-11-segment-1,GPT4V@Shadow,,,"Person with a disability,Trash bins,Person,Tree,Bus,Bridge,Snow,Dog,Bus Stop",,5,,single,0.7058823529411765,0.7044025157232704
+2024-02-06::18:04:36,video-12-segment-4,BLIP,,,"Car,Mail box,Sign Post,Sidewalk,Bicycle,Water leakage,Pedestrian Crossing,Tree,Person with a disability,Bridge,Snow,Train Tracks,Trash bins,Traffic Signals,Building",,6,,single,0.8099173553719009,
+2024-02-06::18:09:43,video-4-segment-1,BLIP@Shadow,,,"Building,Fence,Bench,Car,Stairs,Water Pipes,Person,Person with a disability,Bus,Bus Stop,Bicycle,Tree,Train Platform,Barrier Post,Snow,Pole",,7,,single,0.6989247311827956,0.6986899563318777
+2024-02-06::18:14:22,video-15-segment-3,GPV-1,,,"Sign,Tree,Vegetation,Car,Pedestrian Crossing,Road Divider,Wheelchair,Bicycle,Snow,Person with a disability,Trash bins",,6,,single,0.5496183206106869,
+2024-02-06::18:17:26,video-3-segment-3,Random,,,"Building,Curb,Wall,Parallel Parking Spot,Table,Road Divider,Person with a disability,Car,Crosswalk,Bicycle",,4,,single,0.5419354838709677,
+2024-02-06::18:19:37,video-4-segment-1,Random,,,"Paratransit vehicle,Curb,Sidewalk,Bus,Push button,Tactile Paving,Barrier Post,Bridge,Fire hydrant,Table",,4,,single,0.3505154639175257,
+2024-02-06::18:21:51,video-7-segment-2,GT_N,,,"Pole,Sign,Person with a disability,Car,Lamp Post,Stairs,Tree,Snow,Trash bins,Fence",,9,,single,1.0,
+2024-02-06::18:24:56,video-2-segment-1,GPT4V,,,"Pillar,Accent Paving,Barrier Post,Slopped Curb,Train Platform,Sloped Driveway,Person with a disability,Person,Car,Tree,Pole,Bridge,Road Shoulder,Bicycle",,10,,single,0.7076923076923076,
+2024-02-06::18:27:50,video-14-segment-1,GT_N,,,"Bench,White Cane,Car,Railing,Counter,Parallel Parking Spot,Fence,Roadside Parking,Snow,Wet surface,Person with a disability,Stairs,Flush Door",,10,,single,1.0,
+2024-02-06::18:30:05,video-14-segment-4,GPT4V,,,"Building,Gate,Fence,Sidewalk,Motorcycle,Uneven Stairs,Person with a disability,Person,Closed Sidewalk,Tree",,6,,single,0.8108108108108109,
+2024-02-06::18:31:09,video-7-segment-2,GPV-1@Shadow,N/A,N/A,"Accent Paving,Parallel Parking Spot,Roadside Parking,Pole,Gutter,Pillar,Person with a disability,Tree",,9,,single,0.6666666666666666,0.6666666666666666

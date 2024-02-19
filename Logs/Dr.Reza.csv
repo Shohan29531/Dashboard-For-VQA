@@ -1,0 +1,25 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-06::14:29:53,video-2-segment-1,GPV-1@Shadow,,,"Pillar,Tactile Paving,Bicycle,Pole,Elevator,Dog,Person,Sidewalk,Tree",,2,,single,0.6896551724137931,0.6883116883116883
+2024-02-06::14:33:22,video-12-segment-4,GPV-1@Shadow,,,"Person,Building,Sidewalk,Person with a disability,Car",,8,,single,0.896551724137931,0.896551724137931
+2024-02-06::14:35:01,video-11-segment-1,Random,,,"Road,White Cane,Bus Stop,Roadside Parking,Counter,Chair,Person,Bus",,0,,single,0.4666666666666667,
+2024-02-06::14:40:20,video-3-segment-2,GPV-1@Shadow,,,"Vegetation,Puddle,Car,Mail box,Snow,Person with a disability",,4,,single,0.6956521739130435,0.6966292134831461
+2024-02-06::14:42:27,video-6-segment-2,GPT4V@Shadow,,,"Raised Entryway,White Cane,Person with a disability,Building,Driveway(flat),Train Platform,Stairs",,4,,single,0.6041666666666666,0.6037735849056605
+2024-02-06::14:44:19,video-1-segment-5,GPV-1,,,"Curb,Bicycle,Car,Barrier Post,Raised Entryway,Road Divider",,8,,single,0.7387387387387387,
+2024-02-06::14:45:35,video-13-segment-2,GPT4V,,,"Slopped Curb,Person,Person with a disability,Traffic Signals,Escalator,Water Pipes,Car",,9,,single,0.8910891089108911,
+2024-02-06::14:47:58,video-16-segment-3,GPT4V,,,"Bicycle,Gate,Sign,Roadside Parking,Bus,Wet surface,Person,Closed Sidewalk,Building",,10,,single,0.6837606837606837,
+2024-02-06::14:50:00,video-3-segment-3,GPT4V@Shadow,,,"Stairs,Curb,Trash on roads,Car,Uncontrolled Crossing,Push button,Person with a disability",,8,,single,0.7560975609756097,0.7575757575757575
+2024-02-06::14:51:54,video-4-segment-3,BLIP,,,"Fence,Person,Curb,Sidewalk,Turnstile,Maintenance Vehicle",,8,,single,0.900763358778626,
+2024-02-06::14:58:01,video-11-segment-1,BLIP@Shadow,,,"Push button,Gutter,Building,Curb,Snow,Road Divider,Person,Trash bins",,4,,single,0.7771428571428571,0.7777777777777778
+2024-02-06::15:01:08,video-14-segment-1,GPV-1,,,"Vegetation,Person with a disability,Building,Stairs,Barrier Stump,Chair,Railing,Car",,7,,single,0.7236842105263157,
+2024-02-06::15:02:57,video-14-segment-4,BLIP@Shadow,,,"Slopped Curb,White Cane,Building,Elevator,Trash bins,Barrier Post,Person,Bridge",,6,,single,0.5918367346938775,0.5925925925925926
+2024-02-06::15:03:42,video-12-segment-4,Random,,,"Sign,Parallel Parking Spot,Car,Mail box,Road Divider,Push button,Person,Road",,0,,single,0.5217391304347826,
+2024-02-06::15:05:35,video-4-segment-4,BLIP@Shadow,,,"Bus Stop,Railing,Sign,Bus,Barrier Post,Accent Paving,Sidewalk,White Cane",,5,,single,0.4444444444444445,0.4444444444444445
+2024-02-06::15:07:25,video-15-segment-3,GT_N,,,"Car,Person with a disability,Puddle,Accent Paving,Water leakage,Fountain,Person,Building",,9,,single,1.0,
+2024-02-06::15:08:43,video-4-segment-1,GPT4V@Shadow,,,"Railing,Person,Bus Stop,Paratransit vehicle,Barrier Post,Road Shoulder,Bus",,9,,single,0.8301886792452831,0.8363636363636363
+2024-02-06::15:10:47,video-1-segment-4,BLIP,,,"Gate,Lamp Post,Railing,Road Shoulder,Wheelchair,Chair,Person,Building,Road",,6,,single,0.7486033519553073,
+2024-02-06::15:12:32,video-15-segment-3,GPV-1,,,"Slopped Curb,Gate,Sloped Driveway,Tree,Train Platform,Wheelchair,Person,Car",,6,,single,0.7310344827586206,
+2024-02-06::15:13:43,video-4-segment-4,GT_N,,,"Road,Curb,Lamp Post,Person with a disability,Table,Turnstile,Building,White Cane",,9,,single,1.0,
+2024-02-06::15:16:09,video-14-segment-1,GPT4V,,,"Bench,Sidewalk,Stairs,Building,Pillar,Pedestrian Crossing,Person,Car,Vegetation",,6,,single,0.8311688311688312,
+2024-02-06::15:17:34,video-6-segment-2,GT_N,,,"Retaining Wall,Railing,Road,Building,Uneven Stairs,Fire hydrant,Person,White Cane",,9,,single,1.0,
+2024-02-06::15:18:30,video-4-segment-3,Random,,,"Vegetation,Sidewalk,Pole,White Cane,Accent Paving,Escalator,Person,Road",,1,,single,0.567741935483871,
+2024-02-06::15:19:29,video-7-segment-2,BLIP,N/A,N/A,"White Cane,Person with a disability,Parallel Parking Spot,Sign,Street Vendor,Bridge,Building,Person",,9,,single,0.7166666666666668,N/A

@@ -1,0 +1,32 @@
+Object,Frame,Presence
+bus stop,0,0
+bicycle,1,1
+bicycle,1,0
+closed sidewalk,1,0
+closed sidewalk,1,1
+closed sidewalk,1,0
+bicycle,2,0
+bicycle,2,1
+bicycle,2,0
+bus stop,2,0
+bus stop,2,1
+bus stop,2,0
+closed sidewalk,2,0
+white cane,4,0
+white cane,5,0
+white cane,6,0
+white cane,7,0
+white cane,7,1
+white cane,7,0
+white cane,10,0
+white cane,10,1
+white cane,10,0
+white cane,12,0
+white cane,14,0
+white cane,14,1
+white cane,14,0
+white cane,15,0
+pole,15,0
+pole,14,0
+person with a disability,8,0
+person with a disability,12,0
