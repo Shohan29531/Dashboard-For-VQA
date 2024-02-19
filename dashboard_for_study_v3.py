@@ -322,8 +322,8 @@ def get_positive_negative_divider_line(last_negative_index, y_labels):
             'xref': 'paper',
             'yref': 'paper',
             'line': {
-                'color': 'grey',
-                'width': 7,
+                'color': 'black',
+                'width': 2,
             },
             'opacity': 1
         } 
@@ -346,8 +346,8 @@ def get_end_lines(y_labels):
             'xref': 'paper',
             'yref': 'paper',
             'line': {
-                'color': 'grey',
-                'width': 7,
+                'color': 'black',
+                'width': 2,
             },
             'opacity': 1
         }) 
@@ -361,8 +361,8 @@ def get_end_lines(y_labels):
             'xref': 'paper',
             'yref': 'paper',
             'line': {
-                'color': 'grey',
-                'width': 7,
+                'color': 'black',
+                'width': 2,
             },
             'opacity': 1
         }) 
@@ -863,6 +863,22 @@ app.layout = html.Div(
         ),
     ],
 )
+
+
+@app.callback(
+    Output('I-see', 'value', allow_duplicate = True),
+    Input('I-see', 'value'),
+    prevent_initial_call=True
+)
+def sort_see_area(see_items):
+
+    print("VALS", see_items)
+    sorted_items = sorted(see_items, key=lambda x: (1 if x.startswith('+') else 2, x))
+    print("Sorted Values:", sorted_items)
+
+    return sorted_items
+
+
 
 
 
@@ -1597,6 +1613,10 @@ def update_heatmap_1(
         heatmap_cell_width = (fixed_heatmap_width - 50) / (len(x_labels) + (length_of_longest_x_label / 6))
         heatmap_cell_height = (fixed_heatmap_height - 125) / len(y_labels)
 
+        label_colors = ['green' if label.startswith('+') else 'red' for label in y_labels]
+
+        tick_positions = [i for i, label in enumerate(y_labels)]
+        colored_tick_texts = [f'<span style="color:{color}">{label}</span>' for label, color in zip(y_labels, label_colors)]
 
         layout = go.Layout(
             title=get_see_text(first_model_name),
@@ -1616,8 +1636,10 @@ def update_heatmap_1(
                 showgrid=False,
                 dtick=1,
                 gridwidth=1,
+                tickvals=tick_positions,
+                ticktext=colored_tick_texts,  
                 tickfont=dict(size=11, family='Arial'),
-
+                tickmode='array'
             ),
             annotations=[
                 dict(
@@ -1629,7 +1651,8 @@ def update_heatmap_1(
                     showarrow=False,
                     font=dict(size=12, family='Arial'),
                 )
-            ]
+            ],
+
         )
 
         heatmap_line_column = None
@@ -1648,7 +1671,8 @@ def update_heatmap_1(
         print(last_negative_index)
 
 
-        layout_shapes_list.extend([get_positive_negative_divider_line(last_negative_index, y_labels)])
+        if last_negative_index is not None:
+            layout_shapes_list.extend([get_positive_negative_divider_line(last_negative_index, y_labels)])
 
         layout_shapes_list.extend(get_end_lines(y_labels))
 
@@ -1735,22 +1759,6 @@ def update_heatmap_1(
         )
 
         heat_map = go.Figure(data=heatmap, layout=layout)
-        # heat_map.update_layout(xaxis=dict(ticks='', showticklabels=False))
-
-        # colors = ['red', 'green', 'blue', 'purple', 'orange']*10
-        # for idx, value in enumerate(x_labels):
-        #     heat_map.add_annotation(
-        #         x=value,
-        #         y=-0.1,  # Position the annotation slightly below the x-axis
-        #         # text=heat_map.layout.xaxis.ticktext[idx],
-        #         showarrow=False,
-        #         yshift=-20,  # Adjust the vertical position
-        #         xref='x',
-        #         yref='paper',
-        #         font=dict(color=colors[idx], size=12)
-        #     )
-
-        # heat_map.update_layout(xaxis=dict(tickfont=dict(color='rgba(0,0,0,0)')))
 
         filtered_heatmap_1_clicks = []
 
