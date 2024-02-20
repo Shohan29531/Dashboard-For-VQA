@@ -27,15 +27,14 @@ for csv_file in csv_files:
     for index, row in df.iterrows():
         # Create a new row with '+' sign added to the object's name
         new_row_plus = row.copy()
-        new_row_plus['Object'] = '+' + new_row_plus['Object'][0].upper() + new_row_plus['Object'][1:]
+        new_row_plus['Object'] = new_row_plus['Object']
         modified_rows.append(new_row_plus)
 
         # Create a new row with '-' sign added to the object's name and all columns flipped
         new_row_minus = row.copy()
 
-        new_row_minus['Object'] = '-' + new_row_minus['Object'][0].upper() + new_row_minus['Object'][1:]
-
-        new_row_minus[columns[1:]] = 1 - new_row_minus[columns[1:]]
+        new_row_minus['Object'] = '*' + new_row_minus['Object'][0].upper() + new_row_minus['Object'][1:]
+        new_row_minus[columns[1:]] = new_row_minus[columns[1:]]
         modified_rows.append(new_row_minus)
 
     # Create a new DataFrame from the modified rows
