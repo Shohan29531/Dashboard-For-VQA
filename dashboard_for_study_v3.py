@@ -886,17 +886,30 @@ app.layout = html.Div(
 
 
 @app.callback(
+    Output('I-see', 'options', allow_duplicate = True),
     Output('I-see', 'value', allow_duplicate = True),
     Input('I-see', 'value'),
     prevent_initial_call=True
 )
 def sort_see_area(see_items):
 
-    print("VALS", see_items)
-    sorted_items = sorted(see_items, key=lambda x: (2 if x.startswith('*') else 1, x))
-    print("Sorted Values:", sorted_items)
+    disabled_items = []
 
-    return sorted_items
+    sorted_items = sorted(see_items, key=lambda x: (2 if x.startswith('*') else 1, x))
+
+    for item in sorted_items:
+        disabled_items.append(item)
+        print(item)
+        if item.startswith('*'):
+            disabled_items.append(item[1:])
+        else:
+            disabled_items.append('*' + item)
+
+    
+    suggestions_dict = [{'label': suggestion, 'value': suggestion, 'disabled': True if suggestion in disabled_items else False} for suggestion in suggestions_initial]
+    
+
+    return suggestions_dict, sorted_items
 
 
 
@@ -1967,6 +1980,8 @@ def randomize_event(n_clicks):
         return "*Not Randomized*"
 
 
+spy_objects = ['*Snow', '*Turnstile', '*Sidewalk pits', '*Stop sign', '*Counter']
+
 @app.callback(
     Output('I-see', 'value', allow_duplicate=True),
     Input('video-dropdown', 'value'),
@@ -2003,9 +2018,10 @@ def auto_select_objects(video):
 
     obj_list = get_obj_list(gt_file, e_obj=e_obj, non_e_obj=non_e_obj, total_obj=all_rand_obj, all_random=False,
                             from_given_list=frm_gvn_lst, given_list=obj_list_ref)
+    
+    print(obj_list + [random.choice(spy_objects)])
 
-    print("Damn", obj_list)
-    return obj_list
+    return obj_list + [random.choice(spy_objects)]
 
 
 app.clientside_callback(
