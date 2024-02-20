@@ -45,12 +45,12 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
             var spans = document.querySelectorAll('#I-see .Select-value-label');
             // var span_divs = document.querySelectorAll('#I-see .Select-value-label');
             for (var i = 0; i < spans.length; i++) {
-                if(spans[i].innerText.startsWith('+')){
-                    spans[i].style.color = 'green';
+                if(spans[i].innerText.startsWith('*')){
+                    spans[i].style.color = 'violet';
                     // span_divs[i].style.border_color = 'green'
                 }
                 else{
-                    spans[i].style.color = 'red';
+                    spans[i].style.color = 'black';
                 }
             }
         }

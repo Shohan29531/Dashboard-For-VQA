@@ -120,7 +120,7 @@ num_frames = 100
 max_frames = 16
 heatmap_highlight_line_width = 5
 
-fixed_heatmap_height = 380
+fixed_heatmap_height = 350
 fixed_heatmap_width = 500
 heatmap_x_axis_title = 'Frame'
 
@@ -504,9 +504,9 @@ def get_dont_see_text(model_name):
 
 
 
-suggestions = read_text_file_content('all_a11y_objects_new.txt').split(', ')
+suggestions_initial = read_text_file_content('all_a11y_objects_new.txt').split(', ')
 
-suggestions = [{'label': suggestion, 'value': suggestion} for suggestion in suggestions]
+suggestions = [{'label': suggestion, 'value': suggestion} for suggestion in suggestions_initial]
 
 
 
@@ -893,7 +893,7 @@ app.layout = html.Div(
 def sort_see_area(see_items):
 
     print("VALS", see_items)
-    sorted_items = sorted(see_items, key=lambda x: (1 if x.startswith('+') else 2, x))
+    sorted_items = sorted(see_items, key=lambda x: (2 if x.startswith('*') else 1, x))
     print("Sorted Values:", sorted_items)
 
     return sorted_items
@@ -1611,7 +1611,7 @@ def update_heatmap_1(
         y_labels = y_labels[:max_frames]
         z_values = z_values[:max_frames]
 
-        sorted_indices = sorted(range(len(y_labels)), key=lambda k: not y_labels[k].startswith('-'))
+        sorted_indices = sorted(range(len(y_labels)), key=lambda k: not y_labels[k].startswith('*'))
 
         y_labels = [y_labels[i] for i in sorted_indices]
         z_values = [z_values[i] for i in sorted_indices]
@@ -1633,13 +1633,13 @@ def update_heatmap_1(
         heatmap_cell_width = (fixed_heatmap_width - 50) / (len(x_labels) + (length_of_longest_x_label / 6))
         heatmap_cell_height = (fixed_heatmap_height - 125) / len(y_labels)
 
-        label_colors = ['green' if label.startswith('+') else 'red' for label in y_labels]
+        label_colors = ['violet' if label.startswith('*') else 'black' for label in y_labels]
 
         tick_positions = [i for i, label in enumerate(y_labels)]
         colored_tick_texts = [f'<span style="color:{color}">{label}</span>' for label, color in zip(y_labels, label_colors)]
 
         layout = go.Layout(
-            title=get_new_see_text(first_model_name),
+            title=get_see_text(first_model_name),
             title_x=0.15,
             title_y=0.95,
             title_font=dict(family='Arial Black', size=12),
@@ -1702,7 +1702,7 @@ def update_heatmap_1(
 
         layout_shapes_list = []
 
-        last_negative_index = next((i for i, label in reversed(list(enumerate(y_labels))) if label.startswith('-')), None)
+        last_negative_index = next((i for i, label in reversed(list(enumerate(y_labels))) if label.startswith('*')), None)
 
 
 
@@ -1988,8 +1988,8 @@ def auto_select_objects(video):
         obj_list_ref = pfb_common_obj
         frm_gvn_lst = True
     else:
-        obj_list_ref = []
-        frm_gvn_lst = False
+        obj_list_ref = natsorted([x__ for x__ in suggestions_initial if not x__.startswith('*')])
+        frm_gvn_lst = True
 
     # obj_list_ref = list(set(coco_common_obj) & set(pfb_common_obj))
     # frm_gvn_lst = True
