@@ -120,7 +120,7 @@ num_frames = 100
 max_frames = 16
 heatmap_highlight_line_width = 5
 
-fixed_heatmap_height = 350
+fixed_heatmap_height = 380
 fixed_heatmap_width = 500
 heatmap_x_axis_title = 'Frame'
 
@@ -483,6 +483,19 @@ def get_see_text(model_name):
 
     return title
 
+def get_new_see_text(model_name):
+
+    title = "<span style='color:rgb(6, 200, 115);'>" +"Green indicates agreement between you and the model<br>" + "</span>" +"<span style='color:rgb(211, 6, 50);'>" +"Red indicates disagreement between you and the model"+ "</span>"
+
+
+    # title = """
+    
+    # 
+    # """
+
+    return title
+
+
 
 def get_dont_see_text(model_name):
     title = "Objects you DON'T SEE that " + "<span style='color:blue;'>" + model_name + "</span>" + " also DOESN'T SEE (" + "<span style='color:rgb(6, 200, 115);'>" + "green, <br> agreement" + "</span>" + ") and that the model does SEE (" + "<span style='color:rgb(211, 6, 50);'>" + "red, disagreement" + "</span>" + ") "
@@ -608,7 +621,7 @@ heatmaps = html.Div(
         # I see text area
         html.Div(
             [
-                dcc.Markdown(children='**Interesting Objects** in the video:', id='I-see-markdown'),
+                dcc.Markdown(children='**Objects** to test the model:', id='I-see-markdown'),
                 dcc.Dropdown(
                     id='I-see',
                     options=suggestions,
@@ -836,6 +849,8 @@ rating_row = html.Div(
                     children='*Status:  Not saved*',
                 )
             ], className='two columns',
+            style = {'display': 'none'}
+
         ),
 
         # save button
@@ -1624,13 +1639,13 @@ def update_heatmap_1(
         colored_tick_texts = [f'<span style="color:{color}">{label}</span>' for label, color in zip(y_labels, label_colors)]
 
         layout = go.Layout(
-            title=get_see_text(first_model_name),
-            title_x=0.10,
+            title=get_new_see_text(first_model_name),
+            title_x=0.15,
             title_y=0.95,
             title_font=dict(family='Arial Black', size=12),
             height=fixed_heatmap_height,
             width=fixed_heatmap_width,
-            margin=dict(l=30, r=30, t=50, b=70),
+            margin=dict(l=30, r=10, t=50, b=50),
             xaxis=dict(
                 showgrid=False,
                 dtick=1,
@@ -1659,6 +1674,24 @@ def update_heatmap_1(
             ],
 
         )
+
+        # tooltip_annotation = dict(
+        #     x=0.98,
+        #     y=1.15,  # Adjust the y-position for tooltip placement
+        #     xref='paper',
+        #     yref='paper',
+        #     text="ℹ️",  # Unicode character for an info icon
+        #     showarrow=False,
+        #     font=dict(size=16, family='Arial'),
+        #     hovertext="Green indicates agreement between you and the model (e.g., objects that you see, the model also sees;<br> or objects that you don't see, the model does not see either). Red indicates disagreement between you and the model (e.g., objects that you see but the model does not; or objects that you don't see but the model does).",  # Your detailed tooltip content
+        # )
+
+        # annotations_list = list(layout['annotations'])
+        # # Append the tooltip annotation to the list of annotations
+        # annotations_list.append(tooltip_annotation)
+
+        # # Convert the list back to a tuple
+        # layout['annotations'] = tuple(annotations_list)
 
         heatmap_line_column = None
         if last_clicked_image_id is not None:
@@ -1980,7 +2013,6 @@ app.clientside_callback(
     Output('abcd', 'children'),
     Input('I-see', 'value'),
 )
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
