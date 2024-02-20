@@ -6,4 +6,5 @@ timestamp,video,model left,model right,winner model,see,not_see,score,comments,m
 2024-02-05::14:49:13,video-1-segment-5,BLIP,,,"Road,Stairs,Gate,Person with a disability,Barrier Post,Tree",,5,,single,0.9108910891089108,
 2024-02-06::12:17:22,video-1-segment-5,BLIP,,,"Building,Car,Gutter,Sidewalk,Paratransit vehicle,Person with a disability",,7,,single,0.8411214953271028,
 2024-02-06::14:19:37,video-1-segment-5,BLIP,,,"Roadside Parking,Person,Barrier Post,Street Vendor,Person with a disability",,5,,single,0.9473684210526316,
-2024-02-06::17:17:40,video-1-segment-5,BLIP,N/A,N/A,"Roadside Parking,Curb,Street Vendor,Water Pipes,Parallel Parking Spot,Person",,5,,single,0.7238095238095238,N/A
+2024-02-06::17:17:40,video-1-segment-5,BLIP,,,"Roadside Parking,Curb,Street Vendor,Water Pipes,Parallel Parking Spot,Person",,5,,single,0.7238095238095238,
+2024-02-20::10:46:47,video-1-segment-5,BLIP@Shadow,N/A,N/A,"+Barrier Stump,+Bicycle,+Railing,-Barrier Stump,-Dog,-Fountain",,5,,single,0.7839999999999999,0.782608695652174
