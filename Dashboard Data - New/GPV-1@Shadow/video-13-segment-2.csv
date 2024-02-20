@@ -1,0 +1,10 @@
+Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11,frame_12,frame_13,frame_14,frame_15
++accent paving,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
++car,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1
++curb,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1
++lamp post,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1
++traffic signals,1,1,1,1,1,0,0,1,0,1,1,1,0,1,1,1
++wet surface,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
++white cane,1,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1
+-curb,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+-road shoulder,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0
