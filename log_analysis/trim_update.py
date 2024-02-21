@@ -6,6 +6,13 @@ folder_path = '../Logs/all_user_log/'
 
 output_path = '../Logs/trimmed_logs/'
 
+# Define the mapping of participant names to expertise levels
+expertise_mapping = {
+    'P1': 'Expert', 'P4': 'Expert', 'P5': 'Expert', 'P11': 'Expert', 'P12': 'Expert', 'P14': 'Expert',
+    'P2': 'Novice/Intermediate', 'P3': 'Novice/Intermediate', 'P6': 'Novice/Intermediate',
+    'P7': 'Novice/Intermediate', 'P8': 'Novice/Intermediate', 'P9': 'Novice/Intermediate', 'P10': 'Novice/Intermediate', 'P13': 'Novice/Intermediate'
+}
+
 # Iterate through all CSV files in the folder
 for file_name in os.listdir(folder_path):
     if file_name.endswith('.csv'):
@@ -40,9 +47,16 @@ for file_name in os.listdir(folder_path):
 
         df.insert(1, 'trial', range(1, len(df) + 1))
 
+        df['score'] = df['score'] / 10
+
+        # Add the 'expertise' column based on participant names
+        df['expertise'] = df['participant'].map(expertise_mapping)
+
+        # Replace 'GT_N' in 'model left' with 'Ground Truth'
+        df['model left'] = df['model left'].replace('GT_N', 'Ground Truth')
+
         # Specify the path for the new CSV file
         new_file_path = os.path.join(output_path, f'{file_name}')
 
         # Save the modified DataFrame to a new CSV file
         df.to_csv(new_file_path, index=False)
-

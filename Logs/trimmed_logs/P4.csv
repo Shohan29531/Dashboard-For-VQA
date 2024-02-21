@@ -1,25 +1,25 @@
-participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see
-P4,1,video-4-segment-4,Random,1,0.6666666667,,262.0,4,"Person,Road,White Cane,Sidewalk"
-P4,2,video-1-segment-5,GPV-1,6,0.75,,202.0,6,"Stairs,Sidewalk,Car,Building,Crosswalk,Motorcycle"
-P4,3,video-4-segment-1,GPT4V,8,0.7058823529,,286.0,5,"Trash on roads,Vegetation,Bus,Trash bins,Car"
-P4,4,video-4-segment-3,GT_N,10,1.0,,217.0,5,"Person with a disability,Vegetation,Mail box,White Cane,Pole"
-P4,5,video-6-segment-2,GPV-1@Shadow,0,0.8734177215,0.8727272727,163.0,5,"Pillar,Person with a disability,Stairs,Accent Paving,Railing"
-P4,6,video-15-segment-3,BLIP@shadow,6,0.9677419355,0.9696969697,335.0,5,"Bicycle,Wall,Vegetation,Car,Tree"
-P4,7,video-7-segment-2,Random,1,0.6101694915,,244.0,6,"White Cane,Accent Paving,Car,Road,Person,Vegetation"
-P4,8,video-14-segment-4,GPT4V,7,0.7837837838,,248.0,5,"Bench,Fence,Building,Person with a disability,Vegetation"
-P4,9,video-3-segment-2,GPV-1,1,0.8705882353,,107.0,4,"Person with a disability,Car,Sidewalk,Fence"
-P4,10,video-11-segment-1,GPT4V@Shadow,8,0.9801324503,0.9803921569,135.0,5,"Road,Trash bins,Person,Car,Push button"
-P4,11,video-15-segment-3,BLIP,3,0.9448818898,,191.0,6,"Car,Bicycle,Person with a disability,Vegetation,Tree,Road"
-P4,12,video-2-segment-1,BLIP@shadow,6,0.8435013263,0.8441247002,185.0,6,"Person,Crosswalk,Building,Vegetation,Car,Tree"
-P4,13,video-3-segment-2,BLIP@shadow,1,0.8316831683,0.8349514563,150.0,5,"Car,Person with a disability,Fence,Sidewalk,Road"
-P4,14,video-11-segment-1,BLIP,8,0.9839572193,,147.0,6,"Building,Bus,Car,Trash bins,Road,Person"
-P4,15,video-1-segment-4,GT_N,9,1.0,,145.0,6,"Gate,Person with a disability,Car,Bicycle,Building,Vegetation"
-P4,16,video-1-segment-5,Random,0,0.5853658537,,82.0,5,"Car,Stairs,Barrier Post,Motorcycle,Person with a disability"
-P4,17,video-4-segment-3,GT_N,9,1.0,,78.0,6,"Person with a disability,Sidewalk,Pole,Fence,Vegetation,White Cane"
-P4,18,video-12-segment-4,GPV-1@Shadow,0,0.8266666667,0.8278688525,80.0,6,"Building,Fence,Crosswalk,Person,Car,Tree"
-P4,19,video-6-segment-2,GPV-1@Shadow,0,0.8441558442,0.8466257669,65.0,5,"Person with a disability,Stairs,Railing,White Cane,Pillar"
-P4,20,video-16-segment-3,GPV-1,9,0.9387755102,,121.0,5,"Pole,Car,Building,Sign,Bicycle"
-P4,21,video-13-segment-2,BLIP,7,0.8609865471,,130.0,5,"White Cane,Person with a disability,Traffic Signals,Car,Pole"
-P4,22,video-12-segment-4,GPT4V@Shadow,2,0.8638497653,0.8650793651,169.0,6,"Car,Crosswalk,Tree,Fence,Person,Mail box"
-P4,23,video-3-segment-3,GPT4V,6,0.9198606272,,94.0,5,"Person,Tree,Car,Vegetation,Fence"
-P4,24,video-4-segment-1,GPT4V@Shadow,0,0.8316831683,0.8345323741,63.0,6,"Trash on roads,Fence,Car,Bus,Person with a disability,White Cane"
+participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see,expertise
+P4,1,video-4-segment-4,Random,0.1,0.6666666667,,262.0,4,"Person,Road,White Cane,Sidewalk",Expert
+P4,2,video-1-segment-5,GPV-1,0.6,0.75,,202.0,6,"Stairs,Sidewalk,Car,Building,Crosswalk,Motorcycle",Expert
+P4,3,video-4-segment-1,GPT4V,0.8,0.7058823529,,286.0,5,"Trash on roads,Vegetation,Bus,Trash bins,Car",Expert
+P4,4,video-4-segment-3,Ground Truth,1.0,1.0,,217.0,5,"Person with a disability,Vegetation,Mail box,White Cane,Pole",Expert
+P4,5,video-6-segment-2,GPV-1@Shadow,0.0,0.8734177215,0.8727272727,163.0,5,"Pillar,Person with a disability,Stairs,Accent Paving,Railing",Expert
+P4,6,video-15-segment-3,BLIP@shadow,0.6,0.9677419355,0.9696969697,335.0,5,"Bicycle,Wall,Vegetation,Car,Tree",Expert
+P4,7,video-7-segment-2,Random,0.1,0.6101694915,,244.0,6,"White Cane,Accent Paving,Car,Road,Person,Vegetation",Expert
+P4,8,video-14-segment-4,GPT4V,0.7,0.7837837838,,248.0,5,"Bench,Fence,Building,Person with a disability,Vegetation",Expert
+P4,9,video-3-segment-2,GPV-1,0.1,0.8705882353,,107.0,4,"Person with a disability,Car,Sidewalk,Fence",Expert
+P4,10,video-11-segment-1,GPT4V@Shadow,0.8,0.9801324503,0.9803921569,135.0,5,"Road,Trash bins,Person,Car,Push button",Expert
+P4,11,video-15-segment-3,BLIP,0.3,0.9448818898,,191.0,6,"Car,Bicycle,Person with a disability,Vegetation,Tree,Road",Expert
+P4,12,video-2-segment-1,BLIP@shadow,0.6,0.8435013263,0.8441247002,185.0,6,"Person,Crosswalk,Building,Vegetation,Car,Tree",Expert
+P4,13,video-3-segment-2,BLIP@shadow,0.1,0.8316831683,0.8349514563,150.0,5,"Car,Person with a disability,Fence,Sidewalk,Road",Expert
+P4,14,video-11-segment-1,BLIP,0.8,0.9839572193,,147.0,6,"Building,Bus,Car,Trash bins,Road,Person",Expert
+P4,15,video-1-segment-4,Ground Truth,0.9,1.0,,145.0,6,"Gate,Person with a disability,Car,Bicycle,Building,Vegetation",Expert
+P4,16,video-1-segment-5,Random,0.0,0.5853658537,,82.0,5,"Car,Stairs,Barrier Post,Motorcycle,Person with a disability",Expert
+P4,17,video-4-segment-3,Ground Truth,0.9,1.0,,78.0,6,"Person with a disability,Sidewalk,Pole,Fence,Vegetation,White Cane",Expert
+P4,18,video-12-segment-4,GPV-1@Shadow,0.0,0.8266666667,0.8278688525,80.0,6,"Building,Fence,Crosswalk,Person,Car,Tree",Expert
+P4,19,video-6-segment-2,GPV-1@Shadow,0.0,0.8441558442,0.8466257669,65.0,5,"Person with a disability,Stairs,Railing,White Cane,Pillar",Expert
+P4,20,video-16-segment-3,GPV-1,0.9,0.9387755102,,121.0,5,"Pole,Car,Building,Sign,Bicycle",Expert
+P4,21,video-13-segment-2,BLIP,0.7,0.8609865471,,130.0,5,"White Cane,Person with a disability,Traffic Signals,Car,Pole",Expert
+P4,22,video-12-segment-4,GPT4V@Shadow,0.2,0.8638497653,0.8650793651,169.0,6,"Car,Crosswalk,Tree,Fence,Person,Mail box",Expert
+P4,23,video-3-segment-3,GPT4V,0.6,0.9198606272,,94.0,5,"Person,Tree,Car,Vegetation,Fence",Expert
+P4,24,video-4-segment-1,GPT4V@Shadow,0.0,0.8316831683,0.8345323741,63.0,6,"Trash on roads,Fence,Car,Bus,Person with a disability,White Cane",Expert

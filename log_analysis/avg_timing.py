@@ -5,19 +5,19 @@ import matplotlib.pyplot as plt
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
 # Specify the order of participants
-participant_order = ['P1', 'P5', 'P11', 'P12', 'P3', 'P6', 'P7', 'P10', 'P2', 'P4', 'P8', 'P9', 'P13']
+participant_order = ['P1', 'P4', 'P5', 'P11', 'P12', 'P14', 'P2', 'P3', 'P6', 'P7', 'P8', 'P9', 'P10', 'P13']
 
 # Convert 'participant' column to a categorical type with specified order
 df['participant'] = pd.Categorical(df['participant'], categories=participant_order, ordered=True)
 
 # Specify the order of expertise levels
-expertise_order = ['High', 'Moderate', 'Low']
+expertise_order = ['Expert', 'Novice/Intermediate']
 
 # Convert 'expertise' column to a categorical type with specified order
 df['expertise'] = pd.Categorical(df['expertise'], categories=expertise_order, ordered=True)
 
 # Assign shades of grey to each expertise level
-colors = {'High': '#111111', 'Moderate': '#888888', 'Low': '#CCCCCC'}
+colors = {'Expert': 'black', 'Novice/Intermediate': 'lightgrey'}
 
 # Calculate the average 'timing' for each participant
 avg_timing_per_participant = df.groupby(['participant', 'expertise'])['timing'].mean().reset_index()
@@ -51,9 +51,9 @@ plt.legend(title='Participant Expertise', title_fontsize='14', fontsize='12')
 # Set y-axis limits
 plt.ylim(0, 230)
 
-# Draw vertical lines after 4 and 8 bars
-plt.axvline(x=3.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 4 bars
-plt.axvline(x=7.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 8 bars
+# # Draw vertical lines after 4 and 8 bars
+# plt.axvline(x=3.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 4 bars
+plt.axvline(x=5.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 8 bars
 
 # Save the plot as an image file (e.g., PDF)
 plt.savefig('../Paper files/average_timing_per_participant.pdf')

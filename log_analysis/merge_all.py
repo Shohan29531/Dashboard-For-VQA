@@ -20,11 +20,11 @@ for file_name in os.listdir(output_path):
         concatenated_df = pd.concat([concatenated_df, df], ignore_index=True)
 
 # Convert 'participant' column to categorical with a custom order
-participant_order = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'P12', 'P13']
+participant_order = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'P12', 'P13', 'P14']
 concatenated_df['participant'] = pd.Categorical(concatenated_df['participant'], categories=participant_order, ordered=True)
 
-# Sort the DataFrame by the 'participant' column
-concatenated_df.sort_values('participant', inplace=True)
+# Sort the DataFrame by the 'participant' and 'trial' columns
+concatenated_df.sort_values(['participant', 'trial'], inplace=True)
 
 # Specify the path for the new CSV file containing all rows
 all_rows_file_path = os.path.join(output_path, 'all.csv')

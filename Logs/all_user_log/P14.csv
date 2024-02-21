@@ -1,0 +1,17 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-02-20::10:53:28,video-3-segment-2,GPT4V@Shadow,,,"+Barrier Post,+Car,+Person with a disability,+Pillar,-Bench,-Bridge,-Driveway(flat),-Fountain",,7,,single,0.9172932330827068,0.9171974522292992
+2024-02-20::10:55:17,video-6-segment-2,GT_N,,,"+Building,+Closed Sidewalk,+Motorcycle,+Person with a disability,+Pillar,+Stairs,-Bench,-Gutter,-Sign",,6,,single,1.0,
+2024-02-20::10:57:45,video-15-segment-3,BLIP@Shadow,,,"+Building,+Car,+Foldout Sign,+Person with a disability,+Tactile Paving,+Trash bins,-Bicycle,-Driveway(flat),-Water Pipes,-White Cane",,6,,single,0.8279569892473119,0.8262910798122065
+2024-02-20::11:02:11,video-11-segment-1,BLIP,,,"+Person with a disability,+Roadside Parking,+Trash bins,-Foldout Sign,-Gutter,-Road,-Sidewalk",,5,,single,0.7706422018348623,
+2024-02-20::11:04:25,video-4-segment-4,GT_N,,,"+Barrier Post,+Barrier Stump,+Person with a disability,+Road,+Road Shoulder,+Water Pipes,-Crosswalk,-Foldout Sign,-Sign,-Stop sign",,5,,single,1.0,
+2024-02-20::11:06:08,video-1-segment-5,GPT4V@Shadow,,,"+Bench,+Bicycle,+Driveway(flat),+Motorcycle,+Person with a disability,-Bridge,-Car,-Wall",,4,,single,0.7835051546391751,0.7814569536423841
+2024-02-20::11:07:46,video-14-segment-1,GPT4V,,,"+Bridge,+Car,+Person with a disability,+Railing,+Stairs,+Vegetation,-Maintenance Vehicle,-Person with a disability",,3,,single,0.8354430379746836,
+2024-02-20::11:09:44,video-13-segment-2,GPV-1,,,"+Elevator,+Parallel Parking Spot,+Pedestrian Crossing,+Person with a disability,+Slopped Curb,+Traffic Signals,+White Cane,-Stairs,-Unpaved Sidewalk",,3,,single,0.6363636363636364,
+2024-02-20::11:11:33,video-2-segment-1,BLIP,,,"+Car,+Person,+Road,+Roadside Parking,+Stairs,+Vegetation,-Barrier Stump,-Dog,-Escalator",,5,,single,0.8526315789473684,
+2024-02-20::11:13:21,video-4-segment-3,Random,,,"+Bench,+Bridge,+Person with a disability,+Pillar,+Road Shoulder,+White Cane,-Bus Stop,-Pedestrian Crossing,-Road Divider,-Wheelchair",,4,,single,0.5777777777777777,
+2024-02-20::11:15:27,video-3-segment-3,GPV-1,,,"+Barrier Post,+Bicycle,+Car,+Road Shoulder,+Trash bins,+Tree,+Unpaved Sidewalk,+Wall,-Motorcycle",,6,,single,0.5864661654135338,
+2024-02-20::11:16:54,video-13-segment-2,GPV-1@Shadow,,,"+Accent Paving,+Car,+Curb,+Lamp Post,+Traffic Signals,+Wet surface,+White Cane,-Curb,-Road Shoulder",,2,,single,0.6211180124223602,0.6220095693779905
+2024-02-20::11:18:07,video-3-segment-3,Random,,,"+Car,+Pillar,+Sign,+Tree,-Barrier Stump,-Foldout Sign,-Gutter,-Retaining Wall",,0,,single,0.598639455782313,
+2024-02-20::11:19:39,video-4-segment-4,GPT4V,,,"+Barrier Post,+Person,+Person with a disability,+Road,+Road Shoulder,+Tree,+Water Pipes,+White Cane,-Crosswalk,-Foldout Sign,-Sign,-Stop sign",,5,,single,0.8949771689497716,
+2024-02-20::11:22:08,video-14-segment-1,BLIP@Shadow,,,"+Bench,+Bicycle,+Building,+Car,+Elevator,+Stairs,-Bicycle,-Roadside Parking,-Unpaved Road",,4,,single,0.7428571428571428,0.7422680412371134
+2024-02-20::11:24:35,video-1-segment-5,GPV-1@Shadow,N/A,N/A,"+Bench,+Bicycle,+Car,+Curb,+Dog,+Motorcycle,+Road Shoulder,-Car,-Trash on roads,-Uncontrolled Crossing",,0,,single,0.7323943661971831,0.731958762886598

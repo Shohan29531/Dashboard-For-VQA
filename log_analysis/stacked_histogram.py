@@ -5,16 +5,18 @@ import time
 # Load the combined CSV
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
-# df = df[~df['participant'].isin(['P9'])]
-
 # Define model pairs
-# models = ['Ground Truth', 'Random', 'BLIP', 'BLIP@Shadow', 'GPV-1', 'GPV-1@Shadow', 'GPT4V', 'GPT4V@Shadow']
-
 models = ['Ground Truth', 'Random']
 
 # Define expertise levels and corresponding colors
-expertise_levels = ['High', 'Moderate', 'Low']
-expertise_colors = {'High': 'green', 'Moderate': 'yellow', 'Low': 'red'}
+expertise_levels = ['Expert', 'Novice/Intermediate']
+expertise_colors = {'Expert': 'black', 'Novice/Intermediate': 'lightgrey'}
+
+# Find the common X-axis range
+x_range = (
+    min(df[df['model left'] == models[0]]['normalized_score'].min(), df[df['model left'] == models[1]]['normalized_score'].min()),
+    max(df[df['model left'] == models[0]]['normalized_score'].max(), df[df['model left'] == models[1]]['normalized_score'].max())
+)
 
 for model in models:
     df_model = df[df['model left'] == model]
@@ -22,22 +24,15 @@ for model in models:
     fig = go.Figure()
 
     for i, expertise in enumerate(expertise_levels):
-        # Count occurrences of each user rating for both models and each expertise level
-        count = (((df_model[df_model['expertise'] == expertise]['normalized_score']*10).round())/10).value_counts().sort_index().to_dict()
-
-        # Ensure x_data and y_data have a length of 11
-        x_data = [i/10 for i in range(11)]
-        y_data = [count[i/10] if i/10 in count else 0 for i in range(11)]
-
-        # Add a trace for each expertise level with corresponding color
-        fig.add_trace(go.Bar(
-            x=x_data,
-            y=y_data,
-            text=y_data,
-            textposition='auto',
-            hoverinfo='y+text',
+        # Create a histogram for each expertise level with the common X-axis range
+        fig.add_trace(go.Histogram(
+            x=df_model[df_model['expertise'] == expertise]['normalized_score'],
             name=expertise,
             marker_color=expertise_colors[expertise],
+            opacity=0.7,
+            xbins=dict(start=x_range[0], end=x_range[1], size=0.03),  # Specify the common X-axis range and bin size
+            histnorm='percent',
+            marker_line=dict(color='black', width=1)  # Add border to the bars
         ))
 
     # Customize the layout
@@ -47,31 +42,37 @@ for model in models:
             x=0.5,
             font=dict(family='Arial', size=16, color='black')
         ),
-        xaxis_title='User Rating',
-        yaxis_title='Number of Users with this Rating',
+        xaxis_title='Z-Normalized User Rating',
+        yaxis_title='Percentage of Users',
         barmode='stack',
         xaxis=dict(
-            tickmode='array',
-            tickvals=[i/10 for i in range(11)],
-            ticktext=[str(i/10) for i in range(11)],
-            gridcolor='lightgrey',
+            range=x_range,  # Set the common X-axis range
+            gridcolor='white',
             gridwidth=0.01
         ),
         yaxis=dict(
-            tickmode='array',
-            tickvals=list(range(0, max(y_data) + 2, 2)),
-            ticktext=list(range(0, max(y_data) + 2, 2)),
             gridcolor='lightgrey',
             gridwidth=0.01,
-            showgrid=True  # Add this line to display the grid and y-axis labels
+            showgrid=True
         ),
         plot_bgcolor='white',
         font=dict(family='Arial')
     )
 
+    # Position the legend in the middle at the top
     fig.update_layout(
         width=600,
-        height=500
+        height=500,
+        legend=dict(
+            title='Participant Expertise',
+            orientation='v',
+            x=0.5,
+            y=0.95,
+            xanchor='center',
+            yanchor='top',
+            bordercolor='black',
+            borderwidth=0.5
+        )
     )
 
     fig.show()

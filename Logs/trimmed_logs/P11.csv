@@ -1,25 +1,25 @@
-participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see
-P11,1,video-3-segment-2,BLIP,9,0.845360824742268,,412.0,6,"Road,Curb,White Cane,Car,Fence,Motorcycle"
-P11,2,video-7-segment-2,GT_N,6,1.0,,352.0,8,"Vegetation,Road,Accent Paving,Sidewalk,Car,White Cane,Wall,Pole"
-P11,3,video-4-segment-4,GPT4V,9,0.8679245283018867,,244.0,6,"Person,Road,Person with a disability,Railing,Road Divider,Curb"
-P11,4,video-4-segment-4,GPV-1,2,0.6376811594202899,,68.0,6,"Person,Paratransit vehicle,Lamp Post,White Cane,Yard Waste,Gutter"
-P11,5,video-16-segment-3,GPT4V@Shadow,1,0.5238095238095238,0.5225225225225225,87.0,7,"Pole,Traffic Signals,Road Shoulder,Gate,Pedestrian Crossing,Railing,Closed Sidewalk"
-P11,6,video-1-segment-5,GPV-1,1,0.6792452830188678,,128.0,8,"Roadside Parking,Gutter,Sidewalk,Building,Puddle,Pole,Barrier Post,White Cane"
-P11,7,video-4-segment-3,GT_N,9,1.0,,219.0,5,"Slopped Curb,Tactile Paving,Person with a disability,Vegetation,Motorcycle"
-P11,8,video-3-segment-2,GPT4V@Shadow,2,0.6451612903225806,0.6476190476190476,171.0,6,"Vegetation,Person with a disability,Person,Table,Puddle,Curb"
-P11,9,video-6-segment-2,BLIP,3,0.6569343065693432,,137.0,8,"Car,Railing,Road,Wall,Barrier Post,Closed Sidewalk,Stairs,Accent Paving"
-P11,10,video-11-segment-1,GPT4V,6,0.8403361344537815,,184.0,7,"Road,Uncontrolled Crossing,Turnstile,Bridge,Trash bins,Person,Bus"
-P11,11,video-4-segment-1,GPT4V,6,0.7272727272727273,,296.0,8,"Bus Stop,Gutter,Mail box,Bus,White Cane,Curb,Fence,Bench"
-P11,12,video-14-segment-1,GPV-1@Shadow,2,0.84375,0.8456375838926175,96.0,6,"Tree,Lamp Post,Railing,Stairs,Vegetation,Car"
-P11,13,video-1-segment-4,GPV-1@Shadow,1,0.7304347826086957,0.7328244274809159,152.0,6,"Person with a disability,Pole,Bicycle,Trash bins,Maintenance Vehicle,Vegetation"
-P11,14,video-14-segment-4,BLIP,2,0.6464646464646465,,130.0,8,"Slopped Curb,Road,Car,Guide dog,Person with a disability,Fence,Building,Vegetation"
-P11,15,video-4-segment-1,Random,2,0.4909090909090909,,63.0,8,"Railing,Bench,Person,White Cane,Gate,Closed Sidewalk,Bus,Snow"
-P11,16,video-3-segment-3,BLIP@Shadow,2,0.8947368421052632,0.8976377952755905,110.0,6,"Car,Curb,Road,White Cane,Vegetation,Snow"
-P11,17,video-2-segment-1,GPV-1,1,0.1538461538461538,,70.0,6,"Barrier Stump,Traffic Signals,Crosswalk,Sign Post,Table,Push button"
-P11,18,video-15-segment-3,Random,3,0.5858585858585859,,101.0,5,"Curb,Fence,Car,Wall,Trash on roads"
-P11,19,video-11-segment-1,GPV-1@Shadow,2,0.7480916030534351,0.7462686567164178,74.0,7,"Trash bins,Bus,Accent Paving,Pole,Mail box,Counter,Motorcycle"
-P11,20,video-13-segment-2,BLIP@Shadow,3,0.7578947368421053,0.7572815533980582,120.0,8,"Building,Pole,Road Divider,Slopped Curb,Hose,Flush Door,Car,Motorcycle"
-P11,21,video-7-segment-2,BLIP@Shadow,6,0.7862068965517242,0.7837837837837839,148.0,8,"White Cane,Sign,Road,Accent Paving,Closed Sidewalk,Railing,Tactile Paving,Pole"
-P11,22,video-12-segment-4,GT_N,10,1.0,,187.0,8,"Pole,Building,Pedestrian Crossing,Maintenance Vehicle,Car,Mail box,Sign Post,Traffic Signals"
-P11,23,video-14-segment-4,Random,1,0.46875,,85.0,6,"Person with a disability,Elevator,Person,Bench,Retaining Wall,Road Divider"
-P11,24,video-4-segment-3,GPT4V@Shadow,3,0.8,0.8,64.0,6,"Tactile Paving,Vegetation,Push button,Person,Water Pipes,Motorcycle"
+participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see,expertise
+P11,1,video-3-segment-2,BLIP,0.9,0.845360824742268,,412.0,6,"Road,Curb,White Cane,Car,Fence,Motorcycle",Expert
+P11,2,video-7-segment-2,Ground Truth,0.6,1.0,,352.0,8,"Vegetation,Road,Accent Paving,Sidewalk,Car,White Cane,Wall,Pole",Expert
+P11,3,video-4-segment-4,GPT4V,0.9,0.8679245283018867,,244.0,6,"Person,Road,Person with a disability,Railing,Road Divider,Curb",Expert
+P11,4,video-4-segment-4,GPV-1,0.2,0.6376811594202899,,68.0,6,"Person,Paratransit vehicle,Lamp Post,White Cane,Yard Waste,Gutter",Expert
+P11,5,video-16-segment-3,GPT4V@Shadow,0.1,0.5238095238095238,0.5225225225225225,87.0,7,"Pole,Traffic Signals,Road Shoulder,Gate,Pedestrian Crossing,Railing,Closed Sidewalk",Expert
+P11,6,video-1-segment-5,GPV-1,0.1,0.6792452830188678,,128.0,8,"Roadside Parking,Gutter,Sidewalk,Building,Puddle,Pole,Barrier Post,White Cane",Expert
+P11,7,video-4-segment-3,Ground Truth,0.9,1.0,,219.0,5,"Slopped Curb,Tactile Paving,Person with a disability,Vegetation,Motorcycle",Expert
+P11,8,video-3-segment-2,GPT4V@Shadow,0.2,0.6451612903225806,0.6476190476190476,171.0,6,"Vegetation,Person with a disability,Person,Table,Puddle,Curb",Expert
+P11,9,video-6-segment-2,BLIP,0.3,0.6569343065693432,,137.0,8,"Car,Railing,Road,Wall,Barrier Post,Closed Sidewalk,Stairs,Accent Paving",Expert
+P11,10,video-11-segment-1,GPT4V,0.6,0.8403361344537815,,184.0,7,"Road,Uncontrolled Crossing,Turnstile,Bridge,Trash bins,Person,Bus",Expert
+P11,11,video-4-segment-1,GPT4V,0.6,0.7272727272727273,,296.0,8,"Bus Stop,Gutter,Mail box,Bus,White Cane,Curb,Fence,Bench",Expert
+P11,12,video-14-segment-1,GPV-1@Shadow,0.2,0.84375,0.8456375838926175,96.0,6,"Tree,Lamp Post,Railing,Stairs,Vegetation,Car",Expert
+P11,13,video-1-segment-4,GPV-1@Shadow,0.1,0.7304347826086957,0.7328244274809159,152.0,6,"Person with a disability,Pole,Bicycle,Trash bins,Maintenance Vehicle,Vegetation",Expert
+P11,14,video-14-segment-4,BLIP,0.2,0.6464646464646465,,130.0,8,"Slopped Curb,Road,Car,Guide dog,Person with a disability,Fence,Building,Vegetation",Expert
+P11,15,video-4-segment-1,Random,0.2,0.4909090909090909,,63.0,8,"Railing,Bench,Person,White Cane,Gate,Closed Sidewalk,Bus,Snow",Expert
+P11,16,video-3-segment-3,BLIP@Shadow,0.2,0.8947368421052632,0.8976377952755905,110.0,6,"Car,Curb,Road,White Cane,Vegetation,Snow",Expert
+P11,17,video-2-segment-1,GPV-1,0.1,0.1538461538461538,,70.0,6,"Barrier Stump,Traffic Signals,Crosswalk,Sign Post,Table,Push button",Expert
+P11,18,video-15-segment-3,Random,0.3,0.5858585858585859,,101.0,5,"Curb,Fence,Car,Wall,Trash on roads",Expert
+P11,19,video-11-segment-1,GPV-1@Shadow,0.2,0.7480916030534351,0.7462686567164178,74.0,7,"Trash bins,Bus,Accent Paving,Pole,Mail box,Counter,Motorcycle",Expert
+P11,20,video-13-segment-2,BLIP@Shadow,0.3,0.7578947368421053,0.7572815533980582,120.0,8,"Building,Pole,Road Divider,Slopped Curb,Hose,Flush Door,Car,Motorcycle",Expert
+P11,21,video-7-segment-2,BLIP@Shadow,0.6,0.7862068965517242,0.7837837837837839,148.0,8,"White Cane,Sign,Road,Accent Paving,Closed Sidewalk,Railing,Tactile Paving,Pole",Expert
+P11,22,video-12-segment-4,Ground Truth,1.0,1.0,,187.0,8,"Pole,Building,Pedestrian Crossing,Maintenance Vehicle,Car,Mail box,Sign Post,Traffic Signals",Expert
+P11,23,video-14-segment-4,Random,0.1,0.46875,,85.0,6,"Person with a disability,Elevator,Person,Bench,Retaining Wall,Road Divider",Expert
+P11,24,video-4-segment-3,GPT4V@Shadow,0.3,0.8,0.8,64.0,6,"Tactile Paving,Vegetation,Push button,Person,Water Pipes,Motorcycle",Expert

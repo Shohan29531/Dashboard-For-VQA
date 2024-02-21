@@ -1,0 +1,17 @@
+participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see,expertise
+P14,1,video-3-segment-2,GPT4V@Shadow,0.7,0.9172932330827068,0.9171974522292992,169.0,8,"+Barrier Post,+Car,+Person with a disability,+Pillar,-Bench,-Bridge,-Driveway(flat),-Fountain",Expert
+P14,2,video-6-segment-2,Ground Truth,0.6,1.0,,109.0,9,"+Building,+Closed Sidewalk,+Motorcycle,+Person with a disability,+Pillar,+Stairs,-Bench,-Gutter,-Sign",Expert
+P14,3,video-15-segment-3,BLIP@Shadow,0.6,0.8279569892473119,0.8262910798122065,148.0,10,"+Building,+Car,+Foldout Sign,+Person with a disability,+Tactile Paving,+Trash bins,-Bicycle,-Driveway(flat),-Water Pipes,-White Cane",Expert
+P14,4,video-11-segment-1,BLIP,0.5,0.7706422018348623,,266.0,7,"+Person with a disability,+Roadside Parking,+Trash bins,-Foldout Sign,-Gutter,-Road,-Sidewalk",Expert
+P14,5,video-4-segment-4,Ground Truth,0.5,1.0,,134.0,10,"+Barrier Post,+Barrier Stump,+Person with a disability,+Road,+Road Shoulder,+Water Pipes,-Crosswalk,-Foldout Sign,-Sign,-Stop sign",Expert
+P14,6,video-1-segment-5,GPT4V@Shadow,0.4,0.7835051546391751,0.7814569536423841,103.0,8,"+Bench,+Bicycle,+Driveway(flat),+Motorcycle,+Person with a disability,-Bridge,-Car,-Wall",Expert
+P14,7,video-14-segment-1,GPT4V,0.3,0.8354430379746836,,98.0,8,"+Bridge,+Car,+Person with a disability,+Railing,+Stairs,+Vegetation,-Maintenance Vehicle,-Person with a disability",Expert
+P14,8,video-13-segment-2,GPV-1,0.3,0.6363636363636364,,118.0,9,"+Elevator,+Parallel Parking Spot,+Pedestrian Crossing,+Person with a disability,+Slopped Curb,+Traffic Signals,+White Cane,-Stairs,-Unpaved Sidewalk",Expert
+P14,9,video-2-segment-1,BLIP,0.5,0.8526315789473684,,109.0,9,"+Car,+Person,+Road,+Roadside Parking,+Stairs,+Vegetation,-Barrier Stump,-Dog,-Escalator",Expert
+P14,10,video-4-segment-3,Random,0.4,0.5777777777777777,,108.0,10,"+Bench,+Bridge,+Person with a disability,+Pillar,+Road Shoulder,+White Cane,-Bus Stop,-Pedestrian Crossing,-Road Divider,-Wheelchair",Expert
+P14,11,video-3-segment-3,GPV-1,0.6,0.5864661654135338,,126.0,9,"+Barrier Post,+Bicycle,+Car,+Road Shoulder,+Trash bins,+Tree,+Unpaved Sidewalk,+Wall,-Motorcycle",Expert
+P14,12,video-13-segment-2,GPV-1@Shadow,0.2,0.6211180124223602,0.6220095693779905,87.0,9,"+Accent Paving,+Car,+Curb,+Lamp Post,+Traffic Signals,+Wet surface,+White Cane,-Curb,-Road Shoulder",Expert
+P14,13,video-3-segment-3,Random,0.0,0.598639455782313,,73.0,8,"+Car,+Pillar,+Sign,+Tree,-Barrier Stump,-Foldout Sign,-Gutter,-Retaining Wall",Expert
+P14,14,video-4-segment-4,GPT4V,0.5,0.8949771689497716,,92.0,12,"+Barrier Post,+Person,+Person with a disability,+Road,+Road Shoulder,+Tree,+Water Pipes,+White Cane,-Crosswalk,-Foldout Sign,-Sign,-Stop sign",Expert
+P14,15,video-14-segment-1,BLIP@Shadow,0.4,0.7428571428571428,0.7422680412371134,149.0,9,"+Bench,+Bicycle,+Building,+Car,+Elevator,+Stairs,-Bicycle,-Roadside Parking,-Unpaved Road",Expert
+P14,16,video-1-segment-5,GPV-1@Shadow,0.0,0.7323943661971831,0.731958762886598,147.0,10,"+Bench,+Bicycle,+Car,+Curb,+Dog,+Motorcycle,+Road Shoulder,-Car,-Trash on roads,-Uncontrolled Crossing",Expert

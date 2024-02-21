@@ -790,6 +790,10 @@ modal_row = html.Div(
 # 4th row: rating layout
 rating_row = html.Div(
     [
+        html.Div([
+        		# empty
+        	], className = 'one column'
+        ),
         # rating slider
         html.Div(
             [
@@ -827,6 +831,10 @@ rating_row = html.Div(
                 ),
             ], id="radio-button-div", className='five columns', style={'display': 'none'}
         ),
+        html.Div([
+        		# empty
+        	], className = 'one column'
+        ),
 
         # raw feedback
         html.Div(
@@ -838,7 +846,7 @@ rating_row = html.Div(
                     placeholder='Please explain why did you rate the model this way',
                     style={'width': '100%', 'color': 'grey', 'font-style': 'italic'}
                 )
-            ], className='four columns',
+            ], className='three columns',
         ),
 
         # status feedback
@@ -1658,7 +1666,7 @@ def update_heatmap_1(
             title_font=dict(family='Arial Black', size=12),
             height=fixed_heatmap_height,
             width=fixed_heatmap_width,
-            margin=dict(l=30, r=10, t=50, b=50),
+            margin=dict(l=30, r=10, t=50, b=80),
             xaxis=dict(
                 showgrid=False,
                 dtick=1,
@@ -2031,4 +2039,4 @@ app.clientside_callback(
 )
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)

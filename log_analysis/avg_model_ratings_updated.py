@@ -67,7 +67,7 @@ layout['yaxis'].update(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
 # Iterate over each model in the sorted order
 for model in desired_order:
     # Determine color based on the presence of 'Shadow'
-    color = 'green' if '@Shadow' not in model else 'red'
+    color = 'black' if '@Shadow' not in model else 'rgb(158, 157, 157)'
 
     # Add a horizontal line trace for the mean
     lines.append(go.Scatter(

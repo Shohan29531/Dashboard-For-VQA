@@ -1,25 +1,25 @@
-participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see
-P3,1,video-1-segment-5,BLIP@shadow,9,0.9791666667,0.98,552.0,4,"Person with a disability,Sidewalk,Bicycle,White Cane"
-P3,2,video-4-segment-4,GPT4V,4,0.7975460123,,492.0,4,"Slopped Curb,White Cane,Sidewalk,Person with a disability"
-P3,3,video-3-segment-3,GPV-1@Shadow,4,0.6666666667,0.6666666667,402.0,4,"Gate,White Cane,Car,Sidewalk"
-P3,4,video-7-segment-2,GPT4V@Shadow,4,0.8793103448,0.8760330579,410.0,4,"White Cane,Person with a disability,Sidewalk,Person"
-P3,5,video-3-segment-3,BLIP,5,0.635193133,,166.0,4,"Fence,Sidewalk,Person with a disability,White Cane"
-P3,6,video-4-segment-3,GT_N,7,1.0,,135.0,4,"Person with a disability,Fence,White Cane,Pillar"
-P3,7,video-4-segment-1,GPV-1,5,0.7142857143,,257.0,4,"Bus,Fence,Person with a disability,White Cane"
-P3,8,video-15-segment-3,GPT4V,10,0.9523809524,,104.0,4,"White Cane,Car,Closed Sidewalk,Person"
-P3,9,video-14-segment-1,GPT4V,8,0.8,,114.0,4,"Vegetation,Roadside Parking,White Cane,Stairs"
-P3,10,video-14-segment-4,BLIP@shadow,7,0.8205128205,0.825,106.0,4,"Person,White Cane,Person with a disability,Building"
-P3,11,video-14-segment-1,GT_N,10,1.0,,104.0,4,"Roadside Parking,White Cane,Person with a disability,Stairs"
-P3,12,video-12-segment-4,BLIP,8,0.9367088608,,82.0,4,"White Cane,Pedestrian Crossing,Person with a disability,Building"
-P3,13,video-1-segment-4,BLIP,7,0.7943262411,,98.0,4,"Gate,Person with a disability,White Cane,Bicycle"
-P3,14,video-2-segment-1,GPV-1,7,0.780952381,,118.0,4,"Vegetation,White Cane,Tree,Person with a disability"
-P3,15,video-4-segment-4,GPT4V@Shadow,3,0.6346153846,0.6354166667,107.0,4,"Person with a disability,White Cane,Slopped Curb,Tree"
-P3,16,video-4-segment-3,GPV-1@Shadow,5,0.8275862069,0.8266666667,71.0,4,"Fence,Person with a disability,Pole,White Cane"
-P3,17,video-15-segment-3,Random,1,0.4179104478,,72.0,4,"Person with a disability,Car,White Cane,Road"
-P3,18,video-1-segment-4,Random,1,0.3469387755,,123.0,4,"Bicycle,Person with a disability,Fence,White Cane"
-P3,19,video-6-segment-2,GPV-1,6,0.8524590164,,78.0,4,"Person with a disability,Stairs,Pillar,White Cane"
-P3,20,video-7-segment-2,Random,4,0.7021276596,,90.0,4,"Building,Person with a disability,White Cane,Person"
-P3,21,video-11-segment-1,GPT4V@Shadow,3,0.5217391304,0.523364486,124.0,4,"Trash bins,White Cane,Person with a disability,Tree"
-P3,22,video-3-segment-2,GT_N,7,1.0,,61.0,4,"Car,Fence,Person with a disability,White Cane"
-P3,23,video-6-segment-2,BLIP@shadow,5,0.6095238095,0.6111111111,128.0,4,"White Cane,Pillar,Stairs,Person with a disability"
-P3,24,video-1-segment-5,GPV-1@Shadow,6,0.8936170213,0.8910891089,72.0,4,"Person with a disability,Bicycle,White Cane,Sidewalk"
+participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see,expertise
+P3,1,video-1-segment-5,BLIP@shadow,0.9,0.9791666667,0.98,552.0,4,"Person with a disability,Sidewalk,Bicycle,White Cane",Novice/Intermediate
+P3,2,video-4-segment-4,GPT4V,0.4,0.7975460123,,492.0,4,"Slopped Curb,White Cane,Sidewalk,Person with a disability",Novice/Intermediate
+P3,3,video-3-segment-3,GPV-1@Shadow,0.4,0.6666666667,0.6666666667,402.0,4,"Gate,White Cane,Car,Sidewalk",Novice/Intermediate
+P3,4,video-7-segment-2,GPT4V@Shadow,0.4,0.8793103448,0.8760330579,410.0,4,"White Cane,Person with a disability,Sidewalk,Person",Novice/Intermediate
+P3,5,video-3-segment-3,BLIP,0.5,0.635193133,,166.0,4,"Fence,Sidewalk,Person with a disability,White Cane",Novice/Intermediate
+P3,6,video-4-segment-3,Ground Truth,0.7,1.0,,135.0,4,"Person with a disability,Fence,White Cane,Pillar",Novice/Intermediate
+P3,7,video-4-segment-1,GPV-1,0.5,0.7142857143,,257.0,4,"Bus,Fence,Person with a disability,White Cane",Novice/Intermediate
+P3,8,video-15-segment-3,GPT4V,1.0,0.9523809524,,104.0,4,"White Cane,Car,Closed Sidewalk,Person",Novice/Intermediate
+P3,9,video-14-segment-1,GPT4V,0.8,0.8,,114.0,4,"Vegetation,Roadside Parking,White Cane,Stairs",Novice/Intermediate
+P3,10,video-14-segment-4,BLIP@shadow,0.7,0.8205128205,0.825,106.0,4,"Person,White Cane,Person with a disability,Building",Novice/Intermediate
+P3,11,video-14-segment-1,Ground Truth,1.0,1.0,,104.0,4,"Roadside Parking,White Cane,Person with a disability,Stairs",Novice/Intermediate
+P3,12,video-12-segment-4,BLIP,0.8,0.9367088608,,82.0,4,"White Cane,Pedestrian Crossing,Person with a disability,Building",Novice/Intermediate
+P3,13,video-1-segment-4,BLIP,0.7,0.7943262411,,98.0,4,"Gate,Person with a disability,White Cane,Bicycle",Novice/Intermediate
+P3,14,video-2-segment-1,GPV-1,0.7,0.780952381,,118.0,4,"Vegetation,White Cane,Tree,Person with a disability",Novice/Intermediate
+P3,15,video-4-segment-4,GPT4V@Shadow,0.3,0.6346153846,0.6354166667,107.0,4,"Person with a disability,White Cane,Slopped Curb,Tree",Novice/Intermediate
+P3,16,video-4-segment-3,GPV-1@Shadow,0.5,0.8275862069,0.8266666667,71.0,4,"Fence,Person with a disability,Pole,White Cane",Novice/Intermediate
+P3,17,video-15-segment-3,Random,0.1,0.4179104478,,72.0,4,"Person with a disability,Car,White Cane,Road",Novice/Intermediate
+P3,18,video-1-segment-4,Random,0.1,0.3469387755,,123.0,4,"Bicycle,Person with a disability,Fence,White Cane",Novice/Intermediate
+P3,19,video-6-segment-2,GPV-1,0.6,0.8524590164,,78.0,4,"Person with a disability,Stairs,Pillar,White Cane",Novice/Intermediate
+P3,20,video-7-segment-2,Random,0.4,0.7021276596,,90.0,4,"Building,Person with a disability,White Cane,Person",Novice/Intermediate
+P3,21,video-11-segment-1,GPT4V@Shadow,0.3,0.5217391304,0.523364486,124.0,4,"Trash bins,White Cane,Person with a disability,Tree",Novice/Intermediate
+P3,22,video-3-segment-2,Ground Truth,0.7,1.0,,61.0,4,"Car,Fence,Person with a disability,White Cane",Novice/Intermediate
+P3,23,video-6-segment-2,BLIP@shadow,0.5,0.6095238095,0.6111111111,128.0,4,"White Cane,Pillar,Stairs,Person with a disability",Novice/Intermediate
+P3,24,video-1-segment-5,GPV-1@Shadow,0.6,0.8936170213,0.8910891089,72.0,4,"Person with a disability,Bicycle,White Cane,Sidewalk",Novice/Intermediate
