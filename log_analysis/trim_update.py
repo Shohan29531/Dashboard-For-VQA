@@ -9,8 +9,8 @@ output_path = '../Logs/trimmed_logs/'
 # Define the mapping of participant names to expertise levels
 expertise_mapping = {
     'P1': 'Expert', 'P4': 'Expert', 'P5': 'Expert', 'P11': 'Expert', 'P12': 'Expert', 'P14': 'Expert',
-    'P2': 'Novice/Intermediate', 'P3': 'Novice/Intermediate', 'P6': 'Novice/Intermediate',
-    'P7': 'Novice/Intermediate', 'P8': 'Novice/Intermediate', 'P9': 'Novice/Intermediate', 'P10': 'Novice/Intermediate', 'P13': 'Novice/Intermediate'
+    'P2': 'Non-Expert', 'P3': 'Non-Expert', 'P6': 'Non-Expert',
+    'P7': 'Non-Expert', 'P8': 'Non-Expert', 'P9': 'Non-Expert', 'P10': 'Non-Expert', 'P13': 'Non-Expert'
 }
 
 # Iterate through all CSV files in the folder
@@ -51,6 +51,9 @@ for file_name in os.listdir(folder_path):
 
         # Add the 'expertise' column based on participant names
         df['expertise'] = df['participant'].map(expertise_mapping)
+
+        # Replace 'Novice/Intermediate' with 'Non-Expert' in the 'expertise' column
+        df['expertise'] = df['expertise'].replace('Novice/Intermediate', 'Non-Expert')
 
         # Replace 'GT_N' in 'model left' with 'Ground Truth'
         df['model left'] = df['model left'].replace('GT_N', 'Ground Truth')

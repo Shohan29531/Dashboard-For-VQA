@@ -11,13 +11,13 @@ participant_order = ['P1', 'P4', 'P5', 'P11', 'P12', 'P14', 'P2', 'P3', 'P6', 'P
 df['participant'] = pd.Categorical(df['participant'], categories=participant_order, ordered=True)
 
 # Specify the order of expertise levels
-expertise_order = ['Expert', 'Novice/Intermediate']
+expertise_order = ['Expert', 'Non-Expert']
 
 # Convert 'expertise' column to a categorical type with specified order
 df['expertise'] = pd.Categorical(df['expertise'], categories=expertise_order, ordered=True)
 
 # Assign shades of grey to each expertise level
-colors = {'Expert': 'black', 'Novice/Intermediate': 'lightgrey'}
+colors = {'Expert': 'black', 'Non-Expert': 'lightgrey'}
 
 # Calculate the average 'timing' for each participant
 avg_timing_per_participant = df.groupby(['participant', 'expertise'])['timing'].mean().reset_index()

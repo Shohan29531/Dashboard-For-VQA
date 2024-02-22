@@ -9,14 +9,11 @@ df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 models = ['Ground Truth', 'Random']
 
 # Define expertise levels and corresponding colors
-expertise_levels = ['Expert', 'Novice/Intermediate']
-expertise_colors = {'Expert': 'black', 'Novice/Intermediate': 'lightgrey'}
+expertise_levels = ['Expert', 'Non-Expert']
+expertise_colors = {'Expert': 'black', 'Non-Expert': 'lightgrey'}
 
-# Find the common X-axis range
-x_range = (
-    min(df[df['model left'] == models[0]]['normalized_score'].min(), df[df['model left'] == models[1]]['normalized_score'].min()),
-    max(df[df['model left'] == models[0]]['normalized_score'].max(), df[df['model left'] == models[1]]['normalized_score'].max())
-)
+# Adjust the X-axis range
+x_range = (-2.5, 2.5)
 
 for model in models:
     df_model = df[df['model left'] == model]
@@ -24,39 +21,47 @@ for model in models:
     fig = go.Figure()
 
     for i, expertise in enumerate(expertise_levels):
-        # Create a histogram for each expertise level with the common X-axis range
+        # Create a histogram for each expertise level with the adjusted X-axis range
         fig.add_trace(go.Histogram(
             x=df_model[df_model['expertise'] == expertise]['normalized_score'],
             name=expertise,
             marker_color=expertise_colors[expertise],
             opacity=0.7,
-            xbins=dict(start=x_range[0], end=x_range[1], size=0.03),  # Specify the common X-axis range and bin size
+            xbins=dict(start=x_range[0], end=x_range[1], size=0.1),  # Specify the adjusted X-axis range and bin size
             histnorm='percent',
-            marker_line=dict(color='black', width=1)  # Add border to the bars
+            marker_line=dict(color='black', width=1)  # Add a border to the bars
         ))
 
     # Customize the layout
     fig.update_layout(
         title=dict(
-            text=f'Comparative User Ratings for {model}',
+            text=f'Z-Normalized User Ratings for {model}',
             x=0.5,
-            font=dict(family='Arial', size=16, color='black')
+            font=dict(family='Arial', size=18, color='black')  # Increased font size by 2
         ),
-        xaxis_title='Z-Normalized User Rating',
-        yaxis_title='Percentage of Users',
+        xaxis_title=dict(
+            text='Z-Normalized User Rating',
+            font=dict(family='Arial', size=16)  # Increased font size by 2
+        ),
+        yaxis_title=dict(
+            text='Percentage of Users',
+            font=dict(family='Arial', size=16)  # Increased font size by 2
+        ),
         barmode='stack',
         xaxis=dict(
-            range=x_range,  # Set the common X-axis range
+            range=x_range,  # Set the adjusted X-axis range
             gridcolor='white',
-            gridwidth=0.01
+            gridwidth=0.01,
+            tickfont=dict(size=14)  # Increased font size by 2
         ),
         yaxis=dict(
             gridcolor='lightgrey',
             gridwidth=0.01,
-            showgrid=True
+            showgrid=True,
+            tickfont=dict(size=14)  # Increased font size by 2
         ),
         plot_bgcolor='white',
-        font=dict(family='Arial')
+        font=dict(family='Arial', size=14)  # Increased font size by 2
     )
 
     # Position the legend in the middle at the top
@@ -64,14 +69,17 @@ for model in models:
         width=600,
         height=500,
         legend=dict(
-            title='Participant Expertise',
+            title=dict(
+                text='Participant Expertise',
+                font=dict(family='Arial', size=16)  # Increased font size by 2
+            ),
             orientation='v',
-            x=0.5,
+            x=0.2 if model == 'Ground Truth' else 0.8,
             y=0.95,
             xanchor='center',
             yanchor='top',
             bordercolor='black',
-            borderwidth=0.5
+            borderwidth=0
         )
     )
 
