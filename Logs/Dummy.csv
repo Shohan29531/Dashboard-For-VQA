@@ -1,6 +1,0 @@
-timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
-2024-02-05::12:18:02,video-1-segment-5,BLIP@Shadow,,,"Road,Car,Gutter,Stairs,Gate,Person with a disability",,5,,single,0.8333333333333333,0.8363636363636363
-2024-02-05::12:18:35,video-2-segment-1,BLIP,,,"Street Vendor,Car,Building,Bridge,Foldout Sign,Push button",,5,,single,0.4545454545454545,
-2024-02-05::12:19:15,video-2-segment-1,BLIP@Shadow,,,"Pillar,Tactile Paving,Bicycle,Pole,Elevator,Dog",,5,,single,0.4827586206896553,0.4827586206896553
-2024-02-05::14:29:11,video-1-segment-5,BLIP@Shadow,,,"Person with a disability,Sidewalk,White Cane,Closed Sidewalk,Accent Paving,Person",,5,,single,0.7457627118644068,0.7479674796747967
-2024-02-05::14:49:13,video-1-segment-5,BLIP,N/A,N/A,"Road,Stairs,Gate,Person with a disability,Barrier Post,Tree",,5,,single,0.9108910891089108,N/A
