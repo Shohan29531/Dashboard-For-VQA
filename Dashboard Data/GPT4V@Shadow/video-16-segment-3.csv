@@ -1,8 +1,0 @@
-Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11
-barrier post,1,1,1,1,1,1,1,1,1,1,1,1
-closed sidewalk,0,1,1,1,1,0,1,0,1,1,1,1
-fence,1,1,1,1,1,1,1,1,1,1,1,1
-lamp post,1,1,1,1,1,1,1,1,0,1,1,1
-pole,1,1,1,1,0,1,0,0,1,1,1,1
-sign,1,1,1,0,1,1,1,1,1,0,1,0
-sloped driveway,1,1,1,1,1,1,1,1,1,1,1,1
