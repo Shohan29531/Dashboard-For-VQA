@@ -50,7 +50,7 @@ layout = go.Layout(
         x=0.5,  # Center align the title
         font=dict(family='Arial', size=20, color='black')  # Increased font size
     ),
-    yaxis_title='Z-Normlaized User Rating',
+    yaxis_title='Mean-Centered User Data',
     xaxis_title='Model',
     plot_bgcolor='white',
     font=dict(family='Arial', size=14),  # Increased font size
@@ -58,7 +58,8 @@ layout = go.Layout(
         showgrid=True,  # Show horizontal gridlines
         gridwidth=0.5,
         gridcolor='lightgrey',
-        dtick=0.5  # Set gridline interval
+        dtick=0.1,  # Set gridline interval
+        range=[-0.7, 0.7]
     ),
 )
 layout['yaxis'].update(showgrid=True, gridwidth=1, gridcolor='lightgrey', zeroline=True, zerolinewidth=1, zerolinecolor='lightgrey')
@@ -94,7 +95,7 @@ for model, x_pos in zip(['GPV-1', 'BLIP', 'GPT4V'], [0.5, 4.5, 8.5]):
     fig.add_annotation(
         go.layout.Annotation(
             x=x_pos,
-            y=2.1,
+            y=0.57,
             xref="x",
             yref="y",
             text="<b>F1 : {:.3f} </b>".format(F1[model]),
@@ -112,7 +113,7 @@ for model, x_pos in zip(['GPV-1', 'BLIP', 'GPT4V'], [0.5, 4.5, 8.5]):
 # Update layout for width and height
 fig.update_layout(
     width=600,
-    height=500
+    height=600
 )
 
 # Show the figure
