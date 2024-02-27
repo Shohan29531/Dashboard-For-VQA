@@ -6,17 +6,20 @@ import time
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
 # Define model pairs
-models = ['Ground Truth', 'Random',]
+models = ['Ground Truth', 'Random']
 
 # Define expertise levels and corresponding colors
 expertise_levels = ['Expert', 'Non-Expert']
 expertise_colors = {'Expert': 'black', 'Non-Expert': 'lightgrey'}
 
+# Define participants to exclude
+# exclude_participants = ['P2', 'P6', 'P9', 'P14']
+exclude_videos = ['video-6-segment-2', 'video-7-segment-2', 'video-13-segment-2', 'video-1-segment-5', 'video-14-segment-1']
 # Adjust the X-axis range
-x_range = (-0.8, 0.8)
+x_range = [0, 1]
 
 for model in models:
-    df_model = df[df['model left'] == model]
+    df_model = df[(df['model left'] == model) & (~df['video'].isin(exclude_videos))]
 
     fig = go.Figure()
 
@@ -27,7 +30,7 @@ for model in models:
             name=expertise,
             marker_color=expertise_colors[expertise],
             opacity=0.7,
-            xbins=dict(start=x_range[0], end=x_range[1], size=0.035),  # Specify the adjusted X-axis range and bin size
+            xbins=dict(start=x_range[0], end=x_range[1], size=0.025),  # Specify the adjusted X-axis range and bin size
             histnorm='percent',
             marker_line=dict(color='black', width=1)  # Add a border to the bars
         ))
@@ -35,12 +38,12 @@ for model in models:
     # Customize the layout
     fig.update_layout(
         title=dict(
-            text=f'Mean-Centered User Ratings for {model}',
+            text=f'Normalized User Ratings for {model}',
             x=0.5,
             font=dict(family='Arial', size=18, color='black')  # Increased font size by 2
         ),
         xaxis_title=dict(
-            text='Mean-Centered User Rating',
+            text='Normalized User Rating',
             font=dict(family='Arial', size=16)  # Increased font size by 2
         ),
         yaxis_title=dict(
@@ -53,8 +56,8 @@ for model in models:
             gridcolor='white',
             gridwidth=0.01,
             tickfont=dict(size=14),  # Increased font size by 2
-            tickvals=[i/10 for i in range(int((x_range[0]+0.2) * 10), int((x_range[1]-0.2) * 10) + 1, 2)],  # Set tick values
-            ticktext=[str(i/10) for i in range(int((x_range[0]+0.2) * 10), int((x_range[1]-0.2) * 10) + 1, 2)]  # Set tick labels
+            tickvals=[i/10 for i in range(int((x_range[0]) * 10), int((x_range[1]) * 10) + 1, 1)],  # Set tick values
+            ticktext=[str(i/10) for i in range(int((x_range[0]) * 10), int((x_range[1]) * 10) + 1, 1)]  # Set tick labels
         ),
         yaxis=dict(
             gridcolor='lightgrey',
