@@ -43,7 +43,7 @@ ticktext = [f"{model}<br>(F1: {F1[model]:.3f})" for model in desired_order]
 # Iterate over each model in the desired order
 for model in desired_order:
     # Determine color based on the presence of 'Shadow'
-    color = 'rgb(100, 100, 100)'
+    color = 'rgb(55, 83, 109)' 
     
     # Extract scores for the current model
     scores = df[df['model left'] == model]['normalized_score']
@@ -66,7 +66,7 @@ fig.update_layout(
         x=0.5,  # Center align the title
         font=dict(family='Arial', size=20, color='black'),  # Increased font size
     ),
-    yaxis_title='Normalized User Data',
+    yaxis_title='Normalized User Rating',
     xaxis=dict(
         title='Model',
         ticktext=ticktext,

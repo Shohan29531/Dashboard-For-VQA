@@ -26,7 +26,7 @@ exclude_videos = ['video-6-segment-2', 'video-7-segment-2', 'video-13-segment-2'
 df = df[~df['video'].isin(exclude_videos)]
 
 # Define the desired order and ensure it matches F1 dictionary
-desired_order = ['GPV-1@Shadow', 'GPV-1','BLIP@Shadow', 'BLIP',  'GPT4V@Shadow', 'GPT4V']
+desired_order = ['GPV-1@Shadow', 'GPV-1', 'BLIP@Shadow', 'BLIP', 'GPT4V@Shadow', 'GPT4V']
 
 # Filter dataframe based on desired order
 df = df[df['model left'].isin(desired_order)]
@@ -41,6 +41,10 @@ x_positions = {
     'GPT4V': 5, 'GPT4V@Shadow': 5.5,
 }
 
+# Colors for original and shadow models
+color_original = 'rgb(55, 83, 109)'  # Darker color
+color_shadow = 'rgb(164, 194, 244)'  # Lighter color
+
 # Generate ticktext with model names and F1 scores, and calculate tickvals
 ticktext = []
 tickvals = []
@@ -51,8 +55,8 @@ for model in desired_order:
 
 # Iterate over each model in the desired order
 for model in desired_order:
-    # Determine color based on the presence of 'Shadow'
-    color = 'rgb(100, 100, 100)'
+    # Determine color based on the presence of '@Shadow'
+    color = color_shadow if '@Shadow' in model else color_original
     
     # Extract scores for the current model
     scores = df[df['model left'] == model]['normalized_score']
@@ -69,14 +73,14 @@ for model in desired_order:
         x=[x_positions[model]] * len(scores)  # Set x positions for boxes
     ))
 
-# Adjust the figure's layout to indirectly increase spacing between boxes by manipulating the figure's overall width
+# Adjust the figure's layout
 fig.update_layout(
     title=dict(
         text='Normalized User Ratings for Different Models',
         x=0.5,  # Center align the title
         font=dict(family='Arial', size=20, color='black'),  # Increased font size
     ),
-    yaxis_title='Normalized User Data',
+    yaxis_title='Normalized User Rating',
     xaxis=dict(
         title='Model',
         ticktext=ticktext,
@@ -92,7 +96,7 @@ fig.update_layout(
         range=[0, 1]
     ),
     width=800,  # Adjusted width
-    height=600,
+    height=800,
     boxmode='group'  # Group boxes by x position
 )
 
