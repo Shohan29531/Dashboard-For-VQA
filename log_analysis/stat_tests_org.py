@@ -25,6 +25,7 @@ if p_var > 0.05:
 else:
     # Variances are not equal, use Welch's t-test
     t_stat, p_value = stats.ttest_ind(random_scores, ground_truth_scores, equal_var=False)
+    print("Alternate used.")
 
 print(f"Random vs. Ground Truth: t-statistic = {t_stat}, p-value = {p_value}")
 
