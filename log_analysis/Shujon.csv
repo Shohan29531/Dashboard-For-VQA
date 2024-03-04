@@ -1,0 +1,8 @@
+timestamp,video,model left,model right,winner model,see,not_see,score,comments,mode,F1-Base,F1-Shadow
+2024-03-01::11:33:42,video-11-segment-1,BLIP@Shadow,,,"Car,Crosswalk,Person,Trash on roads,Uncontrolled Crossing,Unpaved Road,Vegetation,*Snow,*Turnstile",,7,,single,0.6428571428571428,0.6444444444444445
+2024-03-01::11:41:13,video-13-segment-2,BLIP,,,"Car,Motorcycle,Person with a disability,Road Divider,Slopped Curb,Tactile Paving,Vegetation,Yard Waste,*Turnstile",,5,,single,0.4742268041237113,
+2024-03-01::11:46:24,video-1-segment-4,GT_N,,,"Bicycle,Car,Closed Sidewalk,Gate,Person,Person with a disability,Road,Roadside Parking,Sidewalk,Stairs,White Cane,*Counter,*Snow",,10,,single,1.0,
+2024-03-01::11:50:57,video-4-segment-4,GPV-1,,,"Foldout Sign,Person,Puddle,Sidewalk,Sign,Tree,White Cane,*Car,*Snow",,4,,single,0.5142857142857142,
+2024-03-01::11:55:57,video-6-segment-2,Random,,,"Barrier Stump,Curb,Escalator,Person,Retaining Wall,Road,Stairs,White Cane,*Car,*Snow,*Stop sign",,4,,single,0.4370860927152318,
+2024-03-01::12:01:23,video-4-segment-3,GPT4V,,,"Car,Curb,Gutter,Person,Pole,Road Shoulder,Slopped Curb,White Cane,*Snow,*Turnstile",,9,,single,0.7591240875912408,
+2024-03-01::12:06:04,video-16-segment-3,GPV-1@Shadow,N/A,N/A,"Fire hydrant,Lamp Post,Person,Road Shoulder,Sign Post,Stairs,Trash bins,White Cane,*Sidewalk pits",,4,,single,0.7563025210084033,0.5319148936170213
