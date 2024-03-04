@@ -8,7 +8,7 @@ output_path = '../Logs/trimmed_logs/'
 
 # Define the mapping of participant names to expertise levels
 expertise_mapping = {
-    'P1': 'Expert', 'P4': 'Expert', 'P5': 'Expert', 'P11': 'Expert', 'P12': 'Expert', 'P14': 'Expert',
+    'P1': 'Expert', 'P4': 'Expert', 'P5': 'Expert', 'P11': 'Expert', 'P12': 'Expert', 'P14': 'Expert', 'P15': 'Expert',
     'P2': 'Non-Expert', 'P3': 'Non-Expert', 'P6': 'Non-Expert',
     'P7': 'Non-Expert', 'P8': 'Non-Expert', 'P9': 'Non-Expert', 'P10': 'Non-Expert', 'P13': 'Non-Expert'
 }
