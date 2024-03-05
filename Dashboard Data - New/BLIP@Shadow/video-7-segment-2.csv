@@ -1,5 +1,5 @@
 Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11,frame_12,frame_13,frame_14,frame_15
 car,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-curb,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1
-fence,1,1,1,1,1,1,1,1,1,1,0,1,1,0,0,0
-street vendor,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+person with a disability,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1
+pole,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+sidewalk,1,0,1,1,1,1,1,0,1,0,1,1,1,1,1,1

@@ -1,8 +1,5 @@
 Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11,frame_12,frame_13
-*sidewalk pits,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-curb,1,1,1,1,1,0,0,1,0,1,1,1,1,1
-mail box,0,1,1,1,1,1,1,1,0,1,1,1,1,0
-person with a disability,1,1,0,1,0,0,1,0,1,0,1,0,1,1
-sidewalk,0,0,0,1,1,1,1,1,1,1,0,1,1,0
-stairs,1,1,1,1,1,0,1,0,1,1,1,1,1,0
-train platform,1,1,0,1,0,1,1,1,0,0,1,1,1,0
+bicycle,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+car,0,1,0,1,1,1,1,1,1,1,1,1,1,1
+motorcycle,1,1,1,1,1,1,0,0,1,1,0,1,0,0
+person with a disability,1,1,1,1,1,1,1,1,1,1,1,0,1,0

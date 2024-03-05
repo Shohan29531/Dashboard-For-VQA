@@ -1,25 +1,25 @@
-participant,trial,video,model left,score,timing,see_count,see,expertise
-P1,1,video-4-segment-3,Random,0.8,411.0,5,"Sidewalk,White Cane,Fence,Driveway(flat),Person with a disability",Expert
-P1,2,video-11-segment-1,GPV-1,0.9,351.0,4,"Trash bins,Car,Pole,Person with a disability",Expert
-P1,3,video-14-segment-4,GPV-1@Shadow,0.9,169.0,4,"Person with a disability,Building,Vegetation,Fence",Expert
-P1,4,video-2-segment-1,GPT4V@Shadow,0.9,262.0,4,"Sidewalk,Person,Vegetation,Building",Expert
-P1,5,video-4-segment-4,Ground Truth,1.0,204.0,4,"Person with a disability,White Cane,Sidewalk,Road",Expert
-P1,6,video-11-segment-1,Ground Truth,1.0,182.0,4,"Car,Person with a disability,Trash bins,Road",Expert
-P1,7,video-4-segment-1,GPV-1,0.8,252.0,4,"Person with a disability,Bus,Fence,Bench",Expert
-P1,8,video-15-segment-3,BLIP,1.0,145.0,5,"Person,Car,Road,Vegetation,Building",Expert
-P1,9,video-12-segment-4,BLIP,1.0,143.0,4,"Mail box,Tree,Person with a disability,Pedestrian Crossing",Expert
-P1,10,video-1-segment-5,GPT4V,1.0,108.0,4,"Motorcycle,Person with a disability,Curb,Car",Expert
-P1,11,video-4-segment-4,GPV-1@Shadow,1.0,103.0,4,"Curb,Vegetation,Person with a disability,Road",Expert
-P1,12,video-14-segment-4,GPT4V,0.9,122.0,4,"Person,Person with a disability,Building,Vegetation",Expert
-P1,13,video-14-segment-1,GPT4V@Shadow,0.9,119.0,4,"Stairs,Person,Road,Fence",Expert
-P1,14,video-1-segment-4,BLIP@shadow,0.8,283.0,4,"Person with a disability,Vegetation,Fence,Building",Expert
-P1,15,video-6-segment-2,GPV-1,0.9,232.0,4,"Person with a disability,Stairs,Accent Paving,Pillar",Expert
-P1,16,video-3-segment-2,Random,0.8,227.0,4,"Car,Person with a disability,Fence,Road",Expert
-P1,17,video-13-segment-2,BLIP,0.9,116.0,4,"Pole,Person,Car,Road",Expert
-P1,18,video-3-segment-3,GPT4V@Shadow,1.0,103.0,4,"Curb,Tree,Car,Fence",Expert
-P1,19,video-7-segment-2,BLIP@shadow,0.9,125.0,4,"Person with a disability,Car,Sidewalk,Pole",Expert
-P1,20,video-2-segment-1,BLIP@shadow,0.9,188.0,4,"Vegetation,Person,Building,Road",Expert
-P1,21,video-13-segment-2,Random,0.8,156.0,4,"Person with a disability,Car,Road,Pole",Expert
-P1,22,video-3-segment-3,Ground Truth,1.0,73.0,4,"Car,Person with a disability,Fence,Tree",Expert
-P1,23,video-16-segment-3,GPT4V,1.0,113.0,4,"Curb,Person with a disability,Car,Person",Expert
-P1,24,video-1-segment-5,GPV-1@Shadow,0.9,116.0,4,"Motorcycle,Person with a disability,Car,Bicycle",Expert
+participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see,expertise
+P1,1,video-4-segment-3,Random,0.8,0.6667,,411,5,"Sidewalk,White Cane,Fence,Driveway(flat),Person with a disability",Expert
+P1,2,video-11-segment-1,GPV-1,0.9,0.931,,351,4,"Trash bins,Car,Pole,Person with a disability",Expert
+P1,3,video-14-segment-4,GPV-1@Shadow,0.9,0.8974,0.8941,169,4,"Person with a disability,Building,Vegetation,Fence",Expert
+P1,4,video-2-segment-1,GPT4V@Shadow,0.9,0.8762,0.8785,262,4,"Sidewalk,Person,Vegetation,Building",Expert
+P1,5,video-4-segment-4,Ground Truth,1,1,,204,4,"Person with a disability,White Cane,Sidewalk,Road",Expert
+P1,6,video-11-segment-1,Ground Truth,1,1,,182,4,"Car,Person with a disability,Trash bins,Road",Expert
+P1,7,video-4-segment-1,GPV-1,0.8,0.5938,,252,4,"Person with a disability,Bus,Fence,Bench",Expert
+P1,8,video-15-segment-3,BLIP,1,1,,145,5,"Person,Car,Road,Vegetation,Building",Expert
+P1,9,video-12-segment-4,BLIP,1,0.8991,,143,4,"Mail box,Tree,Person with a disability,Pedestrian Crossing",Expert
+P1,10,video-1-segment-5,GPT4V,1,0.9062,,108,4,"Motorcycle,Person with a disability,Curb,Car",Expert
+P1,11,video-4-segment-4,GPV-1@Shadow,1,0.8539,0.8571,103,4,"Curb,Vegetation,Person with a disability,Road",Expert
+P1,12,video-14-segment-4,GPT4V,0.9,0.8889,,122,4,"Person,Person with a disability,Building,Vegetation",Expert
+P1,13,video-14-segment-1,GPT4V@Shadow,0.9,0.8298,0.8298,119,4,"Stairs,Person,Road,Fence",Expert
+P1,14,video-1-segment-4,BLIP@shadow,0.8,0.6804,0.6804,283,4,"Person with a disability,Vegetation,Fence,Building",Expert
+P1,15,video-6-segment-2,GPV-1,0.9,0.8952,,232,4,"Person with a disability,Stairs,Accent Paving,Pillar",Expert
+P1,16,video-3-segment-2,Random,0.8,0.6866,,227,4,"Car,Person with a disability,Fence,Road",Expert
+P1,17,video-13-segment-2,BLIP,0.9,0.9159,,116,4,"Pole,Person,Car,Road",Expert
+P1,18,video-3-segment-3,GPT4V@Shadow,1,0.9639,0.9639,103,4,"Curb,Tree,Car,Fence",Expert
+P1,19,video-7-segment-2,BLIP@shadow,0.9,0.8148,0.8148,125,4,"Person with a disability,Car,Sidewalk,Pole",Expert
+P1,20,video-2-segment-1,BLIP@shadow,0.9,0.8411,0.8411,188,4,"Vegetation,Person,Building,Road",Expert
+P1,21,video-13-segment-2,Random,0.8,0.6667,,156,4,"Person with a disability,Car,Road,Pole",Expert
+P1,22,video-3-segment-3,Ground Truth,1,1,,73,4,"Car,Person with a disability,Fence,Tree",Expert
+P1,23,video-16-segment-3,GPT4V,1,0.9333,,113,4,"Curb,Person with a disability,Car,Person",Expert
+P1,24,video-1-segment-5,GPV-1@Shadow,0.9,0.8537,0.8537,116,4,"Motorcycle,Person with a disability,Car,Bicycle",Expert
