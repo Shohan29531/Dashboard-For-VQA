@@ -22,11 +22,12 @@ import plotly.express as px
 import csv
 from convolution import *
 from utils.shadow_model_generator import get_dum_pred_from_f1 as get_shadow
-
+import matplotlib.pyplot as plt
 
 # Load the modified CSV file
 df = pd.read_csv('../Logs/trimmed_logs/all_mod.csv')
 df = df[df['participant'] == 'P12']
+df = df[df['trial'] == 1]
 max_frames = 16
 # Print each row
 # for index, row in df.iterrows():
@@ -112,31 +113,47 @@ for index, row in df.iterrows():
 
         convolution_result = convolve2d(matrix, kernel, mode='valid')
 
-        matches = convolution_result == expected_output
-
-        rows = len(matches)
-        columns = len(matches[0])
+        rows = len(convolution_result)
+        columns = len(convolution_result[0])
 
         count = 0
 
-        print(matches)
+        if expected_output != 0:
+            division_result = convolution_result / expected_output
+        else:
+            division_result = convolution_result / 3   
 
-        for i in range(rows):
-            for j in range(columns):
-                if matches[i][j] == True:
-                    count += 1
+        print(division_result)
 
-        print(count, end =' ')
-        csv_row.append(count)
-
-    csv_row.append(score)
-    csv_row.append(normalized_score_mc)
-    csv_row.append(normalized_score)
-
-    all_rows.append(csv_row)
+        plt.imshow(division_result, cmap='RdYlGn', vmin=0, vmax=1)  # RdYlGn colormap ranges from red (0) to green (1)
+        plt.colorbar()  # Add colorbar for reference
+        plt.title(str(kernel) + ' Pattern Presence Heatmap')
+        plt.xlabel('Objects')
+        plt.ylabel('Frames')
+        plt.show()
 
 
-with open('output.csv', "w", newline="") as csvfile:
-    writer = csv.writer(csvfile)
-    for row in all_rows:
-        writer.writerow(row)    
+
+
+
+
+        
+
+        # for i in range(rows):
+        #     for j in range(columns):
+        #         convolution_result[i][j]= convolution_result[i][j] / expected_output
+
+        # print(count, end =' ')
+#         csv_row.append(count)
+
+#     csv_row.append(score)
+#     csv_row.append(normalized_score_mc)
+#     csv_row.append(normalized_score)
+
+#     all_rows.append(csv_row)
+
+
+# with open('output.csv', "w", newline="") as csvfile:
+#     writer = csv.writer(csvfile)
+#     for row in all_rows:
+#         writer.writerow(row)    

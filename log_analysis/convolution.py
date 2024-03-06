@@ -70,31 +70,27 @@ backslash_kernel_with_zeroes = np.array([
 
 
 switch_kernel_1 = np.array([
-    [1, 0, 1],
-    [0, 1, 0],
-    [1, 0, 1],
+    [1, 0, 1]
 ])
 
 switch_kernel_2 = np.array([
-    [0, 1, 0],
-    [1, 0, 1],
-    [0, 1, 0],
+    [0, 1, 0]
 ])
 
 
 all_kernels = [
                (all_one_kernel, 3),
-               (plus_kernel_with_ones, 5),
-               (minus_kernel_with_ones, 3),
-               (slash_kernel_with_ones, 3),
-               (backslash_kernel_with_ones, 3),
-               (all_zero_kernel, 0),
-               (plus_kernel_with_zeroes, 4),
-               (minus_kernel_with_zeroes, 6),
-               (slash_kernel_with_zeroes, 6),
-               (backslash_kernel_with_zeroes, 6),
-               (switch_kernel_1, 5),
-               (switch_kernel_2, 4)
+            #    (plus_kernel_with_ones, 5),
+            #    (minus_kernel_with_ones, 3),
+            #    (slash_kernel_with_ones, 3),
+            #    (backslash_kernel_with_ones, 3),
+            #    (all_zero_kernel, 0),
+            #    (plus_kernel_with_zeroes, 4),
+            #    (minus_kernel_with_zeroes, 6),
+            #    (slash_kernel_with_zeroes, 6),
+            #    (backslash_kernel_with_zeroes, 6),
+            #    (switch_kernel_1, 2),
+            #    (switch_kernel_2, 1)
               ]
 
 # Perform convolution
