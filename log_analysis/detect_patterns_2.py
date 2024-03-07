@@ -25,9 +25,11 @@ from utils.shadow_model_generator import get_dum_pred_from_f1 as get_shadow
 import matplotlib.pyplot as plt
 
 # Load the modified CSV file
+participant = 'P12'
+trial = 5
 df = pd.read_csv('../Logs/trimmed_logs/all_mod.csv')
-df = df[df['participant'] == 'P12']
-df = df[df['trial'] == 1]
+df = df[df['participant'] == participant]
+df = df[df['trial'] == trial]
 max_frames = 16
 # Print each row
 # for index, row in df.iterrows():
@@ -107,9 +109,11 @@ for index, row in df.iterrows():
 
     matrix = np.array(z_values)
     csv_row = []
+    sample = 0
     for kernel_output_combo in all_kernels:
         kernel = kernel_output_combo[0]
-        expected_output = kernel_output_combo[1]
+        kernel_name = kernel_output_combo[1]
+        expected_output = kernel_output_combo[2]
 
         convolution_result = convolve2d(matrix, kernel, mode='valid')
 
@@ -123,14 +127,19 @@ for index, row in df.iterrows():
         else:
             division_result = convolution_result / 3   
 
-        print(division_result)
+        print(sample)
+
+        plt.figure()
 
         plt.imshow(division_result, cmap='RdYlGn', vmin=0, vmax=1)  # RdYlGn colormap ranges from red (0) to green (1)
         plt.colorbar()  # Add colorbar for reference
-        plt.title(str(kernel) + ' Pattern Presence Heatmap')
+        plt.title(kernel_name + ' Presence Heatmap')
         plt.xlabel('Objects')
         plt.ylabel('Frames')
-        plt.show()
+        # plt.show()
+
+        plt.savefig('pattern_heatmaps/' + participant + '_' + str(trial) + '_' + kernel_name + '.png')
+        sample += 1
 
 
 
