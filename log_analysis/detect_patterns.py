@@ -58,7 +58,10 @@ max_frames = 16
 # print(df)
 
 
-DATA_DIR = '/Users/touhidshohan/Desktop/Others/Dashboard-For-VQA/Dashboard Data - New/'
+# DATA_DIR = '/Users/touhidshohan/Desktop/Others/Dashboard-For-VQA/Dashboard Data - New/'
+
+DATA_DIR = 'E:/Projects/Dashboard-For-VQA/Dashboard Data - New/'
+
 base_folder = DATA_DIR
 
 all_rows = [name_row]

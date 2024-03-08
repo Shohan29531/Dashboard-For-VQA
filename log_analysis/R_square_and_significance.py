@@ -7,8 +7,8 @@ import statsmodels.api as sm
 df = pd.read_csv('output.csv')
 
 # Selecting independent variables (first 12 columns) and dependent variable
-X = df.iloc[:, :12]  # Selects all rows and the first 12 columns for independent variables
-y = df['Mean-Centered_rating']  # Dependent variable
+X = df.iloc[:, :14]  # Selects all rows and the first 12 columns for independent variables
+y = df['MC_with_MinMax']  # Dependent variable
 
 # Normalizing the independent variables
 scaler = StandardScaler()
@@ -18,7 +18,7 @@ X_scaled = scaler.fit_transform(X)
 X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
 
 # Splitting dataset into training and testing set
-X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.01, random_state=42)
 
 # Adding a constant for the intercept term
 X_train_with_intercept = sm.add_constant(X_train)
