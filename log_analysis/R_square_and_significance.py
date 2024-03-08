@@ -18,7 +18,7 @@ X_scaled = scaler.fit_transform(X)
 X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
 
 # Splitting dataset into training and testing set
-X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.01, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
 
 # Adding a constant for the intercept term
 X_train_with_intercept = sm.add_constant(X_train)

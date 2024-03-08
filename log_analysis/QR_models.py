@@ -1,35 +1,42 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.stats import linregress
 
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
+df['quality of rating'] = 1 - abs(df['F1-Base'] - df['normalized_score'])
+
 # List of models present in your dataset
-models = ['BLIP', 'BLIP@Shadow']
+models = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'GPV-1@Shadow', 'BLIP@Shadow', 'GPT4V@Shadow']
 
-# Create a scatter plot for each model
-fig, ax = plt.subplots(len(models), figsize=(20, 10*len(models)))  # Adjust figure size as needed
-
-for i, model in enumerate(models):
+for model in models:
     # Filter data for the current model
     model_data = df[df['model left'] == model]
     
-    # Define colors based on 'F1-Base' scores
-    colors = model_data['normalized_score']
+    # Define the figure
+    fig, ax = plt.subplots(figsize=(10, 6))
     
-    # Plot 'trial' vs. 'normalized_score' with colors based on 'F1-Base'
-    scatter = ax[i].scatter(model_data['trial'], model_data['F1-Base'], c=colors, cmap='RdYlGn', label=model, alpha=0.5)
+    # Plot 'F1-Base' vs. 'normalized_score'
+    scatter = ax.scatter(model_data['F1-Base'], model_data['quality of rating'], label=model, alpha=0.7)
     
-    # Adding a colorbar to show the mapping of 'F1-Base' scores to colors
-    cbar = plt.colorbar(scatter, ax=ax[i])
-    cbar.set_label('Normalized Ratings')
+    # Calculate regression line
+    slope, intercept, _, _, _ = linregress(model_data['F1-Base'], model_data['quality of rating'])
+    regression_line_x = np.array([0, 1])  # Assuming F1 score ranges from 0 to 1
+    regression_line_y = slope * regression_line_x + intercept
+    
+    # Plot regression line
+    ax.plot(regression_line_x, regression_line_y, color='red', linestyle='--', label='Regression Line')
     
     # Labeling the plot
-    ax[i].set_title(f"{model} Scores")
-    ax[i].set_xlabel('Trial')
-    ax[i].set_ylabel('F1 Score')
-    ax[i].set_ylim([0, 1])
-    ax[i].legend()
+    ax.set_title(f"{model} Ratings vs. F1 Score")
+    ax.set_xlabel('F1 Score')
+    ax.set_ylabel('Quality of Ratings')
+    ax.set_xlim([0, 1])  # Assuming F1 score is between 0 and 1
+    ax.set_ylim([0, 1])  # Assuming normalized ratings are between 0 and 1
+    ax.legend()
 
-plt.tight_layout()
-plt.show()
+    # Save the figure
+    plt.tight_layout()
+    plt.savefig(f'QR_data/{model}.png')
+    plt.close()  # Close the figure to reset for the next iteration

@@ -24,9 +24,33 @@ from convolution import *
 from utils.shadow_model_generator import get_dum_pred_from_f1 as get_shadow
 
 
+
+
+
+def pattern_match_score_2d(matrix, pattern):
+    nrows, ncols = matrix.shape
+    p_rows, p_cols = pattern.shape
+    scores = []
+
+    # Ensure the pattern can actually fit within the matrix
+    if nrows < p_rows or ncols < p_cols:
+        return scores
+    
+    for i in range(nrows - p_rows + 1):
+        for j in range(ncols - p_cols + 1):
+            submatrix = matrix[i:i+p_rows, j:j+p_cols]
+            # Calculate match count
+            match_count = np.sum(submatrix == pattern)
+            scores.append(((i, j), match_count))
+    
+    return scores
+
+
+
+
 # Load the modified CSV file
 df = pd.read_csv('../Logs/trimmed_logs/all_mod.csv')
-df = df[df['participant'] == 'P12']
+# df = df[df['participant'] == 'P12']
 max_frames = 16
 # Print each row
 # for index, row in df.iterrows():
@@ -34,7 +58,7 @@ max_frames = 16
 # print(df)
 
 
-DATA_DIR = 'E:\\Projects\\Dashboard-For-VQA\\Dashboard Data - New\\'
+DATA_DIR = '/Users/touhidshohan/Desktop/Others/Dashboard-For-VQA/Dashboard Data - New/'
 base_folder = DATA_DIR
 
 all_rows = [name_row]
@@ -108,23 +132,25 @@ for index, row in df.iterrows():
     csv_row = []
     for kernel_output_combo in all_kernels:
         kernel = kernel_output_combo[0]
-        expected_output = kernel_output_combo[1]
+        expected_output = kernel_output_combo[2]
 
-        convolution_result = convolve2d(matrix, kernel, mode='valid')
+        convolution_result = pattern_match_score_2d(matrix, kernel)
 
-        matches = convolution_result == expected_output
+        # print(convolution_result[0][1])
 
-        rows = len(matches)
-        columns = len(matches[0])
+        # matches = convolution_result == expected_output
+
+        # rows = len(matches)
+        # columns = len(matches[0])
 
         count = 0
 
-        print(matches)
+        # print(matches)
 
-        for i in range(rows):
-            for j in range(columns):
-                if matches[i][j] == True:
-                    count += 1
+        for i in range(len(convolution_result)):
+            if convolution_result[i][1] == expected_output:
+                count += 1
+
 
         print(count, end =' ')
         csv_row.append(count)
