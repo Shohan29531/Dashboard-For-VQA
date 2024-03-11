@@ -70,6 +70,8 @@ for index, row in df.iterrows():
     score = row['score']
     normalized_score_mc = row['normalized_score_mc']
     normalized_score = row['normalized_score']
+    timing =  row['timing']
+    model = row['model left']
 
     model = row['model left']
     selected_file = row['video']
@@ -161,6 +163,8 @@ for index, row in df.iterrows():
     csv_row.append(score)
     csv_row.append(normalized_score_mc)
     csv_row.append(normalized_score)
+    csv_row.append(model)
+    csv_row.append(timing)
 
     all_rows.append(csv_row)
 

@@ -13,8 +13,12 @@ def min_max_normalize(series):
 # Apply Z normalization for each participant separately
 df['normalized_score_mc'] = df.groupby('participant')['score'].transform(z_normalize)
 
-
 df['normalized_score'] = df['normalized_score_mc'].transform(min_max_normalize)
+
+
+df['normalized_timing'] = df.groupby('participant')['timing'].transform(z_normalize)
+
+df['normalized_timing_minmax'] = df['normalized_timing'].transform(min_max_normalize)
 
 # df['normalized_score'] = df.groupby('participant')['score'].transform(min_max_normalize)
 

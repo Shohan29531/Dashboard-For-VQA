@@ -9,7 +9,7 @@ from scipy.signal import convolve2d
 
 
 all_one_kernel = np.array([
-    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1],
 ])
 
 
@@ -41,7 +41,7 @@ all_one_kernel = np.array([
 
 
 all_zero_kernel = np.array([
-    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0],
 ])
 
 # plus_kernel_with_zeroes = np.array([
@@ -123,8 +123,8 @@ switch_kernel_4 = np.array([
 
 
 all_kernels = [
-               (all_one_kernel, "all_one_kernel", 6),
-               (all_zero_kernel, "all_zero_kernel", 6),
+               (all_one_kernel, "all_one_kernel", 4),
+               (all_zero_kernel, "all_zero_kernel", 4),
                (switch_kernel_1, "switch_kernel_1", 6),
                (switch_kernel_2, "switch_kernel_2", 6),
                (switch_kernel_3, "switch_kernel_3", 6),
@@ -169,4 +169,6 @@ name_row = [
     "Rating",
     "Mean-Centered_rating",
     "MC_with_MinMax",
+    'model',
+    'timing'
     ]

@@ -1,11 +1,12 @@
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load the combined CSV
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
-
+df = df[df['model left'] == 'BLIP']
 # Specify the order of participants
-participant_order = ['P1', 'P4', 'P5', 'P11', 'P12', 'P14', 'P2', 'P3', 'P6', 'P7', 'P8', 'P9', 'P10', 'P13']
+participant_order = ['P1', 'P4', 'P5', 'P11', 'P12', 'P14', 'P15', 'P2', 'P3', 'P6', 'P7', 'P8', 'P9', 'P10', 'P13']
 
 # Convert 'participant' column to a categorical type with specified order
 df['participant'] = pd.Categorical(df['participant'], categories=participant_order, ordered=True)
@@ -16,47 +17,35 @@ expertise_order = ['Expert', 'Non-Expert']
 # Convert 'expertise' column to a categorical type with specified order
 df['expertise'] = pd.Categorical(df['expertise'], categories=expertise_order, ordered=True)
 
-# Assign shades of grey to each expertise level
-colors = {'Expert': 'black', 'Non-Expert': 'lightgrey'}
-
-# Calculate the average 'timing' for each participant
-avg_timing_per_participant = df.groupby(['participant', 'expertise'])['timing'].mean().reset_index()
-
-# Increase font sizes by 2
-font_size = 2
-
-# Set the width of the plot
+# Set the figure size and font
 plt.figure(figsize=(12, 6))
-
-# Set Arial as the font
 plt.rcParams['font.family'] = 'Arial'
 
-# Plotting the bar graph with expertise-based colors
-for expertise_level, color in colors.items():
-    subset_df = avg_timing_per_participant[avg_timing_per_participant['expertise'] == expertise_level]
-    plt.bar(subset_df['participant'], subset_df['timing'], color=color, label=expertise_level, zorder=5)
+# Increase font sizes
+font_size = 2
+plt.rcParams.update({'font.size': 12 + font_size})
 
-plt.xlabel('Participant', fontsize=14 + font_size)  # Increase font size by 2
-plt.ylabel('Avg. Trial Completion Time (in Seconds)', fontsize=14 + font_size)  # Increase font size by 2
+# Plotting the boxplot with seaborn
+sns.boxplot(x='participant', y='timing', data=df, hue='expertise', palette='gray', order=participant_order)
+
+sns.stripplot(x='participant', y='timing', data=df, order=participant_order, color='red', size=3, jitter=True, alpha=0.6)
+
 plt.title("Avg. Trial Completion Times by Participants", fontsize=15 + font_size)
-plt.xticks(rotation=0, ha='center', fontsize=13)  # Center-align x-axis ticks and increase font size
-plt.yticks(fontsize=13)  # Increase font size by 2
-
-# Add grid lines
-plt.grid(True, linestyle='--', alpha=0.7, zorder=0)  # Set a lower zorder value for grid lines
-
-# Add legend
+plt.xlabel('Participant', fontsize=14 + font_size)
+plt.ylabel('Trial Completion Time (in Seconds)', fontsize=14 + font_size)
+plt.xticks(rotation=45, ha='right', fontsize=13)  # Rotate participant labels for better readability
+plt.yticks(fontsize=13)
 plt.legend(title='Participant Expertise', title_fontsize='14', fontsize='12')
 
-# Set y-axis limits
-plt.ylim(0, 230)
+# Optional: Adjust y-axis limits if necessary
+plt.ylim(0, 500)
 
-# # Draw vertical lines after 4 and 8 bars
-# plt.axvline(x=3.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 4 bars
-plt.axvline(x=5.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 8 bars
+# Draw vertical lines to visually separate different participant groups, if needed
+plt.axvline(x=6.5, color='black', linestyle='-', linewidth=3, zorder=10)
 
-# Save the plot as an image file (e.g., PDF)
-plt.savefig('../Paper files/average_timing_per_participant.pdf')
+# Adjust layout and save the plot as a PDF file
+plt.tight_layout()
+plt.savefig('../Paper files/average_timing_per_participant_boxplot.pdf')
 
 # Show the plot
 plt.show()

@@ -46,6 +46,7 @@ for index, row in df.iterrows():
     score = row['score']
     normalized_score_mc = row['normalized_score_mc']
     normalized_score = row['normalized_score']
+    timing =  row['timing']
 
     model = row['model left']
     selected_file = row['video']
