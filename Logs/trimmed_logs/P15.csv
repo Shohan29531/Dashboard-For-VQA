@@ -1,16 +1,16 @@
 participant,trial,video,model left,score,F1-Base,F1-Shadow,timing,see_count,see,expertise
-P15,1,video-11-segment-1,BLIP@Shadow,0.7,0.6428571428571428,0.6444444444444445,511.0,9,"Car,Crosswalk,Person,Trash on roads,Uncontrolled Crossing,Unpaved Road,Vegetation,*Snow,*Turnstile",Expert
-P15,2,video-13-segment-2,BLIP,0.5,0.4742268041237113,,451.0,9,"Car,Motorcycle,Person with a disability,Road Divider,Slopped Curb,Tactile Paving,Vegetation,Yard Waste,*Turnstile",Expert
-P15,3,video-1-segment-4,Ground Truth,1.0,1.0,,311.0,13,"Bicycle,Car,Closed Sidewalk,Gate,Person,Person with a disability,Road,Roadside Parking,Sidewalk,Stairs,White Cane,*Counter,*Snow",Expert
-P15,4,video-4-segment-4,GPV-1,0.4,0.5142857142857142,,273.0,9,"Foldout Sign,Person,Puddle,Sidewalk,Sign,Tree,White Cane,*Car,*Snow",Expert
-P15,5,video-6-segment-2,Random,0.4,0.4370860927152318,,300.0,11,"Barrier Stump,Curb,Escalator,Person,Retaining Wall,Road,Stairs,White Cane,*Car,*Snow,*Stop sign",Expert
-P15,6,video-4-segment-3,GPT4V,0.9,0.7591240875912408,,326.0,10,"Car,Curb,Gutter,Person,Pole,Road Shoulder,Slopped Curb,White Cane,*Snow,*Turnstile",Expert
-P15,7,video-16-segment-3,GPV-1@Shadow,0.4,0.7563025210084033,0.5319148936170213,281.0,9,"Fire hydrant,Lamp Post,Person,Road Shoulder,Sign Post,Stairs,Trash bins,White Cane,*Sidewalk pits",Expert
-P15,8,video-11-segment-1,GPV-1,0.6,0.6547085201793722,,86522.0,11,"Car,Person,Pole,Push button,Trash bins,Uneven Stairs,Wall,Water Pipes,White Cane,*Snow,*Turnstile",Expert
-P15,9,video-2-segment-1,GPT4V,0.9,0.8461538461538463,,264.0,11,"Barrier Post,Car,Curb,Pedestrian Crossing,Person,Sidewalk pits,Trash on roads,Tree,*Snow,*Turnstile,*White Cane",Expert
-P15,10,video-4-segment-1,BLIP@Shadow,0.7,0.7539267015706806,0.7543859649122806,229.0,11,"Bench,Curb,Fence,Foldout Sign,Person,Person with a disability,Sloped Driveway,Slopped Curb,Trash on roads,*Car,*Stop sign",Expert
-P15,11,video-3-segment-2,Random,0.4,0.5,,171.0,11,"Car,Curb,Fence,Person,Pole,Retaining Wall,Sloped Driveway,Slopped Curb,White Cane,*Counter,*Snow",Expert
-P15,12,video-14-segment-4,Ground Truth,0.7,1.0,,233.0,13,"Fence,Lamp Post,Person,Person with a disability,Puddle,Sidewalk,Sign,Slopped Curb,Tactile Paving,Wall,*Car,*Counter,*Snow",Expert
-P15,13,video-7-segment-2,GPT4V@Shadow,0.7,0.8173913043478261,0.8152866242038217,186.0,9,"Counter,Person,Road,Tactile Paving,Vegetation,Wall,Water Pipes,White Cane,*Turnstile",Expert
-P15,14,video-16-segment-3,BLIP,0.6,0.7666666666666666,,152.0,10,"Bench,Closed Sidewalk,Lamp Post,Person,Pole,Traffic Signals,Tree,Turnstile,*Snow,*Turnstile",Expert
-P15,15,video-1-segment-4,GPV-1@Shadow,0.3,0.5389221556886227,0.5388127853881278,136.0,10,"Bicycle,Car,Fence,Person,Person with a disability,Puddle,Retaining Wall,Wall,White Cane,*Snow",Expert
+P15,1,video-11-segment-1,BLIP@Shadow,0.7,0.642857143,0.644444444,511,9,"Car,Crosswalk,Person,Trash on roads,Uncontrolled Crossing,Unpaved Road,Vegetation,*Snow,*Turnstile",Expert
+P15,2,video-13-segment-2,BLIP,0.5,0.474226804,,451,9,"Car,Motorcycle,Person with a disability,Road Divider,Slopped Curb,Tactile Paving,Vegetation,Yard Waste,*Turnstile",Expert
+P15,3,video-1-segment-4,Ground Truth,1,1,,311,13,"Bicycle,Car,Closed Sidewalk,Gate,Person,Person with a disability,Road,Roadside Parking,Sidewalk,Stairs,White Cane,*Counter,*Snow",Expert
+P15,4,video-4-segment-4,GPV-1,0.4,0.514285714,,273,9,"Foldout Sign,Person,Puddle,Sidewalk,Sign,Tree,White Cane,*Car,*Snow",Expert
+P15,5,video-6-segment-2,Random,0.4,0.437086093,,300,11,"Barrier Stump,Curb,Escalator,Person,Retaining Wall,Road,Stairs,White Cane,*Car,*Snow,*Stop sign",Expert
+P15,6,video-4-segment-3,GPT4V,0.9,0.759124088,,326,10,"Car,Curb,Gutter,Person,Pole,Road Shoulder,Slopped Curb,White Cane,*Snow,*Turnstile",Expert
+P15,7,video-16-segment-3,GPV-1@Shadow,0.4,0.756302521,0.531914894,281,9,"Fire hydrant,Lamp Post,Person,Road Shoulder,Sign Post,Stairs,Trash bins,White Cane,*Sidewalk pits",Expert
+P15,8,video-11-segment-1,GPV-1,0.6,0.65470852,,300,11,"Car,Person,Pole,Push button,Trash bins,Uneven Stairs,Wall,Water Pipes,White Cane,*Snow,*Turnstile",Expert
+P15,9,video-2-segment-1,GPT4V,0.9,0.846153846,,264,11,"Barrier Post,Car,Curb,Pedestrian Crossing,Person,Sidewalk pits,Trash on roads,Tree,*Snow,*Turnstile,*White Cane",Expert
+P15,10,video-4-segment-1,BLIP@Shadow,0.7,0.753926702,0.754385965,229,11,"Bench,Curb,Fence,Foldout Sign,Person,Person with a disability,Sloped Driveway,Slopped Curb,Trash on roads,*Car,*Stop sign",Expert
+P15,11,video-3-segment-2,Random,0.4,0.5,,171,11,"Car,Curb,Fence,Person,Pole,Retaining Wall,Sloped Driveway,Slopped Curb,White Cane,*Counter,*Snow",Expert
+P15,12,video-14-segment-4,Ground Truth,0.7,1,,233,13,"Fence,Lamp Post,Person,Person with a disability,Puddle,Sidewalk,Sign,Slopped Curb,Tactile Paving,Wall,*Car,*Counter,*Snow",Expert
+P15,13,video-7-segment-2,GPT4V@Shadow,0.7,0.817391304,0.815286624,186,9,"Counter,Person,Road,Tactile Paving,Vegetation,Wall,Water Pipes,White Cane,*Turnstile",Expert
+P15,14,video-16-segment-3,BLIP,0.6,0.766666667,,152,10,"Bench,Closed Sidewalk,Lamp Post,Person,Pole,Traffic Signals,Tree,Turnstile,*Snow,*Turnstile",Expert
+P15,15,video-1-segment-4,GPV-1@Shadow,0.3,0.538922156,0.538812785,136,10,"Bicycle,Car,Fence,Person,Person with a disability,Puddle,Retaining Wall,Wall,White Cane,*Snow",Expert
