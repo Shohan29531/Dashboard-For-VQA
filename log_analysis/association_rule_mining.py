@@ -6,7 +6,7 @@ from mlxtend.frequent_patterns import apriori
 df = pd.read_csv('../Logs/trimmed_logs/all_mod.csv')
 
 # Assuming 'see' column contains strings of objects separated by commas
-df['see'] = df['see'].apply(lambda x: x.split(','))  # Adjust based on your actual data format
+df['see'] = df['see'].apply(lambda x: x.split(','))
 
 # List of transactions
 transactions = df['see'].tolist()
@@ -16,13 +16,18 @@ encoder = TransactionEncoder()
 onehot = encoder.fit_transform(transactions)
 onehot_df = pd.DataFrame(onehot, columns=encoder.columns_)
 
-# Apply Apriori algorithm to find frequent itemsets with at least 2 items
-# Adjust min_support as needed to find relevant itemsets
-frequent_itemsets = apriori(onehot_df, min_support=0.01, use_colnames=True, max_len=2)
+# Apply Apriori algorithm to find frequent itemsets including singles, pairs, and trios
+frequent_itemsets = apriori(onehot_df, min_support=0.01, use_colnames=True, max_len=3)
 
-# Filter itemsets to only include those with exactly 2 items if you only want pairs
-frequent_pairs = frequent_itemsets[frequent_itemsets['itemsets'].apply(lambda x: len(x) == 2)]
+# Sort the frequent itemsets by support in decreasing order
+frequent_itemsets_sorted = frequent_itemsets.sort_values(by='support', ascending=False)
 
-# Saving the frequent itemsets and pairs to CSV files
-frequent_itemsets.to_csv('frequent_itemsets.csv', index=False)
+# Filter itemsets for singles, pairs, and trios
+frequent_singles = frequent_itemsets_sorted[frequent_itemsets_sorted['itemsets'].apply(lambda x: len(x) == 1)]
+frequent_pairs = frequent_itemsets_sorted[frequent_itemsets_sorted['itemsets'].apply(lambda x: len(x) == 2)]
+frequent_trios = frequent_itemsets_sorted[frequent_itemsets_sorted['itemsets'].apply(lambda x: len(x) == 3)]
+
+# Saving the frequent itemsets to separate CSV files
+frequent_singles.to_csv('frequent_singles.csv', index=False)
 frequent_pairs.to_csv('frequent_pairs.csv', index=False)
+frequent_trios.to_csv('frequent_trios.csv', index=False)

@@ -16,12 +16,12 @@ bins = np.arange(0, 1.1, 0.1)
 # Prepare the figure
 plt.figure(figsize=(14, 8))
 
-plt.rc('font', size=16)  # Base font size plus 15 (assuming base was 11)
-plt.rc('axes', titlesize=20)  # Axes title font size
-plt.rc('axes', labelsize=20)  # X and Y labels font size
-plt.rc('xtick', labelsize=14)  # X tick labels font size
-plt.rc('ytick', labelsize=14)  # Y tick labels font size
-plt.rc('legend', fontsize=16)  # Legend font size
+plt.rc('font', size=20)  # Base font size plus 15 (assuming base was 11)
+plt.rc('axes', titlesize=24)  # Axes title font size
+plt.rc('axes', labelsize=24)  # X and Y labels font size
+plt.rc('xtick', labelsize=16)  # X tick labels font size
+plt.rc('ytick', labelsize=16)  # Y tick labels font size
+plt.rc('legend', fontsize=20)  # Legend font size
 
 
 # Set up a color palette
@@ -63,7 +63,9 @@ for i, model in enumerate(models):
                 plt.plot(medians_full['F1-Base_bin'][gap_start:gap_end+1].astype(float) + 0.05, medians_full['quality of rating'][gap_start:gap_end+1], color=colors[model], linestyle=':', zorder=2)
 
 plt.axvline(x=0.35, color='black', linestyle='--', linewidth=3)
+plt.text(0.35, 0.65, ' F1 = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=20)
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=3)
+plt.text(0.75, 0.65, ' F1 = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20)
 
 # Adjust plot settings
 plt.title('Quality of Rating Vs. F1 Score Across Models')

@@ -14,7 +14,7 @@ df['trial'] = pd.Categorical(df['trial'], categories=trial_order, ordered=True)
 avg_timing_per_trial = df.groupby('trial')['timing'].mean().reset_index()
 
 # Increase font sizes by 2
-font_size = 2
+font_size = 6
 
 # Set the width of the plot
 plt.figure(figsize=(12, 6))

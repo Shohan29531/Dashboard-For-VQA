@@ -20,17 +20,25 @@ expertise_order = ['Expert', 'Non-Expert']
 # Convert 'expertise' column to a categorical type with the specified order
 df['expertise'] = pd.Categorical(df['expertise'], categories=expertise_order, ordered=True)
 
+# Increase overall font sizes by 4 using plt.rc
+plt.rc('font', size=18)  # Increase base font size
+plt.rc('axes', titlesize=20 + 4)  # Increase axes title font size
+plt.rc('axes', labelsize=20 + 4)  # Increase axes labels font size
+plt.rc('xtick', labelsize=12 + 4)  # Increase xtick labels font size
+plt.rc('ytick', labelsize=12 + 4)  # Increase ytick labels font size
+plt.rc('legend', fontsize=12 + 4)  # Increase legend font size
+
 # Setting the plot size
 plt.figure(figsize=(14, 8))
 
 # Plotting boxplots for 'quality of rating' for each participant, colored by 'expertise'
 sns.boxplot(x='participant', y='quality of rating', data=df, hue='expertise', palette='gray')
 
-plt.title('Quality of Rating for Each Participant by Expertise', fontsize=16)
-plt.xlabel('Participant', fontsize=14)
-plt.ylabel('Quality of Rating', fontsize=14)
+plt.title('Quality of Rating for Each Participant by Expertise')
+plt.xlabel('Participant')
+plt.ylabel('Quality of Rating')
 plt.xticks(rotation=45)  # Rotate participant labels for better readability
-plt.legend(title='Participant Expertise', fontsize=12, title_fontsize='13')
+plt.legend(title='Participant Expertise', title_fontsize='13')
 
 # Optional: Adjust ylim if necessary to better visualize the boxplots
 plt.ylim(0, 1)
@@ -38,5 +46,5 @@ plt.ylim(0, 1)
 plt.axvline(x=6.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 8 bars
 
 plt.tight_layout()  # Adjust layout
-plt.savefig('../Paper files/QR_vs_participant_boxplot.pdf')  # Save the plot as a PDF file
+plt.savefig('../Paper files/QR_vs_participant.pdf')  # Save the plot as a PDF file
 plt.show()
