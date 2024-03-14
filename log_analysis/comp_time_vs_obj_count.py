@@ -9,7 +9,7 @@ df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 models = ['Random', 'Ground Truth', 'GPT4V', 'GPV-1', 'BLIP']
 
 # Create a new column for 'see_count' * 'frames'
-df['see_count_times_frames'] = df['see_count'] * df['frames']
+# df['see_count_times_frames'] = df['see_count'] * df['frames']
 
 for model in models:
     df_model = df[df['model left'] == model]
@@ -31,5 +31,5 @@ for model in models:
     plt.legend()
 
     plt.tight_layout()
-    plt.savefig('images/' + model + '.pdf')
+    plt.savefig('images/' + model + '.png')
     plt.close()  # Close the plot to ensure a new plot is created for each model
