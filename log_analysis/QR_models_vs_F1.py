@@ -62,6 +62,9 @@ for i, model in enumerate(models):
             if gap_end - gap_start == 1:  # Directly adjacent, indicating a gap
                 plt.plot(medians_full['F1-Base_bin'][gap_start:gap_end+1].astype(float) + 0.05, medians_full['quality of rating'][gap_start:gap_end+1], color=colors[model], linestyle=':', zorder=2)
 
+plt.axvline(x=0.35, color='black', linestyle='--', linewidth=3)
+plt.axvline(x=0.75, color='black', linestyle='--', linewidth=3)
+
 # Adjust plot settings
 plt.title('Quality of Rating Vs. F1 Score Across Models')
 plt.xlabel('F1 Score')
