@@ -33,6 +33,8 @@ colors = {
     'GPT4V': '#0a63f2'  
 }
 
+legend_handles = []  # To collect legend handles
+
 for i, model in enumerate(models):
     # Filter the DataFrame for the current model
     model_data = df[df['model left'] == model]
@@ -49,7 +51,7 @@ for i, model in enumerate(models):
             # Plot the median with error bars for 2.5th and 97.5th percentiles
             plt.scatter(1, median_quality, color=colors[model], s=100, zorder=4, label=model)
 
-            plt.errorbar(1, median_quality, yerr=errors, fmt='o', color=colors[model], capsize=5, label=model if index == 0 else "")
+            plt.errorbar(1, median_quality, yerr=errors, fmt='o', color=colors[model], capsize=3, elinewidth=0.5, label=model if index == 0 else "")
             
         # Your existing code for other models continues here
         # This includes plotting their deviations, and possibly their medians and error bars
@@ -70,7 +72,8 @@ for i, model in enumerate(models):
 
         valid_indices = ~medians_full['deviation'].isna()
 
-        plt.plot(medians_full['F1-Base_bin'][valid_indices].astype(float) + 0.05, medians_full['deviation'][valid_indices], color=colors[model], zorder=4)
+        plt.plot(medians_full['F1-Base_bin'][valid_indices].astype(float) + 0.05, medians_full['deviation'][valid_indices], color=colors[model], zorder=4, linewidth=2)
+
 
         summary_stats = model_data.groupby('F1-Base_bin')['deviation'].agg(['median', lambda x: x.quantile(0.025), lambda x: x.quantile(0.975)]).reset_index()
         
@@ -80,26 +83,28 @@ for i, model in enumerate(models):
             median_deviation = row['median']
             error = [[median_deviation - row['<lambda_0>']], [row['<lambda_1>'] - median_deviation]]
             
-            plt.errorbar(bin_center, median_deviation, yerr=error, fmt='o', color=colors[model], capsize=5, label=model if index == 0 else "")
+            plt.errorbar(bin_center, median_deviation, yerr=error, fmt='o', color=colors[model], capsize=3, elinewidth=0.5, label=model if index == 0 else "")
+
 
         # Handle gaps by plotting dotted lines where data is missing
         for gap_start, gap_end in zip(medians_full.index[~valid_indices][:-1], medians_full.index[~valid_indices][1:]):
             if gap_end - gap_start == 1:  # Directly adjacent, indicating a gap
                 plt.plot(medians_full['F1-Base_bin'][gap_start:gap_end+1].astype(float) + 0.05, medians_full['deviation'][gap_start:gap_end+1], color=colors[model], linestyle=':', zorder=2)
+    legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', label=model, markerfacecolor=colors[model], markersize=10))            
 
-plt.axvline(x=0.35, color='black', linestyle='--', linewidth=3)
+plt.axvline(x=0.35, color='black', linestyle='--', linewidth=1)
 plt.text(0.35, -0.1, ' F1 = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
-plt.axvline(x=0.75, color='black', linestyle='--', linewidth=3)
+plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
 plt.text(0.75, -0.1, ' F1 = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
 
 # Adjust plot settings
 plt.title('Deviation from F1 Vs. F1 Score Across Models')
 plt.xlabel('F1 Score')
-plt.ylim(-0.6, 0.6)
+plt.ylim(-0.75, 0.75)
 plt.ylabel('F1 - Normalized-Rating')
 plt.xticks(bins, labels=np.round(bins, 1))
 plt.grid(axis='y')
-plt.legend(title='Model', title_fontsize='20', fontsize='18', loc='lower left')
+plt.legend(handles=legend_handles, title='Model', title_fontsize='20', fontsize='18', loc='lower left')
 plt.tight_layout()
 
 # Save the figure
