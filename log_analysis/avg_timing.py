@@ -49,3 +49,23 @@ plt.savefig('../Paper files/average_timing_per_participant.pdf')
 
 # Show the plot
 plt.show()
+
+
+from scipy.stats import mannwhitneyu
+
+# Filter the DataFrame to separate the expert and non-expert groups
+expert_ratings = df[df['expertise'] == 'Expert']['timing']
+non_expert_ratings = df[df['expertise'] == 'Non-Expert']['timing']
+
+# Perform the Mann-Whitney U test
+u_stat, p_value = mannwhitneyu(expert_ratings, non_expert_ratings, alternative='two-sided')
+
+# Print the results
+print(f"Mann-Whitney U test result: U-statistic = {u_stat}, p-value = {p_value}")
+
+# Evaluate the statistical significance
+alpha = 0.05  # Common threshold for significance
+if p_value < alpha:
+    print("The difference between expert and non-expert groups is statistically significant.")
+else:
+    print("No significant difference was found between expert and non-expert groups.")

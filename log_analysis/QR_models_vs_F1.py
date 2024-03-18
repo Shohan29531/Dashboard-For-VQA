@@ -1,5 +1,5 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 import numpy as np
 import matplotlib.colors as mcolors
 
@@ -29,7 +29,7 @@ def lighten_color(color, amount=0.5):
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
 # Calculate 'quality of rating'
-df['deviation'] = (df['F1-Base'] - df['normalized_score'])
+df['deviation'] = (df['F1-Base'] - df['score'])
 
 models = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'Ground Truth',]
 
@@ -45,7 +45,10 @@ plt.rc('axes', labelsize=24)  # X and Y labels font size
 plt.rc('xtick', labelsize=16)  # X tick labels font size
 plt.rc('ytick', labelsize=16)  # Y tick labels font size
 plt.rc('legend', fontsize=20)  # Legend font size
-
+# plt.rcParams.update({
+#     'text.usetex': True,
+#     'font.family': 'serif',
+# })
 
 # Set up a color palette
 colors = {
@@ -70,8 +73,7 @@ for i, model in enumerate(models):
             
             # Calculate error from the median to the percentiles
             errors = np.array([[median_quality - percentile_2_5, percentile_97_5 - median_quality]]).T
-            
-            # Plot the median with error bars for 2.5th and 97.5th percentiles
+
             plt.scatter(1, median_quality, color=colors[model], s=100, zorder=4, label=model)
 
             lighter_color = lighten_color(colors[model], amount=0.5)  # Adjust 'amount' to control the lightness
@@ -97,7 +99,7 @@ for i, model in enumerate(models):
 
         valid_indices = ~medians_full['deviation'].isna()
 
-        plt.plot(medians_full['F1-Base_bin'][valid_indices].astype(float) + 0.05, medians_full['deviation'][valid_indices], color=colors[model], zorder=4, linewidth=3)
+        plt.plot(medians_full['F1-Base_bin'][valid_indices].astype(float) + 0.05, medians_full['deviation'][valid_indices], color=colors[model], zorder=4, linewidth=2)
 
 
         summary_stats = model_data.groupby('F1-Base_bin')['deviation'].agg(['median', lambda x: x.quantile(0.025), lambda x: x.quantile(0.975)]).reset_index()
@@ -112,7 +114,6 @@ for i, model in enumerate(models):
 
             plt.errorbar(bin_center, median_deviation, yerr=error, fmt='o', color=lighter_color, capsize=5, elinewidth=0.25, label=model if i == 0 else "")
 
-
         # Handle gaps by plotting dotted lines where data is missing
         for gap_start, gap_end in zip(medians_full.index[~valid_indices][:-1], medians_full.index[~valid_indices][1:]):
             if gap_end - gap_start == 1:  # Directly adjacent, indicating a gap
@@ -125,10 +126,12 @@ plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
 plt.text(0.75, -0.1, ' F1 = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
 
 # Adjust plot settings
-plt.title('Deviation from F1 Vs. F1 Score Across Models')
-plt.xlabel('F1 Score')
+plt.title('Deviation of User Rating from F1 Vs. F1 Scores')
+
+
+plt.xlabel('F1 Score', fontsize = 20)
 plt.ylim(-0.75, 0.75)
-plt.ylabel('F1 - Normalized-Rating')
+plt.ylabel('F1 - User Rating')
 plt.xticks(bins, labels=np.round(bins, 1))
 plt.grid(axis='y')
 plt.legend(handles=legend_handles, title='Model', title_fontsize='20', fontsize='18', loc='lower left')
