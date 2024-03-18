@@ -1,7 +1,28 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.colors as mcolors
 
+def lighten_color(color, amount=0.5):
+    """
+    Lightens the given color by mixing it with white.
+
+    Parameters:
+    - color: The initial color (name, hex, or RGB).
+    - amount: How much to lighten the color (0: no change, 1: white).
+
+    Returns:
+    - The lightened color.
+    """
+    # Convert the color to RGB format and normalize to [0, 1]
+    try:
+        c = mcolors.to_rgb(color)
+    except ValueError:
+        # If the color format is unrecognized, return the original
+        return color
+    # Calculate the new color by blending it with white
+    c = np.array([1 - (1 - x) * amount for x in c])
+    return c
 
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
@@ -41,7 +62,9 @@ for i, model in enumerate(models):
             
             plt.scatter(1, median_quality, color=colors[model], s=100, zorder=4, label=model)
 
-            plt.errorbar(1, median_quality, yerr=errors, fmt='o', color=colors[model], capsize=3, elinewidth=0.5, label=model if index == 0 else "")
+            lighter_color = lighten_color(colors[model], amount=0.5)  # Adjust 'amount' to control the lightness
+
+            plt.errorbar(1, median_quality, yerr=errors, fmt='o', color=lighter_color, capsize=5, elinewidth=0.25, label=model if index == 0 else "")
 
     else:
         model_data['F1-Base_bin'] = pd.cut(model_data['F1-Base'], bins, labels=bins[:-1], right=False)
@@ -56,7 +79,7 @@ for i, model in enumerate(models):
 
         valid_indices = ~medians_full['see_count'].isna()
 
-        plt.plot(medians_full['F1-Base_bin'][valid_indices].astype(float) + 0.05, medians_full['see_count'][valid_indices], color=colors[model], zorder=4, linewidth=2)
+        plt.plot(medians_full['F1-Base_bin'][valid_indices].astype(float) + 0.05, medians_full['see_count'][valid_indices], color=colors[model], zorder=4, linewidth=3)
 
 
         summary_stats = model_data.groupby('F1-Base_bin')['see_count'].agg(['median', lambda x: x.quantile(0.025), lambda x: x.quantile(0.975)]).reset_index()
@@ -67,7 +90,9 @@ for i, model in enumerate(models):
             median_deviation = row['median']
             error = [[median_deviation - row['<lambda_0>']], [row['<lambda_1>'] - median_deviation]]
             
-            plt.errorbar(bin_center, median_deviation, yerr=error, fmt='o', color=colors[model], capsize=3, elinewidth=0.5, label=model if index == 0 else "")
+            lighter_color = lighten_color(colors[model], amount=0.5)  # Adjust 'amount' to control the lightness
+
+            plt.errorbar(bin_center, median_deviation, yerr=error, fmt='o', color=lighter_color, capsize=5, elinewidth=0.25, label=model if i == 0 else "")
 
         for gap_start, gap_end in zip(medians_full.index[~valid_indices][:-1], medians_full.index[~valid_indices][1:]):
             if gap_end - gap_start == 1:  
