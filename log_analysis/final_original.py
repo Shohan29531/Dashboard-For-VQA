@@ -22,8 +22,8 @@ df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 df['model left'] = df['model left'].astype(str)
 
 # Exclude participants P2, P6, P9, and P14
-exclude_videos = ['video-6-segment-2', 'video-7-segment-2', 'video-13-segment-2', 'video-1-segment-5']
-df = df[~df['video'].isin(exclude_videos)]
+# exclude_videos = ['video-6-segment-2', 'video-7-segment-2', 'video-13-segment-2', 'video-1-segment-5']
+# df = df[~df['video'].isin(exclude_videos)]
 
 # Define the desired order and ensure it matches F1 dictionary
 desired_order = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'Ground Truth']
@@ -79,13 +79,61 @@ fig.update_layout(
         gridwidth=0.5,
         gridcolor='lightgrey',
         dtick=0.1,  # Set gridline interval
-        range=[0, 1]
+        range=[0, 1.25]
     ),
     width=600,  # Adjusted width
-    height=600
+    height=700
 )
 
-# Show the figure
+
+def add_stat_signf(x0, x1, y, signf_level, fig):
+
+    # Add a horizontal line from x=0 to x=1 at y=0.95
+    fig.add_shape(type="line",
+                x0=x0, y0=y, x1=x1, y1=y,
+                line=dict(color="black", width=1))
+
+    # Adding caps to the horizontal line to create tips at both ends
+    fig.add_shape(type="line",
+                x0=x0, y0=y-0.005, x1=x0, y1=y+0.005,
+                line=dict(color="black", width=1))
+
+    fig.add_shape(type="line",
+                x0=x1, y0=y-0.005, x1=x1, y1=y+0.005,
+                line=dict(color="black", width=1))
+
+    # Add annotation at the center of the line
+    if signf_level != 'NS':
+        fig.add_annotation(x=(x0+x1)/2, y=y, text=signf_level,
+                        showarrow=False, font=dict(family="Arial", size=16))
+    else:
+         fig.add_annotation(x=(x0+x1)/2, y=y+0.02, text=signf_level,
+                        showarrow=False, font=dict(family="Arial", size=16))           
+
+
+add_stat_signf(0, 4, 1.2, '***', fig=fig)
+
+add_stat_signf(0, 3, 1.175, '***', fig=fig)
+add_stat_signf(1, 4, 1.15, '***', fig=fig)
+
+add_stat_signf(0, 2, 1.125, '***', fig=fig)
+add_stat_signf(1, 3, 1.1, '**', fig=fig)
+add_stat_signf(2, 4, 1.075, '***', fig=fig)
+
+add_stat_signf(0, 1, 1.05, '***', fig=fig)
+add_stat_signf(3, 4, 1.025, '**', fig=fig)
+
+add_stat_signf(1, 2, 0.95, 'NS', fig=fig)
+add_stat_signf(2, 3, 0.975, 'NS', fig=fig)
+
+
+
+
+
+
+
+
+
 fig.show()
 
 # Save the figure as a PDF
