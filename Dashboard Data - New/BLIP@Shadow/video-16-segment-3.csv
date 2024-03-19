@@ -1,0 +1,8 @@
+Object,frame_0,frame_1,frame_2,frame_3,frame_4,frame_5,frame_6,frame_7,frame_8,frame_9,frame_10,frame_11
+*sidewalk pits,0,0,0,0,0,0,0,0,0,0,0,0
+chair,0,1,0,1,1,0,0,1,0,1,1,1
+escalator,1,1,1,1,0,0,0,0,1,0,0,1
+gate,1,1,1,0,0,0,0,0,0,1,1,0
+person with a disability,1,1,1,0,0,1,0,0,1,0,0,0
+sign post,0,0,0,0,1,1,0,0,0,0,0,0
+slopped curb,1,0,0,1,0,1,1,0,1,1,0,0
