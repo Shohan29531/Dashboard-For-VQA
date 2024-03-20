@@ -53,10 +53,23 @@ for model in desired_order:
         ticktext.append(f"{model}<br>(F1: {F1[model]:.3f})")
         tickvals.append(x_positions[model])
 
+
+colors = {
+    'GPV-1': '#6012cc', 
+    'GPV-1@Shadow': '#c2b5e9',  # Much lighter version of #6012cc
+    'BLIP': '#0dcfd6', 
+    'BLIP@Shadow': '#a0eff2',   # Much lighter version of #0dcfd6
+    'GPT4V': '#0a63f2',  
+    'GPT4V@Shadow': '#b0d3fa',  # Much lighter version of #0a63f2
+}
+
+
+
+
 # Iterate over each model in the desired order
 for model in desired_order:
     # Determine color based on the presence of '@Shadow'
-    color = color_shadow if '@Shadow' in model else color_original
+    color = colors[model]
     
     # Extract scores for the current model
     scores = df[df['model left'] == model]['normalized_score']
@@ -65,13 +78,20 @@ for model in desired_order:
     fig.add_trace(go.Box(
         y=scores,
         name=f"{model} ({F1[model]:.3f})",  # Include F1 score in the name for legend
-        marker_color=color,
+        marker=dict(
+            color=color  # Color for the markers if boxpoints is enabled
+        ),
+        line=dict(
+            color=color,  # Color for the box outline and whiskers
+            width=2  # Set line width for box
+        ),
+        fillcolor='white',  # Set the fill color of the box to white
         boxpoints=False,  # Do not show all data points
-        line=dict(width=2),  # Set line width for box
         showlegend=False,
         width=0.35,  # Adjust box width here
         x=[x_positions[model]] * len(scores)  # Set x positions for boxes
     ))
+
 
 # Adjust the figure's layout
 fig.update_layout(

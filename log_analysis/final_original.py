@@ -40,10 +40,18 @@ box_width = 0.35  # Decrease box width for thinner boxes
 # Generate ticktext with model names and F1 scores
 ticktext = [f"{model}<br>(F1: {F1[model]:.3f})" for model in desired_order]
 
+colors = {
+    'Random': 'red',
+    'Ground Truth': 'green',
+    'GPV-1': '#6012cc',  
+    'BLIP': '#0dcfd6',   
+    'GPT4V': '#0a63f2'  
+}
+
 # Iterate over each model in the desired order
 for model in desired_order:
     # Determine color based on the presence of 'Shadow'
-    color = 'rgb(55, 83, 109)' 
+    color = colors[model]
     
     # Extract scores for the current model
     scores = df[df['model left'] == model]['normalized_score']
@@ -52,9 +60,15 @@ for model in desired_order:
     fig.add_trace(go.Box(
         y=scores,
         name=f"{model} ({F1[model]:.3f})",  # Include F1 score in the name for legend
-        marker_color=color,
+        marker=dict(
+            color=color,  # Color for the box outline and whiskers
+        ),
+        line=dict(
+            color=color,  # Ensure this matches marker color for consistency
+            width=2  # Set line width for box
+        ),
+        fillcolor='white',  # Set the fill color of the box to white
         boxpoints=False,  # Do not show all data points
-        line=dict(width=2),  # Set line width for box
         showlegend=False,
         width=box_width  # Adjust box width here
     ))
