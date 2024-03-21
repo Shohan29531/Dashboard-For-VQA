@@ -129,10 +129,10 @@ plt.text(0.35, 400, ' F1 = 0.35', va='top', ha='right', rotation=90, color='blac
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
 plt.text(0.75, 400, ' F1 = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
 
-plt.title('Trial Completion Time Vs. F1 Score Across Models')
+plt.title('Individual Task Completion Time Vs. F1 Score Across Models')
 plt.xlabel('F1 Score')
 plt.ylim(0, 500)
-plt.ylabel('Trial Completion Time')
+plt.ylabel('Individual Task Completion Time')
 plt.xticks(bins, labels=np.round(bins, 1))
 plt.grid(axis='y')
 plt.legend(handles=legend_handles, title='Model', title_fontsize='20', fontsize='18', loc='upper left')
