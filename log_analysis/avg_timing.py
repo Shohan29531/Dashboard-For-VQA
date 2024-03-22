@@ -30,9 +30,9 @@ sns.boxplot(x='participant', y='timing', data=df, hue='expertise', palette='gray
 
 # sns.stripplot(x='participant', y='timing', data=df, order=participant_order, color='red', size=3, jitter=True, alpha=0.6)
 
-plt.title("Avg. Trial Completion Times by Participants", fontsize=15 + font_size)
+plt.title("Individual Task Completion Times by Participants", fontsize=15 + font_size)
 plt.xlabel('Participant', fontsize=14 + font_size)
-plt.ylabel('Trial Completion Time (in Seconds)', fontsize=14 + font_size)
+plt.ylabel('Individual Task Completion Time (s)', fontsize=14 + font_size)
 plt.xticks(rotation=45, ha='right', fontsize=13)  # Rotate participant labels for better readability
 plt.yticks(fontsize=13)
 plt.legend(title='Participant Expertise', title_fontsize='14', fontsize='12')

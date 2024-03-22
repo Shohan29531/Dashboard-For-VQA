@@ -135,7 +135,7 @@ add_stat_signf(1, 3, 1.1, '**', fig=fig)
 add_stat_signf(2, 4, 1.075, '***', fig=fig)
 
 add_stat_signf(0, 1, 1.05, '***', fig=fig)
-add_stat_signf(3, 4, 1.025, '**', fig=fig)
+add_stat_signf(3, 4, 1.025, '***', fig=fig)
 
 add_stat_signf(1, 2, 0.95, 'NS', fig=fig)
 add_stat_signf(2, 3, 0.975, 'NS', fig=fig)
