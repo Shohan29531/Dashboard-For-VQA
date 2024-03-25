@@ -1,7 +1,17 @@
 import pandas as pd
-import plotly.graph_objects as go
+# import plotly.graph_objects as go
 import time
 import numpy as np
+import plotly
+# import plotly.graph_objs as go
+from IPython.display import display, HTML
+
+go = plotly.graph_objs
+
+plotly.offline.init_notebook_mode()
+display(HTML(
+    '<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>'
+))
 
 # F1 scores
 F1 = {
@@ -32,13 +42,17 @@ desired_order = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'Ground Truth']
 df = df[df['model left'].isin(desired_order)]
 
 # Create boxplot
-fig = go.Figure()
+
 
 # Adjustments for thinner boxes and increased spacing
 box_width = 0.35  # Decrease box width for thinner boxes
 
 # Generate ticktext with model names and F1 scores
-ticktext = [f"{model}<br>(F1: {F1[model]:.3f})" for model in desired_order]
+f_mathcal_d = r"F_{1}^{\mathcal{D}}"
+ticktext = [r"$\text{" + f"{model}" + r"}" + r"\\(" + f_mathcal_d + f": {F1[model]:.3f})" + r"$" for model in desired_order]
+
+
+fig = go.Figure()
 
 colors = {
     'Random': 'red',
@@ -99,6 +113,8 @@ fig.update_layout(
     height=700
 )
 
+fig.update_xaxes(tickangle=45)
+
 
 def add_stat_signf(x0, x1, y, signf_level, fig):
 
@@ -151,6 +167,6 @@ add_stat_signf(2, 3, 0.975, 'NS', fig=fig)
 fig.show()
 
 # Save the figure as a PDF
-fig.write_image('../Paper files/' + 'all_org_model_scores.pdf', format='pdf')
+fig.write_image('../paper_files_latex/' + 'all_org_model_scores.pdf', format='pdf')
 time.sleep(0.5)  # Ensure the file is saved before attempting to save again
-fig.write_image('../Paper files/' + 'all_org_model_scores.pdf', format='pdf')
+fig.write_image('../paper_files_latex/' + 'all_org_model_scores.pdf', format='pdf')
