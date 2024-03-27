@@ -1,113 +1,47 @@
 import pandas as pd
-import plotly.graph_objects as go
-import time
-import numpy as np
+import matplotlib.pyplot as plt
 
-# Load the combined CSV
-df = pd.read_csv('NASA-TLX.csv')
+# Read the CSV file
+data = pd.read_csv('E://Projects//Dashboard-For-VQA//log_analysis//NASA-TLX.csv')
 
-# Convert 'model left' column to string
-df['model left'] = df['model left'].astype(str)
+# Increase font sizes
+plt.rc('font', size=17)  # Base font size
+plt.rc('axes', titlesize=24)  # Axes title font size
+plt.rc('axes', labelsize=22)  # Axes labels font size
+plt.rc('xtick', labelsize=17)  # X tick labels font size
+plt.rc('ytick', labelsize=17)  # Y tick labels font size
+plt.rc('legend', fontsize=17)  # Legend font size
 
-# Exclude 'Ground Truth' and 'Random'
-df = df[~df['model left'].isin(['Ground Truth', 'Random'])]
+# Create a figure and axis object
+fig, ax = plt.subplots(figsize=(12, 9))
 
-# Define the desired order
-desired_order = ['GPV-1@Shadow', 'GPV-1', '', ' ', 'BLIP@Shadow', 'BLIP', '  ', '   ', 'GPT4V@Shadow', 'GPT4V']
+# Define properties for boxplot components
+boxprops = dict(linestyle='-', linewidth=2, color='black', facecolor='white')
+medianprops = dict(linestyle='-', linewidth=2, color='black')
+whiskerprops = dict(linestyle='-', linewidth=2, color='black')
+capprops = dict(linestyle='-', linewidth=2, color='black')
+flierprops = dict(marker='o', markerfacecolor='black', markersize=5, linestyle='none', markeredgecolor='black')
 
-# Filter dataframe based on desired order
-df = df[df['model left'].isin(desired_order)]
+data.boxplot(column=['MD', 'PD', 'TD', 'Performance', 'Effort', 'Frustration', 'Overall'], 
+             ax=ax, 
+             boxprops=boxprops, 
+             medianprops=medianprops, 
+             whiskerprops=whiskerprops, 
+             capprops=capprops, 
+             flierprops=flierprops,
+             patch_artist=True)
 
-# Calculate average scores and confidence intervals for each model
-grouped_data = df.groupby('model left')['normalized_score']
-average_scores = grouped_data.mean().reindex(desired_order)
+# Set the title and axis labels
+ax.set_title('NASA-TLX Load Indices for Using the System')
+ax.set_xlabel('Metric')
+ax.set_ylabel('Load Index')
 
-conf_intervals = grouped_data.apply(lambda x: np.percentile(x, [2.5, 97.5])).reindex(desired_order)
+# Rotate the x-axis labels for better readability
+plt.xticks(rotation=0)
 
-# Extract lower and upper bounds from the MultiIndex
-conf_intervals = conf_intervals.apply(lambda x: pd.Series(x)).rename(columns={0: 'lower', 1: 'upper'})
+# Bring back horizontal gridlines for better readability
+ax.yaxis.grid(True, linestyle='--', which='major', color='grey', alpha=0.5)
 
-# Create traces for horizontal lines and markers (representing mean and confidence interval)
-lines = []
-dots = []
-
-# Create the layout
-layout = go.Layout(
-    title=dict(
-        text='Average User Ratings for Different Models',
-        x=0.5,  # Center align the title
-        font=dict(family='Arial', size=20, color='black')  # Increased font size
-    ),
-    yaxis_title='Mean-Centered User Data',
-    xaxis_title='Model',
-    plot_bgcolor='white',
-    font=dict(family='Arial', size=14),  # Increased font size
-    yaxis=dict(
-        showgrid=True,  # Show horizontal gridlines
-        gridwidth=0.5,
-        gridcolor='lightgrey',
-        dtick=0.1,  # Set gridline interval
-        range=[-0.7, 0.7]
-    ),
-)
-layout['yaxis'].update(showgrid=True, gridwidth=1, gridcolor='lightgrey', zeroline=True, zerolinewidth=1, zerolinecolor='lightgrey')
-
-# Iterate over each model in the sorted order
-for model in desired_order:
-    # Determine color based on the presence of 'Shadow'
-    color = 'black' if '@Shadow' not in model else 'rgb(158, 157, 157)'
-
-    # Add a horizontal line trace for the mean
-    lines.append(go.Scatter(
-        x=[model, model],
-        y=[conf_intervals.loc[model, 'lower'], conf_intervals.loc[model, 'upper']],
-        mode='lines',
-        line=dict(color=color, width=2),
-        showlegend=False
-    ))
-
-    # Add a marker trace for the mean
-    dots.append(go.Scatter(
-        x=[model],
-        y=[average_scores[model]],
-        mode='markers',
-        marker=dict(color=color, size=14),
-        showlegend=False
-    ))
-
-# Add the lines and dots traces
-fig = go.Figure(data=lines + dots, layout=layout)
-
-# Add F1 score annotations
-for model, x_pos in zip(['GPV-1', 'BLIP', 'GPT4V'], [0.5, 4.5, 8.5]):
-    fig.add_annotation(
-        go.layout.Annotation(
-            x=x_pos,
-            y=0.57,
-            xref="x",
-            yref="y",
-            text="<b>F1 : {:.3f} </b>".format(F1[model]),
-            showarrow=False,
-            font=dict(size=16, color='black', family='Arial'),
-            bordercolor='black',
-            borderwidth=2,
-            opacity=0.7,
-            bgcolor='lightgrey',
-        )
-    )
-
-
-
-# Update layout for width and height
-fig.update_layout(
-    width=600,
-    height=600
-)
-
-# Show the figure
-fig.show()
-
-# Save the figure as a PDF
-fig.write_image('../Paper files/' + 'all_model_scores.pdf', format='pdf')
-time.sleep(0.5)
-fig.write_image('../Paper files/' + 'all_model_scores.pdf', format='pdf')
+# Display the plot
+plt.savefig('NASA-TLX.pdf', format='pdf')
+plt.show()
