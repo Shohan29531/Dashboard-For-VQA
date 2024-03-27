@@ -2,6 +2,18 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np
 import matplotlib.colors as mcolors
+import plotly
+
+from IPython.display import display, HTML
+
+go = plotly.graph_objs
+
+plotly.offline.init_notebook_mode()
+display(HTML(
+    '<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>'
+))
+
+f_mathcal_d = r"F_{1}^{\mathcal{D^{*}}}"
 
 def lighten_color(color, amount=0.5):
     """
