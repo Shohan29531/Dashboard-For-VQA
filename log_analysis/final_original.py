@@ -10,7 +10,7 @@ go = plotly.graph_objs
 
 plotly.offline.init_notebook_mode()
 display(HTML(
-    '<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>'
+    '<script type="text/javascript" async src="hhttps://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js"></script>'
 ))
 
 # F1 scores
@@ -49,7 +49,9 @@ box_width = 0.35  # Decrease box width for thinner boxes
 
 # Generate ticktext with model names and F1 scores
 f_mathcal_d = r"F_{1}^{\mathcal{D}}"
-ticktext = [r"$\text{" + f"{model}" + r"}" + r"\\(" + f_mathcal_d + f": {F1[model]:.3f})" + r"$" for model in desired_order]
+ticktext = [r"$\text{" + f"{model}" + r"}" + r" \\ (" + f_mathcal_d + f": {F1[model]:.3f})" + r"$" for model in desired_order]
+# html.P('''\(Area\)(\(m^2\)) ''')
+# ticktext = [r"<span>This is a vector: </span>$\vec{v} = \begin{bmatrix}x \\ y \\ z\end{bmatrix}$" for model in desired_order]
 
 
 fig = go.Figure()
@@ -168,5 +170,5 @@ fig.show()
 
 # Save the figure as a PDF
 fig.write_image('../paper_files_latex/' + 'all_org_model_scores.pdf', format='pdf')
-time.sleep(0.5)  # Ensure the file is saved before attempting to save again
+time.sleep(1.5)  # Ensure the file is saved before attempting to save again
 fig.write_image('../paper_files_latex/' + 'all_org_model_scores.pdf', format='pdf')

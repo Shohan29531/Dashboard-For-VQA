@@ -2,6 +2,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+plt.rcParams['text.usetex'] = True
+
 # Load the DataFrame
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
@@ -34,9 +36,9 @@ plt.figure(figsize=(14, 8))
 # Plotting boxplots for 'quality of rating' for each participant, colored by 'expertise'
 sns.boxplot(x='participant', y='quality of rating', data=df, hue='expertise', palette='gray')
 
-plt.title('Deviation of User Rating from F1 for Each Participant')
+plt.title(r'Deviation of User Rating from $F_{1}^{\mathcal{D}*}$ for Each Participant')
 plt.xlabel('Participant')
-plt.ylabel('F1 - User Rating')
+plt.ylabel(r'$F_{1}^{\mathcal{D}*}$ - User Rating')
 plt.xticks(rotation=45)  # Rotate participant labels for better readability
 plt.legend(title='Participant Expertise', title_fontsize='13')
 
@@ -46,7 +48,7 @@ plt.ylim(-1, 1)
 plt.axvline(x=6.5, color='black', linestyle='-', linewidth=3, zorder=10)  # After 8 bars
 
 plt.tight_layout()  # Adjust layout
-plt.savefig('../Paper files/QR_vs_participant.pdf')  # Save the plot as a PDF file
+plt.savefig('../paper_files_latex/QR_vs_participant.pdf')  # Save the plot as a PDF file
 plt.show()
 
 

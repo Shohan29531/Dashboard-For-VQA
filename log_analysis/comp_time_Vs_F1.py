@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.colors as mcolors
 
+plt.rcParams['text.usetex'] = True
+
 def lighten_color(color, amount=0.5):
     """
     Lightens the given color by mixing it with white.
@@ -125,12 +127,12 @@ for i, model in enumerate(models):
     legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', label=model, markerfacecolor=colors[model], markersize=10))            
 
 plt.axvline(x=0.35, color='black', linestyle='--', linewidth=1)
-plt.text(0.35, 400, ' F1 = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
+plt.text(0.35, 400, r' $F_{1}^{\mathcal{D}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
-plt.text(0.75, 400, ' F1 = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
+plt.text(0.75, 400, r' $F_{1}^{\mathcal{D}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
 
-plt.title('Individual Task Completion Time Vs. F1 Score Across Models')
-plt.xlabel('F1 Score')
+plt.title(r'Individual Task Completion Time Vs. $F_{1}^{\mathcal{D}*}$ Score Across Models')
+plt.xlabel(r'$F_{1}^{\mathcal{D}*}$ Score')
 plt.ylim(0, 500)
 plt.ylabel('Individual Task Completion Time')
 plt.xticks(bins, labels=np.round(bins, 1))
@@ -138,5 +140,5 @@ plt.grid(axis='y')
 plt.legend(handles=legend_handles, title='Model', title_fontsize='20', fontsize='18', loc='upper left')
 plt.tight_layout()
 
-plt.savefig('images/comp_time_vs_f1_all_models.pdf')
+plt.savefig('../paper_files_latex/comp_time_vs_f1_all_models.pdf')
 plt.show()

@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.colors as mcolors
 
+plt.rcParams['text.usetex'] = True
+
+
 def lighten_color(color, amount=0.5):
     """
     Lightens the given color by mixing it with white.
@@ -121,22 +124,22 @@ for i, model in enumerate(models):
     legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', label=model, markerfacecolor=colors[model], markersize=10))            
 
 plt.axvline(x=0.35, color='black', linestyle='--', linewidth=1)
-plt.text(0.35, -0.1, ' F1 = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
+plt.text(0.35, -0.1, r' $F_{1}^{\mathcal{D}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
-plt.text(0.75, -0.1, ' F1 = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
+plt.text(0.75, -0.1, r' $F_{1}^{\mathcal{D}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
 
 # Adjust plot settings
-plt.title('Deviation of User Rating from F1 Vs. F1 Scores')
+plt.title(r'Deviation of User Rating from $F_{1}^{\mathcal{D}*}$ Vs. $F_{1}^{\mathcal{D}*}$ Scores')
 
 
-plt.xlabel('F1 Score', fontsize = 20)
+plt.xlabel(r'$F_{1}^{\mathcal{D}*}$ Score', fontsize = 20)
 plt.ylim(-0.75, 0.75)
-plt.ylabel('F1 - User Rating')
+plt.ylabel(r'$F_{1}^{\mathcal{D}*}$ - User Rating')
 plt.xticks(bins, labels=np.round(bins, 1))
 plt.grid(axis='y')
 plt.legend(handles=legend_handles, title='Model', title_fontsize='20', fontsize='18', loc='lower left')
 plt.tight_layout()
 
 # Save the figure
-plt.savefig('QR_data/QR_all_models.pdf')
+plt.savefig('../paper_files_latex/QR_data/QR_all_models.pdf')
 plt.show()
