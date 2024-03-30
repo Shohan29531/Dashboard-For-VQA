@@ -799,17 +799,18 @@ rating_row = html.Div(
             [
                 dcc.Markdown(
                     '''
-                        #### Please rate your **Perceived Performance** of this model on a scale from 0 to 10
-                        *(0: not good at all; 5: about average; 10: very good):*                    
+                        #### Please rate your **Perceived Performance** of this model on a scale from 0% to 100%
+                        *(0%: not good at all; 50%: about average; 100%: very good):*                    
                     '''),
                 dcc.Slider(
                     id="rating-slider",
                     min=0,
-                    max=10,
-                    step=1,
-                    value=5,
+                    max=100,
+                    step=10,
+                    value=50,
                     tooltip={"placement": "bottom", "always_visible": True},
                     # marks = None,
+                    marks={i: f'{i}%' for i in range(0, 101, 10)}
                 ),
             ], id="slider-div", className='five columns', style={'display': 'block'}
         ),
@@ -2039,4 +2040,4 @@ app.clientside_callback(
 )
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=False, port=8052)
