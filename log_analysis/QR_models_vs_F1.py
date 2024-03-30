@@ -54,12 +54,12 @@ bins = np.arange(0, 1.1, 0.1)
 # Prepare the figure
 plt.figure(figsize=(14, 8))
 
-plt.rc('font', size=20)  # Base font size plus 15 (assuming base was 11)
+plt.rc('font', size=24)  # Base font size plus 15 (assuming base was 11)
 plt.rc('axes', titlesize=24)  # Axes title font size
 plt.rc('axes', labelsize=24)  # X and Y labels font size
-plt.rc('xtick', labelsize=16)  # X tick labels font size
-plt.rc('ytick', labelsize=16)  # Y tick labels font size
-plt.rc('legend', fontsize=20)  # Legend font size
+plt.rc('xtick', labelsize=20)  # X tick labels font size
+plt.rc('ytick', labelsize=20)  # Y tick labels font size
+plt.rc('legend', fontsize=24)  # Legend font size
 # plt.rcParams.update({
 #     'text.usetex': True,
 #     'font.family': 'serif',
@@ -136,20 +136,20 @@ for i, model in enumerate(models):
     legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', label=model, markerfacecolor=colors[model], markersize=10))            
 
 plt.axvline(x=0.35, color='black', linestyle='--', linewidth=1)
-plt.text(0.35, -0.1, r' $F_{1}^{\mathcal{D}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
+plt.text(0.35, -0.1, r' $F_{1}^{\mathcal{D}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=22, zorder = 2)
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
-plt.text(0.75, -0.1, r' $F_{1}^{\mathcal{D}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=20, zorder = 2)
+plt.text(0.75, -0.1, r' $F_{1}^{\mathcal{D}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=22, zorder = 2)
 
 # Adjust plot settings
 plt.title(r'Deviation of User Rating from $F_{1}^{\mathcal{D}*}$ Vs. $F_{1}^{\mathcal{D}*}$ Scores')
 
 
-plt.xlabel(r'$F_{1}^{\mathcal{D}*}$ Score', fontsize = 20)
+plt.xlabel(r'$F_{1}^{\mathcal{D}*}$ Score', fontsize = 22)
 plt.ylim(-0.75, 0.75)
 plt.ylabel(r'$F_{1}^{\mathcal{D}*}$ - User Rating')
 plt.xticks(bins, labels=np.round(bins, 1))
 plt.grid(axis='y')
-plt.legend(handles=legend_handles, title='Model', title_fontsize='20', fontsize='18', loc='lower left')
+plt.legend(handles=legend_handles, title='Model', title_fontsize='26', fontsize='22', loc='lower left')
 plt.tight_layout()
 
 # Save the figure
