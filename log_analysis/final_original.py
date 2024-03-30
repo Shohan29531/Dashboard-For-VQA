@@ -5,6 +5,9 @@ import numpy as np
 import plotly
 # import plotly.graph_objs as go
 from IPython.display import display, HTML
+import statistics
+import scipy.stats
+from sklearn.linear_model import LinearRegression
 
 go = plotly.graph_objs
 
@@ -64,6 +67,9 @@ colors = {
     'GPT4V': '#0a63f2'  
 }
 
+medians = []
+f1_s = [0.334, 0.786, 0.822, 0.899, 1.00]
+
 # Iterate over each model in the desired order
 for model in desired_order:
     # Determine color based on the presence of 'Shadow'
@@ -71,7 +77,8 @@ for model in desired_order:
     
     # Extract scores for the current model
     scores = df[df['model left'] == model]['normalized_score']
-    
+    s_med = statistics.median(scores)
+    medians.append(s_med)
     # Add box plot trace for the current model with adjusted box width
     fig.add_trace(go.Box(
         y=scores,
