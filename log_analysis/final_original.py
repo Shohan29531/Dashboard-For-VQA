@@ -92,11 +92,11 @@ for model in desired_order:
 # Adjust the figure's layout to indirectly increase spacing between boxes by manipulating the figure's overall width
 fig.update_layout(
     title=dict(
-        text='Normalized User Ratings for Different Models',
+        text='User Ratings for Different Models',
         x=0.5,  # Center align the title
         font=dict(family='Arial', size=20, color='black'),  # Increased font size
     ),
-    yaxis_title='Normalized User Rating',
+    yaxis_title='User Rating',
     xaxis=dict(
         title='Model',
         ticktext=ticktext,
@@ -105,12 +105,14 @@ fig.update_layout(
     plot_bgcolor='white',
     font=dict(family='Arial', size=14),  # Increased font size
     yaxis=dict(
-        showgrid=True,  # Show horizontal gridlines
-        gridwidth=0.5,
-        gridcolor='lightgrey',
-        dtick=0.1,  # Set gridline interval
-        range=[0, 1.25]
-    ),
+            showgrid=True,  # Show horizontal gridlines
+            gridwidth=0.5,
+            gridcolor='lightgrey',
+            dtick=0.1,  # Set gridline interval
+            range=[0, 1.25],
+            tickvals=[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
+            ticktext=['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1', '', '']  # Empty strings for labels at 1.1 and 1.2
+        ),
     width=600,  # Adjusted width
     height=700
 )
@@ -159,10 +161,27 @@ add_stat_signf(1, 2, 0.95, 'NS', fig=fig)
 add_stat_signf(2, 3, 0.975, 'NS', fig=fig)
 
 
+x1, y1 = 0, 0.29776
+x2, y2 = 4, 0.66839
+
+extension_factor_1 = 0.1  # Adjust as needed
+extension_factor_2 = 0.1
+
+dx = x2 - x1
+dy = y2 - y1
+x1_extended = x1 - extension_factor_1 * dx
+y1_extended = y1 - extension_factor_1 * dy
+x2_extended = x2 + extension_factor_2 * dx
+y2_extended = y2 + extension_factor_2 * dy
 
 
+fig.add_shape(type="line",
+                x0=x1_extended, y0=y1_extended, x1=x2_extended, y1=y2_extended,
+                line=dict(color="grey", width=1))
 
-
+fig.add_annotation(x=4.4, y=0.85, text=r"$R^{2} = 0.9$",
+                   showarrow=False, font=dict(family="Arial", size=18),
+                   textangle=90)
 
 
 
