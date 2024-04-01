@@ -32,7 +32,7 @@ data.boxplot(column=['MD', 'PD', 'TD', 'Performance', 'Effort', 'Frustration', '
              patch_artist=True)
 
 # Set the title and axis labels
-ax.set_title('NASA-TLX Load Indices for Using the System')
+ax.set_title('NASA-TLX Load Indices for Using IKIWISI')
 ax.set_xlabel('Metric')
 ax.set_ylabel('Load Index')
 

@@ -102,22 +102,13 @@ for i, model in enumerate(models):
     legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', label=model, markerfacecolor=colors[model], markersize=10))            
 
 
-
-
-
-
-
-
-
-
-
 plt.axvline(x=0.35, color='black', linestyle='--', linewidth=1)
-plt.text(0.35, 10.5, r' $F_{1}^{\mathcal{D}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
+plt.text(0.35, 10.5, r' $F_{1}^{\mathcal{O}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
-plt.text(0.75, 10.5, r' $F_{1}^{\mathcal{D}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
+plt.text(0.75, 10.5, r' $F_{1}^{\mathcal{O}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
 
-plt.title(r'Objects Used Vs. $F_{1}^{\mathcal{D}*}$ Score Across Models')
-plt.xlabel(r'$F_{1}^{\mathcal{D}*}$ Score')
+plt.title(r'Objects Used Vs. $F_{1}^{\mathcal{O}*}$ Score Across Models')
+plt.xlabel(r'$F_{1}^{\mathcal{O}*}$ Score')
 plt.ylim(0, 16)
 plt.ylabel('Objects Used')
 plt.xticks(bins, labels=np.round(bins, 1))

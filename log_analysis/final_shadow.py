@@ -57,7 +57,7 @@ color_original = 'rgb(55, 83, 109)'  # Darker color
 color_shadow = 'rgb(164, 194, 244)'  # Lighter color
 
 # Generate ticktext with model names and F1 scores, and calculate tickvals
-f_mathcal_d = r"F_{1}^{\mathcal{D}}"
+f_mathcal_d = r"F_{1}^{\mathcal{O}}"
 ticktext = []
 tickvals = []
 for model in desired_order:
@@ -108,11 +108,11 @@ for model in desired_order:
 # Adjust the figure's layout
 fig.update_layout(
     title=dict(
-        text='Normalized User Ratings for Original and Shadow Models',
+        text='User Ratings for Original and Shadow Models',
         x=0.5,  # Center align the title
         font=dict(family='Arial', size=22, color='black'),  # Increased font size
     ),
-    yaxis_title='Normalized User Rating',
+    yaxis_title='User Rating',
     xaxis=dict(
         title='Model',
         ticktext=ticktext,

@@ -51,7 +51,7 @@ df = df[df['model left'].isin(desired_order)]
 box_width = 0.35  # Decrease box width for thinner boxes
 
 # Generate ticktext with model names and F1 scores
-f_mathcal_d = r"F_{1}^{\mathcal{D}}"
+f_mathcal_d = r"F_{1}^{\mathcal{O}}"
 ticktext = [r"$\text{" + f"{model}" + r"}" + r" \\ (" + f_mathcal_d + f": {F1[model]:.3f})" + r"$" for model in desired_order]
 # html.P('''\(Area\)(\(m^2\)) ''')
 # ticktext = [r"<span>This is a vector: </span>$\vec{v} = \begin{bmatrix}x \\ y \\ z\end{bmatrix}$" for model in desired_order]

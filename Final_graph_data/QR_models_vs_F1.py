@@ -136,9 +136,9 @@ for i, model in enumerate(models):
     legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', label=model, markerfacecolor=colors[model], markersize=10))            
 
 plt.axvline(x=0.35, color='black', linestyle='--', linewidth=1)
-plt.text(0.35, 0.65, r' $F_{1}^{\mathcal{D}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
+plt.text(0.35, 0.65, r' $F_{1}^{\mathcal{O}*}$ = 0.35', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
-plt.text(0.75, 0.95, r' $F_{1}^{\mathcal{D}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
+plt.text(0.75, 0.95, r' $F_{1}^{\mathcal{O}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
 
 x1, y1 = 0.25, 0.2
 x2, y2 = 1, 0.73
@@ -159,10 +159,10 @@ plt.plot([x1_extended, x2_extended], [y1_extended, y2_extended], color='black', 
 
 
 # Adjust plot settings
-plt.title(r'User Rating Vs. $F_{1}^{\mathcal{D}*}$ Scores')
+plt.title(r'User Rating Vs. $F_{1}^{\mathcal{O}*}$ Scores')
 
 
-plt.xlabel(r'$F_{1}^{\mathcal{D}*}$ Score')
+plt.xlabel(r'$F_{1}^{\mathcal{O}*}$ Score')
 plt.ylim(0, 1)
 plt.ylabel('User Rating')
 plt.xticks(bins, labels=np.round(bins, 1))
@@ -172,5 +172,5 @@ plt.legend(handles=legend_handles, title='Model', title_fontsize='29', fontsize=
 plt.tight_layout()
 
 # Save the figure
-plt.savefig('../paper_files_latex/QR_data/QR_all_models.pdf')
+plt.savefig('../paper_files_latex/QR_all_models.pdf')
 plt.show()
