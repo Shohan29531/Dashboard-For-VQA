@@ -110,7 +110,7 @@ fig.update_layout(
         tickvals=list(range(len(desired_order))),  # Position each tick
     ),
     plot_bgcolor='white',
-    font=dict(family='Arial', size=14),  # Increased font size
+    font=dict(family='Arial', size=18),  # Increased font size
     yaxis=dict(
             showgrid=True,  # Show horizontal gridlines
             gridwidth=0.5,
@@ -120,8 +120,8 @@ fig.update_layout(
             tickvals=[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
             ticktext=['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1', '', '']  # Empty strings for labels at 1.1 and 1.2
         ),
-    width=600,  # Adjusted width
-    height=700
+    width=700,  # Adjusted width
+    height=800
 )
 
 fig.update_xaxes(tickangle=45)
@@ -146,10 +146,10 @@ def add_stat_signf(x0, x1, y, signf_level, fig):
     # Add annotation at the center of the line
     if signf_level != 'NS':
         fig.add_annotation(x=(x0+x1)/2, y=y, text=signf_level,
-                        showarrow=False, font=dict(family="Arial", size=16))
+                        showarrow=False, font=dict(family="Arial", size=20))
     else:
          fig.add_annotation(x=(x0+x1)/2, y=y+0.02, text=signf_level,
-                        showarrow=False, font=dict(family="Arial", size=16))           
+                        showarrow=False, font=dict(family="Arial", size=20))
 
 
 add_stat_signf(0, 4, 1.2, '***', fig=fig)
@@ -187,7 +187,7 @@ fig.add_shape(type="line",
                 line=dict(color="grey", width=1))
 
 fig.add_annotation(x=4.4, y=0.85, text=r"$R^{2} = 0.9$",
-                   showarrow=False, font=dict(family="Arial", size=18),
+                   showarrow=False, font=dict(family="Arial", size=22),
                    textangle=90)
 
 

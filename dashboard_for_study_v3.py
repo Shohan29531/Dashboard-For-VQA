@@ -187,8 +187,10 @@ def randomize_data():
     models_to_show = {}
     reverse_model_map = {}
     for i in range(len(available_models)):
-        models_to_show['Model-{}'.format(i)] = available_models[random_model[i]]
-        reverse_model_map[available_models[random_model[i]]] = 'Model-{}'.format(i)
+        # models_to_show['Model-{}'.format(i)] = available_models[random_model[i]]
+        # reverse_model_map[available_models[random_model[i]]] = 'Model-{}'.format(i)
+        models_to_show[available_models[random_model[i]]] = available_models[random_model[i]]
+        reverse_model_map[available_models[random_model[i]]] = available_models[random_model[i]]
 
 
 
@@ -612,7 +614,7 @@ top_row = html.Div(
             )
         ], id='I-dont-see-container', className='five columns', style={'background-color': 'rgba(211, 6, 50, 0.5)'}),
 
-    ], className='row',
+    ], className='row', style={'padding-left': '100px', 'margin-top': '40px'}
 )
 
 heatmaps = html.Div(
@@ -684,7 +686,7 @@ heatmaps = html.Div(
             ], className='row'
         ),
 
-    ], className='row', style={'margin-right': '0', 'margin-left': '0'}
+    ], className='row', style={'margin-right': '0', 'margin-left': '0', 'padding-left': '120px'}
 )
 
 image_modal = dash_draggable.GridLayout(

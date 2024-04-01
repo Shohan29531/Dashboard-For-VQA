@@ -110,7 +110,7 @@ fig.update_layout(
     title=dict(
         text='Normalized User Ratings for Original and Shadow Models',
         x=0.5,  # Center align the title
-        font=dict(family='Arial', size=20, color='black'),  # Increased font size
+        font=dict(family='Arial', size=22, color='black'),  # Increased font size
     ),
     yaxis_title='Normalized User Rating',
     xaxis=dict(
@@ -119,7 +119,7 @@ fig.update_layout(
         tickvals=tickvals,
     ),
     plot_bgcolor='white',
-    font=dict(family='Arial', size=14),  # Increased font size
+    font=dict(family='Arial', size=22),  # Increased font size
     yaxis=dict(
         showgrid=True,  # Show horizontal gridlines
         gridwidth=0.5,
@@ -154,10 +154,10 @@ def add_stat_signf(x0, x1, y, signf_level, fig):
     # Add annotation at the center of the line
     if signf_level != 'NS':
         fig.add_annotation(x=(x0+x1)/2, y=y, text=signf_level,
-                        showarrow=False, font=dict(family="Arial", size=16))
+                        showarrow=False, font=dict(family="Arial", size=20))
     else:
          fig.add_annotation(x=(x0+x1)/2, y=y+0.02, text=signf_level,
-                        showarrow=False, font=dict(family="Arial", size=16))           
+                        showarrow=False, font=dict(family="Arial", size=20))
 
 
 add_stat_signf(1, 1.5, 0.95, '*', fig=fig)
@@ -172,5 +172,5 @@ fig.show()
 
 # Save the figure as a PDF
 fig.write_image('../paper_files_latex/' + 'all_shadow_model_scores.pdf', format='pdf')
-time.sleep(0.5)  # Ensure the file is saved before attempting to save again
+time.sleep(2.5)  # Ensure the file is saved before attempting to save again
 fig.write_image('../paper_files_latex/' + 'all_shadow_model_scores.pdf', format='pdf')
