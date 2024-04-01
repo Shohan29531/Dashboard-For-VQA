@@ -159,12 +159,12 @@ plt.plot([x1_extended, x2_extended], [y1_extended, y2_extended], color='black', 
 
 
 # Adjust plot settings
-plt.title(r'Normalized User Rating Vs. $F_{1}^{\mathcal{D}*}$ Scores')
+plt.title(r'User Rating Vs. $F_{1}^{\mathcal{D}*}$ Scores')
 
 
 plt.xlabel(r'$F_{1}^{\mathcal{D}*}$ Score')
 plt.ylim(0, 1)
-plt.ylabel('Normalized User Rating')
+plt.ylabel('User Rating')
 plt.xticks(bins, labels=np.round(bins, 1))
 plt.yticks(bins, labels=np.round(bins, 1))
 plt.grid(axis='y')
