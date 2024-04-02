@@ -13,8 +13,14 @@ go = plotly.graph_objs
 
 plotly.offline.init_notebook_mode()
 display(HTML(
-    '<script type="text/javascript" async src="hhttps://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js"></script>'
+    '<script type="text/javascript" async src="hhttps://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js"></script>',
 ))
+# '<script type="text/javascript" async src="hhttps://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js"></script>',
+# '''
+# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+# <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+# <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+# '''
 
 # F1 scores
 F1 = {
@@ -56,6 +62,7 @@ ticktext = [r"$\text{" + f"{model}" + r"}" + r" \\ (" + f_mathcal_d + f": {F1[mo
 # html.P('''\(Area\)(\(m^2\)) ''')
 # ticktext = [r"<span>This is a vector: </span>$\vec{v} = \begin{bmatrix}x \\ y \\ z\end{bmatrix}$" for model in desired_order]
 
+# ticktext = [f"<span>{model}" + r"\(F_{1}^{\mathcal{O}}\)" + f": {F1[model]:.3f})</span>" for model in desired_order]
 
 fig = go.Figure()
 
@@ -116,7 +123,7 @@ fig.update_layout(
             gridwidth=0.5,
             gridcolor='lightgrey',
             dtick=0.1,  # Set gridline interval
-            range=[0, 1.25],
+            range=[-0.05, 1.25],
             tickvals=[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
             ticktext=['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1', '', '']  # Empty strings for labels at 1.1 and 1.2
         ),
@@ -198,3 +205,5 @@ fig.show()
 fig.write_image('../paper_files_latex/' + 'all_org_model_scores.pdf', format='pdf')
 time.sleep(1.5)  # Ensure the file is saved before attempting to save again
 fig.write_image('../paper_files_latex/' + 'all_org_model_scores.pdf', format='pdf')
+
+fig.write_html('../paper_files_latex/' + 'all_org_model_scores.html', include_mathjax='cdn')

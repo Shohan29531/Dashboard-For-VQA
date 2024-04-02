@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Read the CSV file
-data = pd.read_csv('E://Projects//Dashboard-For-VQA//log_analysis//NASA-TLX.csv')
+data = pd.read_csv('./NASA-TLX.csv')
 
 # Increase font sizes
 plt.rc('font', size=17)  # Base font size
@@ -42,6 +42,9 @@ plt.xticks(rotation=0)
 # Bring back horizontal gridlines for better readability
 ax.yaxis.grid(True, linestyle='--', which='major', color='grey', alpha=0.5)
 
+ax.spines.top.set(visible=False)
+ax.spines.right.set(visible=False)
+
 # Display the plot
-plt.savefig('NASA-TLX.pdf', format='pdf')
+plt.savefig('../paper_files_latex/NASA-TLX.pdf', format='pdf')
 plt.show()
