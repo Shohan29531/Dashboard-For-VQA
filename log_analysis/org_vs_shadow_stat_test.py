@@ -1,5 +1,6 @@
 from scipy.stats import mannwhitneyu
 import pandas as pd
+import numpy as np
 
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
@@ -18,6 +19,29 @@ for i in range(0, len(desired_order), 2):
     # Extract scores for each model
     shadow_scores = df[df['model left'] == shadow_model]['normalized_score']
     base_scores = df[df['model left'] == base_model]['normalized_score']
+
+    if base_model == 'BLIP':
+        # unq_scores, unq_counts = np.unique(scores, return_counts=True)
+        mean = np.mean(list(base_scores))
+        std = np.std(list(base_scores))
+
+        threshold = 2.0
+        outliers_index = []
+
+        for i_, x in base_scores.iteritems():
+            z_score = (x - mean) / std
+            # print(z_score)
+            if abs(z_score) > threshold:
+                outliers_index.append(i_)
+
+        # print(outliers_index)
+
+        for o_i in outliers_index:
+            del base_scores[o_i]
+
+        # print(np.max(base_scores), np.min(base_scores))
+        # print(data_freq)
+        # model_scores = up_scores
     
     # Perform the Mann-Whitney U test
     stat, p_value = mannwhitneyu(shadow_scores, base_scores, alternative='two-sided')
