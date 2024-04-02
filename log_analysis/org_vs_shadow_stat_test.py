@@ -20,29 +20,44 @@ for i in range(0, len(desired_order), 2):
     shadow_scores = df[df['model left'] == shadow_model]['normalized_score']
     base_scores = df[df['model left'] == base_model]['normalized_score']
 
-    if base_model == 'BLIP':
+    # if base_model == 'BLIP':
         # unq_scores, unq_counts = np.unique(scores, return_counts=True)
-        mean = np.mean(list(base_scores))
-        std = np.std(list(base_scores))
+    mean = np.mean(list(base_scores))
+    std = np.std(list(base_scores))
 
-        threshold = 2.0
-        outliers_index = []
+    threshold = 2.0
+    outliers_index = []
 
-        for i_, x in base_scores.iteritems():
-            z_score = (x - mean) / std
-            # print(z_score)
-            if abs(z_score) > threshold:
-                outliers_index.append(i_)
+    for i_, x in base_scores.iteritems():
+        z_score = (x - mean) / std
+        # print(z_score)
+        if abs(z_score) > threshold:
+            outliers_index.append(i_)
 
-        for o_i in outliers_index:
-            del base_scores[o_i]
+    # for o_i in outliers_index:
+    #     del base_scores[o_i]
+    base_scores = base_scores.drop(index=outliers_index)
 
-        # print(np.max(base_scores), np.min(base_scores))
-        # print(data_freq)
-        # model_scores = up_scores
+    mean = np.mean(list(shadow_scores))
+    std = np.std(list(shadow_scores))
+
+    threshold = 2.0
+    outliers_index = []
+
+    for i_, x in shadow_scores.iteritems():
+        z_score = (x - mean) / std
+        # print(z_score)
+        if abs(z_score) > threshold:
+            outliers_index.append(i_)
+
+    # for o_i in outliers_index:
+    #     del shadow_scores[o_i]
+    shadow_scores = shadow_scores.drop(index=outliers_index)
     
     # Perform the Mann-Whitney U test
     stat, p_value = mannwhitneyu(shadow_scores, base_scores, alternative='two-sided')
+
+    print(stat, p_value)
     
     # Determine significance
     significance = "NS"  # Not significant
