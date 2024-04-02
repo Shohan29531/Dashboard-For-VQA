@@ -57,7 +57,7 @@ for i in range(0, len(desired_order), 2):
     # Perform the Mann-Whitney U test
     stat, p_value = mannwhitneyu(shadow_scores, base_scores, alternative='two-sided')
 
-    print(stat, p_value)
+    # print(stat, p_value)
     
     # Determine significance
     significance = "NS"  # Not significant

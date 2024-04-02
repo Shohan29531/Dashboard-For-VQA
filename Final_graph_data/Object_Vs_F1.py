@@ -28,6 +28,10 @@ def lighten_color(color, amount=0.5):
 
 df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 
+all_o_l = [39, 91, 134, 186, 189, 240, 36, 130]
+# print(df['deviation'])
+df = df.drop(index=all_o_l)
+
 models = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'Ground Truth',]
 
 bins = np.arange(0, 1.1, 0.1)

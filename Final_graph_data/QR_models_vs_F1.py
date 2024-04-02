@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.colors as mcolors
 import plotly
-
+import scipy.stats
 from IPython.display import display, HTML
-
+import math
 go = plotly.graph_objs
 
 plotly.offline.init_notebook_mode()
@@ -46,6 +46,10 @@ df = pd.read_csv('../Logs/trimmed_logs/all.csv')
 # Calculate 'quality of rating'
 df['deviation'] = (df['normalized_score'])
 
+all_o_l = [39, 91, 134, 186, 189, 240, 36, 130]
+# print(df['deviation'])
+df = df.drop(index=all_o_l)
+
 models = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'Ground Truth',]
 
 # Define the bins for 'F1-Base' scores
@@ -76,6 +80,9 @@ colors = {
 
 legend_handles = []  # To collect legend handles
 
+all_median = []
+all_f1 = []
+
 for i, model in enumerate(models):
     # Filter the DataFrame for the current model
     model_data = df[df['model left'] == model]
@@ -85,6 +92,9 @@ for i, model in enumerate(models):
             median_quality = model_data['deviation'].median()
             percentile_2_5 = model_data['deviation'].quantile(0.025)
             percentile_97_5 = model_data['deviation'].quantile(0.975)
+
+            all_median.append(median_quality)
+            all_f1.append(1)
             
             # Calculate error from the median to the percentiles
             errors = np.array([[median_quality - percentile_2_5, percentile_97_5 - median_quality]]).T
@@ -103,6 +113,16 @@ for i, model in enumerate(models):
         
         # Calculate the median 'quality of rating' for each bin
         medians = model_data.groupby('F1-Base_bin')['deviation'].median().reset_index()
+
+        # print(medians)
+        for ci, row in medians.iterrows():
+            median = row['deviation']
+            f1__ = row['F1-Base_bin']
+            # print(row['deviation'])
+            # if not median.isna():
+            if not math.isnan(median):
+                all_median.append(median)
+                all_f1.append(f1__)
 
         # Find all bins to ensure coverage even for missing bins in medians
         all_bins = pd.DataFrame({'F1-Base_bin': bins[:-1]})
@@ -145,6 +165,15 @@ x2, y2 = 1, 0.73
 
 extension_factor_1 = 0.2  # Adjust as needed
 extension_factor_2 = 0.05
+
+all_f1 = np.array(all_median)
+all_median = np.array(all_median)
+
+print(all_f1, all_median)
+
+slope, intercept, r, p, stderr = scipy.stats.linregress(all_f1, all_median)
+
+print(f'r={r}, intercept={intercept}, slope={slope}, p-value={p}')
 
 dx = x2 - x1
 dy = y2 - y1
