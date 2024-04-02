@@ -34,8 +34,6 @@ for i in range(0, len(desired_order), 2):
             if abs(z_score) > threshold:
                 outliers_index.append(i_)
 
-        # print(outliers_index)
-
         for o_i in outliers_index:
             del base_scores[o_i]
 
