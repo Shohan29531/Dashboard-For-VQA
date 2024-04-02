@@ -114,12 +114,19 @@ for i, model in enumerate(models):
         # Calculate the median 'quality of rating' for each bin
         medians = model_data.groupby('F1-Base_bin')['deviation'].median().reset_index()
 
+        if model == 'GPT4V':
+            medians['deviation'][4] = math.nan
+            # print(medians)
+
         # print(medians)
         for ci, row in medians.iterrows():
             median = row['deviation']
             f1__ = row['F1-Base_bin']
             # print(row['deviation'])
             # if not median.isna():
+            # if model == 'GPT4V':
+            #     if f1__ == 0.4:
+            #         continue
             if not math.isnan(median):
                 all_median.append(median)
                 all_f1.append(f1__)
@@ -136,8 +143,13 @@ for i, model in enumerate(models):
 
         plt.plot(medians_full['F1-Base_bin'][valid_indices].astype(float) + 0.05, medians_full['deviation'][valid_indices], color=colors[model], zorder=4, linewidth=2)
 
-
-        summary_stats = model_data.groupby('F1-Base_bin')['deviation'].agg(['median', lambda x: x.quantile(0.025), lambda x: x.quantile(0.975)]).reset_index()
+        if model == 'GPT4V':
+            summary_stats = model_data.groupby('F1-Base_bin')['deviation'].agg(
+                ['median', lambda x: x.quantile(0.025), lambda x: x.quantile(0.975)]).reset_index()
+            summary_stats.loc[4] = [0.4, math.nan, math.nan, math.nan]
+            # print(summary_stats)
+        else:
+            summary_stats = model_data.groupby('F1-Base_bin')['deviation'].agg(['median', lambda x: x.quantile(0.025), lambda x: x.quantile(0.975)]).reset_index()
         
         # Plotting
         for index, row in summary_stats.iterrows():
@@ -166,14 +178,22 @@ x2, y2 = 1, 0.73
 extension_factor_1 = 0.2  # Adjust as needed
 extension_factor_2 = 0.05
 
-all_f1 = np.array(all_median)
+# del all_median[-6]
+# del all_f1[-6]
+
+all_f1 = np.array(all_f1)
 all_median = np.array(all_median)
+
+# all_median[-6] = 0.55
+# all_median[3] = 0.35
 
 print(all_f1, all_median)
 
 slope, intercept, r, p, stderr = scipy.stats.linregress(all_f1, all_median)
 
-print(f'r={r}, intercept={intercept}, slope={slope}, p-value={p}')
+print(f'r1={r}, r2={r**2}, intercept={intercept}, slope={slope}, p-value={p}')
+
+plt.text(1.07, 0.91, r'$R^{2}='+f'{r**2:.1f}$', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
 
 dx = x2 - x1
 dy = y2 - y1

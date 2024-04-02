@@ -50,7 +50,7 @@ kruskal_results = stats.kruskal(
 )
 
 print(f"Kruskal-Wallis Test: H-statistic = {kruskal_results.statistic}, p-value = {kruskal_results.pvalue}")
-# print(all_outliers)
+print(all_outliers)
 
 if kruskal_results.pvalue < 0.05:
     # print(df.loc[all_outliers].reindex(columns=['model left', 'normalized_score']))
