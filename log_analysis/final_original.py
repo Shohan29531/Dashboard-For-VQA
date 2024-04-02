@@ -218,7 +218,7 @@ y2_extended = y2 + extension_factor_2 * dy
 
 fig.add_shape(type="line",
               x0=x1_extended, y0=y1_extended, x1=x2_extended, y1=y2_extended,
-              line=dict(color="grey", width=2, dash="dash"))
+              line=dict(color="black", width=2, dash="dash"))
 
 fig.add_annotation(x=4.35, y=0.81, text=r"$R^{2} = 0.9$",
                    showarrow=False, font=dict(family="Arial", size=22),
