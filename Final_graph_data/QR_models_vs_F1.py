@@ -50,7 +50,11 @@ all_o_l = [39, 91, 134, 186, 189, 240, 36, 130]
 # print(df['deviation'])
 df = df.drop(index=all_o_l)
 
-models = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'Ground Truth',]
+# 'Random',
+
+models = ['Random', 'GPV-1', 'BLIP', 'GPT4V', 'Ground Truth']
+
+# models = ['Random']
 
 # Define the bins for 'F1-Base' scores
 bins = np.arange(0, 1.1, 0.1)
@@ -119,17 +123,18 @@ for i, model in enumerate(models):
             # print(medians)
 
         # print(medians)
-        for ci, row in medians.iterrows():
-            median = row['deviation']
-            f1__ = row['F1-Base_bin']
-            # print(row['deviation'])
-            # if not median.isna():
-            # if model == 'GPT4V':
-            #     if f1__ == 0.4:
-            #         continue
-            if not math.isnan(median):
-                all_median.append(median)
-                all_f1.append(f1__)
+        if model != 'Random':
+            for ci, row in medians.iterrows():
+                median = row['deviation']
+                f1__ = row['F1-Base_bin']
+                # print(row['deviation'])
+                # if not median.isna():
+                # if model == 'GPT4V':
+                #     if f1__ == 0.4:
+                #         continue
+                if not math.isnan(median):
+                    all_median.append(median)
+                    all_f1.append(f1__)
 
         # Find all bins to ensure coverage even for missing bins in medians
         all_bins = pd.DataFrame({'F1-Base_bin': bins[:-1]})
@@ -172,12 +177,6 @@ plt.text(0.35, 0.65, r' $F_{1}^{\mathcal{O}*}$ = 0.35', va='top', ha='right', ro
 plt.axvline(x=0.75, color='black', linestyle='--', linewidth=1)
 plt.text(0.75, 0.95, r' $F_{1}^{\mathcal{O}*}$ = 0.75', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
 
-x1, y1 = 0.25, 0.2
-x2, y2 = 1, 0.73
-
-extension_factor_1 = 0.2  # Adjust as needed
-extension_factor_2 = 0.05
-
 # del all_median[-6]
 # del all_f1[-6]
 
@@ -191,9 +190,15 @@ print(all_f1, all_median)
 
 slope, intercept, r, p, stderr = scipy.stats.linregress(all_f1, all_median)
 
+x1, y1 = 0.1, (intercept + slope * 0.1)
+x2, y2 = 1.05, (intercept + slope * 1.0)
+
+extension_factor_1 = 0.2  # Adjust as needed
+extension_factor_2 = 0.05
+
 print(f'r1={r}, r2={r**2}, intercept={intercept}, slope={slope}, p-value={p}')
 
-plt.text(1.07, 0.91, r'$R^{2}='+f'{r**2:.1f}$', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
+plt.text(1.08, 0.86, r'$R^{2}='+f'{r**2:.2f}$', va='top', ha='right', rotation=90, color='black', fontsize=29, zorder = 2)
 
 dx = x2 - x1
 dy = y2 - y1
@@ -203,7 +208,7 @@ x2_extended = x2 + extension_factor_2 * dx
 y2_extended = y2 + extension_factor_2 * dy
 
 # Plot the extended line
-plt.plot([x1_extended, x2_extended], [y1_extended, y2_extended], color='black', linestyle='--', linewidth=3)
+plt.plot([x1, x2], [y1, y2], color='black', linestyle='--', linewidth=3)
 
 
 

@@ -1,8 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import numpy as np
 # Read the CSV file
 data = pd.read_csv('./NASA-TLX.csv')
+
+print(np.mean(np.array(data['Overall'])))
+print(np.std(np.array(data['Overall'])))
 
 # Increase font sizes
 plt.rc('font', size=17)  # Base font size
