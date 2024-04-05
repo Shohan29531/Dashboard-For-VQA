@@ -210,8 +210,6 @@ y2_extended = y2 + extension_factor_2 * dy
 # Plot the extended line
 plt.plot([x1, x2], [y1, y2], color='black', linestyle='--', linewidth=3)
 
-
-
 # Adjust plot settings
 plt.title(r'User Rating Vs. $F_{1}^{\mathcal{O}*}$ Scores')
 

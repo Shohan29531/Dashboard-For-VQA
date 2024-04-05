@@ -23,7 +23,7 @@ from copy import deepcopy
 import platform
 from utils.obj_select import get_obj_list
 from utils.get_prec_rec_f1 import calculate_model_ap_ar_af1 as get_f1
-from utils.shadow_model_generator import get_dum_pred_from_f1 as get_shadow
+from utils.shadow_model_generator import get_dum_pred_from_f1_eq_swap as get_shadow
 
 PARTICIPANT_NAME = "Dummy"
 
@@ -1530,6 +1530,7 @@ def update_heatmap_1(
             try:
                 shadow_model_df = get_shadow(
                     os.path.join(base_folder, 'GT_N', f'{selected_file}.csv'),
+                    os.path.join(base_folder, f'{model.split("@")[0]}', f'{selected_file}.csv'),
                     f1___, 1, see_textarea_value_lower, limit_frame_count=max_frames+1
                 )[0]
 
