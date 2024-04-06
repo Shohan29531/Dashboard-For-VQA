@@ -17,4 +17,7 @@ timestamp,video,model left,model right,winner model,see,not_see,score,comments,m
 2024-04-01::00:05:46,video-1-segment-4,GT_N,,,"Bicycle,Gate,Person with a disability,Sidewalk,White Cane,*Chair,*Snow",,100,,single,1.0,
 2024-04-01::00:07:16,video-2-segment-1,GPT4V,,,"Bicycle,Car,Person,Sidewalk,Vegetation,*Snow,*Turnstile",,80,,single,0.9019607843137256,
 2024-04-01::00:08:38,video-3-segment-2,Random,,,"Car,Person with a disability,Road,Sidewalk,White Cane,*Chair,*Snow",,10,,single,0.6458333333333334,
-2024-04-01::00:10:32,video-1-segment-5,GPT4V@Shadow,N/A,N/A,"Barrier Post,Bicycle,Car,Person with a disability,Sidewalk,White Cane,*Snow,*Wheelchair",,30,,single,0.9047619047619047,0.9019607843137255
+2024-04-01::00:10:32,video-1-segment-5,GPT4V@Shadow,,,"Barrier Post,Bicycle,Car,Person with a disability,Sidewalk,White Cane,*Snow,*Wheelchair",,30,,single,0.9047619047619048,0.9019607843137256
+2024-04-05::17:17:33,video-1-segment-4,GT_N,,,"Bicycle,Car,Gate,Lamp Post,Person with a disability,White Cane",,90,missed bicycle in some frames,single,1.0,
+2024-04-05::17:44:58,video-1-segment-4,GPT4V@Shadow,,,"Bicycle,Car,Gate,Lamp Post,Person with a disability,White Cane,*Snow",,40,not as consistent as i want,single,0.7289719626168225,0.7289719626168225
+2024-04-05::19:09:23,video-1-segment-4,GPT4V@Shadow,N/A,N/A,"Bicycle,Car,Gate,Lamp Post,Person with a disability,White Cane,*Snow",,40,,single,0.7289719626168225,0.7289719626168225

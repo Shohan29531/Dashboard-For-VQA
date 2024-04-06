@@ -187,10 +187,10 @@ def randomize_data():
     models_to_show = {}
     reverse_model_map = {}
     for i in range(len(available_models)):
-        # models_to_show['Model-{}'.format(i)] = available_models[random_model[i]]
-        # reverse_model_map[available_models[random_model[i]]] = 'Model-{}'.format(i)
-        models_to_show[available_models[random_model[i]]] = available_models[random_model[i]]
-        reverse_model_map[available_models[random_model[i]]] = available_models[random_model[i]]
+        models_to_show['Model-{}'.format(i)] = available_models[random_model[i]]
+        reverse_model_map[available_models[random_model[i]]] = 'Model-{}'.format(i)
+        # models_to_show[available_models[random_model[i]]] = available_models[random_model[i]]
+        # reverse_model_map[available_models[random_model[i]]] = available_models[random_model[i]]
 
 
 
@@ -520,7 +520,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css', dbc.themes
 app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
 
 
-all_tasks = ['Multi-Object Classification in Video']
+all_tasks = ['Multi-Object Detection in Video']
 
 
 # top row layout
