@@ -39,4 +39,4 @@ IKIWISI was evaluated through a user study involving 15 participants, ranging fr
 
    - git clone https://github.com/your-repo/IKIWISI.git
    - cd IKIWISI
-   - python dashboard.py
+   - python dashboard_for_study_v3.py
